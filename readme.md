@@ -32,5 +32,5 @@ Files compiled and minified in `./dist`
 
 
 ##### Contact
-* Have questions, or would like to submit feedback, `contact me at: https://eaglex.net/app/contact?product=x-utils`
+* Have questions, or would like to submit feedback, `contact on: https://eaglex.net/app/contact?product=x-utils`
 
