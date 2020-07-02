@@ -1,0 +1,175 @@
+"use strict";
+/* eslint-disable no-proto */
+
+/**
+ * lodash alternative `x-utils-es`
+ */
+
+export const objectSize = (obj) => (obj && (Object.prototype === (obj).__proto__)) ? Object.entries(obj).length : 0
+
+export const last = (arr) => (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : null
+export const copyBy = (obj, refs) => refs.reduce((n, el, i) => {
+    if (obj[el] !== undefined) n[el] = obj[el]
+    return n
+}, {})
+
+export const timer = (cb, time = 0) => {
+    const isFN = typeof cb === 'function'
+    if (!isFN) return null
+    const s = setTimeout(() => {
+        cb()
+        clearTimeout(s)
+    }, time)
+}
+
+export const interval = (cb, every = 0, endTime = 0) => {
+    const isFN = typeof cb === 'function'
+    if (!isFN) return null
+
+    let counter = 0
+    const c = setInterval(() => {
+        if (endTime <= counter) {
+            cb()
+            clearInterval(c)
+        }
+        counter = counter + every
+    }, every)
+}
+
+export const validID = (id) => !(id || '') ? null : (id || '').toString().toLowerCase()
+export const isNumber = (n) => n !== undefined ? (n).__proto__ === Number.prototype : false
+export const isPromise = (defer) => Promise.prototype === (defer || {}).__proto__
+export const uniq = (arr) => arr.filter((el, i, all) => all.indexOf(el) === i)
+export const isObject = (obj) => !obj ? false : (Object.prototype === (obj).__proto__ || (obj) instanceof Object)
+export const isArray = (arr) => !arr ? false : Array.prototype === (arr).__proto__
+export const isString = (str) => !str ? false : String.prototype === (str).__proto__
+export const isFunction = (el) => typeof el === 'function'
+export const isFalsy = (el) => {
+    if (el === undefined) return true
+    if (el === false && typeof el === 'boolean') return true
+    if (el === null) return true
+    if (Array.prototype === (el).__proto__) return (el || []).length === 0
+    if (Promise.prototype === (el || {}).__proto__) return false
+    if (typeof el === 'function') return false
+    if ((Object.prototype === (el).__proto__)) return Object.entries(el).length === 0
+    if (el !== undefined && (el).__proto__ === Number.prototype) return el <= 0
+    if (el) return false
+    if ((+(el) > 0) === false) return true
+    else return false
+}
+
+export const copy = (data) => {
+    try {
+        return JSON.parse(JSON.stringify(data))
+    } catch (err) {
+        return err.toString()
+    }
+}
+
+export const delay = (time = 100) => {
+    return new Promise((resolve, reject) => {
+        const t = setTimeout(() => {
+            clearTimeout(t)
+            resolve(true)
+        }, time)
+    })
+}
+
+/**
+ * - match keys object{} > with source{}, order doesnt matter!
+ * @returns true/false when at least 1 length matched
+*/
+export const someKeyMatch = (object = {}, source = {}) => {
+    // test if its an object
+    if (!(!object ? false : (Object.prototype === (object).__proto__ || (object) instanceof Object))) {
+        return false
+    }
+    if (!(!source ? false : (Object.prototype === (source).__proto__ || (source) instanceof Object))) {
+        return false
+    }
+    const a = Object.keys(object)
+    const b = Object.keys(source)
+    if (a.length > b.length) return Object.keys(a).filter(z => Object.keys(b).filter(zz => zz === z).length).length > 0
+    else return Object.keys(b).filter(z => Object.keys(a).filter(zz => zz === z).length).length > 0
+}
+
+/** 
+ * - match keys object{} > with source{}, order doesnt matter!
+ * @returns true/false when all lengths matched
+*/
+export const exectKeyMatch = (object = {}, source = {}) => {
+    // test if its an object
+    if (!(!object ? false : (Object.prototype === (object).__proto__ || (object) instanceof Object))) {
+        return 0
+    }
+    if (!(!source ? false : (Object.prototype === (source).__proto__ || (source) instanceof Object))) {
+        return 0
+    }
+    const a = Object.keys(object)
+    const b = Object.keys(source)
+    if (a.length > b.length) return Object.keys(a).filter(z => Object.keys(b).filter(zz => zz === z).length).length === a.length
+    else return Object.keys(b).filter(z => Object.keys(a).filter(zz => zz === z).length).length === b.length
+}
+
+/** 
+ * - allow 1 level [[1,2]]
+ * @returns first array[] item[0] 
+*/
+export const head = (arr) => {
+    if (Array.prototype !== (arr || null).__proto__) return []
+    return arr.flat().shift()
+}
+
+export const log = function (...args) {
+    args = [].concat('[log]', args)
+
+    try {
+        if (window) console.log.apply(null, args)
+        return
+    } catch (err) {
+        // using node
+        const util = require('util')
+        args = args.map(z => util.inspect(z, false, 3, true))
+    }
+
+    console.log.apply(null, args)
+}
+
+export const warn = function (...args) {
+    args = [].concat('[warning]', args)
+    try {
+        if (window) console.warn.apply(null, args)
+        return
+    } catch (err) {
+        // using node
+        const util = require('util')
+        args = args.map(z => util.inspect(z, false, 3, true))
+    }
+    console.warn.apply(null, args)
+}
+
+export const onerror = function (...args) {
+    args = [].concat('[error]', args)
+    try {
+        if (window) {
+            console.error.apply(null, args)
+            console.log('  ')
+            return
+        }
+    } catch (err) {
+        // using node
+        const util = require('util')
+        args = args.map(z => util.inspect(z, false, 3, true))
+    }
+
+    console.log('  ')
+}
+
+/**
+ * @prop {*} l any data to print
+ * @prop {*} err display as error if set to true
+ */
+
+export const notify = function (logData = null, err = null) {
+    throw ('no notify support for x-utils-es, use: x-utils')
+}

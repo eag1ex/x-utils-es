@@ -1,0 +1,23 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "sourceMap": false,
+    "checkJs":true,
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "es2018", 
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true, 
+    "baseUrl": "."
+  },
+  "paths": {
+    "*": ["node_modules/*"]
+  },
+  "lib": [
+    "es2018",
+    "dom"
+  ],
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
