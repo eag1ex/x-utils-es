@@ -1,21 +1,61 @@
-// NOTE you you have older bersion of node, you have to install esm and then run `node -r esm ./examples.js`
+// NOTE if you have older node.js version, you have to install esm, then run `node -r esm ./examples.js`
+import {
+    objectSize,
+    last,
+    copyBy,
+    timer,
+    interval,
+    validID,
+    isNumber,
+    isPromise,
+    uniq,
+    isFunction,
+    isObject,
+    isArray,
+    isString,
+    isFalsy,
+    copy,
+    delay,
+    someKeyMatch,
+    exectKeyMatch,
+    head,
+    log,
+    warn,
+    onerror,
+    error
+
+    /** 
+     * `esnext` > `./index` (default). For full property names >  /src/x-utils.es
+     *  `es2015` > `./dist/es2015` For full property names >  /dist/es2015/x-utils.es
+    */
+} from './index'
 
 
-// esnext // defaults for node ems minified version
-// import {isArray,log,objectSize,timer} from './index'
+/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) })
+/** */ log({ last: last([{}, { value: 1 }]) })
+/** */ log({ copyBy: copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) })
+/** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(function () { }) })
+/** */ timer(() => log('timer called'), 2000)
+/** */ interval(() => log('interval called'), 100, 300)
+/** */ log({ validID: validID('sdfkj 45 AMKD') })
+/** */ log({ isNumberA: isNumber(-1), isNumberB: isNumber({}) })
+/** */ log({ isPromiseA: isPromise(function () { }), isPromiseB: isPromise(Promise), isPromiseC: isPromise(Promise.resolve()) })
+/** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a']) })
+/** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }) })
+/** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }) })
+/** */ log({ isStringA: isString({}), isStringB: isString('') })
+/** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' ') })
+/** */ log({ copy1: copy({ a: 1 }), copy2: copy(undefined) })
 
-// log(objectSize([]))
+/** */ async function f() {
+    log('delay start')
+    await delay(2000)
+    log('delay end')
+}; f()
 
-// timer(()=>{
-//     console.log('called')
-// },2000)
+/** */ log({ someKeyMatch1: someKeyMatch({ a: 2, b: 1, c: 2 }, { g: 1, e: 1, a: 1 }), someKeyMatch2: someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
+/** */ log({ exectKeyMatch1: exectKeyMatch({ a: 2, b: 1, c: 2 }, { a: 1, b: 1, c: 1 }), exectKeyMatc2: exectKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
 
-
-// es2015 // to access this module you need to target ./dist, loads minified version
-import {isArray,log,objectSize,timer} from './dist/es2015'
-
-log(objectSize([]))
-
-timer(()=>{
-    console.log('called')
-},2000)
+/** */ log({ head: head([[{ value: 1 }, { value: 2 }]]) })
+/** */ error("ups")
+/** */ warn("attention")

@@ -1,7 +1,7 @@
 {
   "name": "x-utils-es",
-  "version": "1.0.0",
-  "description": "helper utility tools for javascript",
+  "version": "1.0.0-beta",
+  "description": "helper tools for javascript",
   "main": "index.js",
   "module": "src/x-utils.es.js",
   "scripts": {
@@ -15,7 +15,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "example": "node -r esm ./examples.js"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/anonym101/x-utils-es"
@@ -24,6 +23,8 @@
   "author": "anon",
   "license": "CC-BY-SA",
   "keywords": [
+    "validation",
+    "data type checker",
     "lodash alternative",
     "utilities",
     "utils",

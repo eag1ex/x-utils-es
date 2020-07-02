@@ -1,4 +1,5 @@
 {
+    "cSpell.language": "en",
     "jslint.enable": false,
     "standard.enable":true,
     "eslint.nodePath":"./node_modules/eslint",

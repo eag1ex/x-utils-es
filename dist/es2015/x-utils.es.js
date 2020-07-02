@@ -1,17 +1,47 @@
+// @ts-nocheck
 "use strict";
 /* eslint-disable no-proto */
 
 /**
- * @xutils
  * lodash alternative `x-utils-es`
  */
 
-export var objectSize = obj => obj && Object.prototype === obj.__proto__ ? Object.entries(obj).length : 0;
-export var last = arr => arr && Array.prototype === arr.__proto__ ? arr[arr.length - 1] : null;
-export var copyBy = (obj, refs) => refs.reduce((n, el, i) => {
-  if (obj[el] !== undefined) n[el] = obj[el];
-  return n;
-}, {});
+export var objectSize = function objectSize(obj) {
+  if (obj === void 0) {
+    obj = {};
+  }
+
+  return obj && Object.prototype === obj.__proto__ ? Object.entries(obj).length : 0;
+}; // @ts-ignore
+
+export var last = function last(arr) {
+  if (arr === void 0) {
+    arr = [];
+  }
+
+  return arr && Array.prototype === arr.__proto__ ? arr[arr.length - 1] : null;
+};
+export var copyBy = function copyBy(obj, refs) {
+  if (obj === void 0) {
+    obj = {};
+  }
+
+  if (refs === void 0) {
+    refs = [];
+  }
+
+  // @ts-ignore
+  var d = refs.reduce((n, el, i) => {
+    if (obj[el] !== undefined) n[el] = obj[el];
+    return n;
+  }, {});
+
+  try {
+    return JSON.parse(JSON.stringify(d));
+  } catch (err) {
+    return d;
+  }
+};
 export var timer = function timer(cb, time) {
   if (time === void 0) {
     time = 0;
@@ -38,34 +68,65 @@ export var interval = function interval(cb, every, endTime) {
   var counter = 0;
   var c = setInterval(() => {
     if (endTime <= counter) {
-      cb();
       clearInterval(c);
-    }
+    } else cb();
 
     counter = counter + every;
   }, every);
 };
-export var validID = id => !(id || '') ? null : (id || '').toString().toLowerCase();
-export var isNumber = n => n !== undefined ? n.__proto__ === Number.prototype : false;
+export var validID = function validID(id) {
+  if (id === void 0) {
+    id = '';
+  }
+
+  return !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '');
+}; // @ts-ignore
+
+export var isNumber = function isNumber(n) {
+  if (n === void 0) {
+    n = null;
+  }
+
+  return n !== undefined ? n.__proto__ === Number.prototype : false;
+};
 export var isPromise = defer => Promise.prototype === (defer || {}).__proto__;
-export var uniq = arr => arr.filter((el, i, all) => all.indexOf(el) === i);
-export var isObject = obj => !obj ? false : Object.prototype === obj.__proto__ || obj instanceof Object;
-export var isArray = arr => !arr ? false : Array.prototype === arr.__proto__;
-export var isString = str => !str ? false : String.prototype === str.__proto__;
+export var uniq = function uniq(arr) {
+  if (arr === void 0) {
+    arr = [];
+  }
+
+  return arr.filter((el, i, all) => all.indexOf(el) === i);
+};
+export var isObject = obj => {
+  var a = !obj ? false : Object.prototype === obj.__proto__;
+  var b = a && obj instanceof Object && obj.__proto__ !== [].__proto__;
+  return b;
+}; // @ts-ignore
+
+export var isArray = arr => !arr ? false : Array.prototype === arr.__proto__; // @ts-ignore
+
+export var isString = str => str === '' ? true : String.prototype === str.__proto__;
 export var isFunction = el => typeof el === 'function';
-export var isFalsy = el => {
+export var isFalsy = function isFalsy(el) {
+  if (el === void 0) {
+    el = null;
+  }
+
   if (el === undefined) return true;
   if (el === false && typeof el === 'boolean') return true;
   if (el === null) return true;
+  if (String.prototype === el.__proto__) return el.length < 1;
   if (Array.prototype === el.__proto__) return (el || []).length === 0;
   if (Promise.prototype === (el || {}).__proto__) return false;
   if (typeof el === 'function') return false;
   if (Object.prototype === el.__proto__) return Object.entries(el).length === 0;
   if (el !== undefined && el.__proto__ === Number.prototype) return el <= 0;
-  if (el) return false;
-  if (+el > 0 === false) return true;else return false;
+  if (+el > 0 === false) return true;
+  if (el) return false;else return false;
 };
 export var copy = data => {
+  if (data === undefined) return data;
+
   try {
     return JSON.parse(JSON.stringify(data));
   } catch (err) {
@@ -77,6 +138,7 @@ export var delay = function delay(time) {
     time = 100;
   }
 
+  // @ts-ignore
   return new Promise((resolve, reject) => {
     var t = setTimeout(() => {
       clearTimeout(t);
@@ -109,7 +171,7 @@ export var someKeyMatch = function someKeyMatch(object, source) {
 
   var a = Object.keys(object);
   var b = Object.keys(source);
-  if (a.length > b.length) return Object.keys(a).filter(z => Object.keys(b).filter(zz => zz === z).length).length > 0;else return Object.keys(b).filter(z => Object.keys(a).filter(zz => zz === z).length).length > 0;
+  if (a.length >= b.length) return a.filter(z => b.filter(zz => zz === z).length).length > 0;else return b.filter(z => a.filter(zz => zz === z).length).length > 0;
 };
 /** 
  * - match keys object{} > with source{}, order doesnt matter!
@@ -136,15 +198,21 @@ export var exectKeyMatch = function exectKeyMatch(object, source) {
 
   var a = Object.keys(object);
   var b = Object.keys(source);
-  if (a.length > b.length) return Object.keys(a).filter(z => Object.keys(b).filter(zz => zz === z).length).length === a.length;else return Object.keys(b).filter(z => Object.keys(a).filter(zz => zz === z).length).length === b.length;
+  if (a.length >= b.length) return a.filter(z => b.filter(zz => zz === z).length).length === a.length;else return b.filter(z => a.filter(zz => zz === z).length).length === b.length;
 };
 /** 
  * - allow 1 level [[1,2]]
  * @returns first array[] item[0] 
 */
 
-export var head = arr => {
-  if (Array.prototype !== (arr || null).__proto__) return [];
+export var head = function head(arr) {
+  if (arr === void 0) {
+    arr = [];
+  }
+
+  // @ts-ignore
+  if (Array.prototype !== (arr || null).__proto__) return []; // @ts-ignore
+
   return arr.flat().shift();
 };
 export var log = function log() {
@@ -205,12 +273,37 @@ export var onerror = function onerror() {
     args = args.map(z => util.inspect(z, false, 3, true));
   }
 
+  console.error.apply(null, args);
+  console.log('  ');
+};
+export var error = function error() {
+  for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+    args[_key4] = arguments[_key4];
+  }
+
+  args = [].concat('[error]', args);
+
+  try {
+    if (window) {
+      console.error.apply(null, args);
+      console.log('  ');
+      return;
+    }
+  } catch (err) {
+    // using node
+    var util = require('util');
+
+    args = args.map(z => util.inspect(z, false, 3, true));
+  }
+
+  console.error.apply(null, args);
   console.log('  ');
 };
 /**
  * @prop {*} l any data to print
  * @prop {*} err display as error if set to true
  */
+// @ts-ignore
 
 export var notify = function notify(logData, err) {
   if (logData === void 0) {
