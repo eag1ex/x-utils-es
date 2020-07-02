@@ -1,5 +1,3 @@
-### x-utils-es
-
 
 #### About
 - Simple javascript lodash alternative library, to help with type validation, with no external plugins
@@ -7,8 +5,13 @@
 - Lightweight, minified
 
 
+#### Installation
+- `npm i x-utils-es`
+- For Node.js users, and `esm/esnext` version, you need `"node": ">=11.0.0", "npm": ">=6.4.1"` installed 
+
+
+
 #### Documentation
-- Methods and use
 
 |METHODS                |DESCRIPTION                          |RETURN                         |
 |----------------|-------------------------------|-----------------------------|
@@ -36,14 +39,16 @@
 |**onerror(,,,), error(,,,)** | `-` |console.error, with prefix `[error]` |
 
 
+
 #### Examples
-- available in: `./examples.js` `/$ node -r esm ./examples.js`
+- path: `./examples.js` `/$ node -r esm ./examples.js`
+
 ```
     /** 
      * `esnext` > `./index` (default). For full property names, use un-minified >  /src/x-utils.es
      *  `es2015` > `./dist/es2015` For full property names, use un-minified >  /dist/es2015/x-utils.es
     */
-import { objectSize, isObject, isPromise, last, head, isNumber, isArray, timer, isFalsy, someKeyMatch } from './index'
+import { log, objectSize, isObject, isPromise, last, head, isNumber, isArray, timer, isFalsy, someKeyMatch } from './index'
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) })
 /** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }) })
@@ -56,6 +61,7 @@ log({ isPromiseA: isPromise(function () { }), isPromiseC: isPromise(Promise.reso
 /** */ log({ someKeyMatch1: someKeyMatch({ a: 2, b: 1, c: 2 }, { g: 1, e: 1, a: 1 }), someKeyMatch2: someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
 ```
 
+
 #### Compatibility
 Files compiled and minified in `./dist`
 - **node.js** > esm/esnext  > support with es6+ functionality
@@ -63,18 +69,11 @@ Files compiled and minified in `./dist`
     - On browser refer to `https://jakearchibald.com/2017/es-modules-in-browsers/#nomodule-for-backwards-compatibility` if you wish to use `esm/esnext` version instead.
 
 
-##### Installation
-- `npm i x-utils-es`
-- For Node.js users, and `esm/esnext` version, you need `"node": ">=11.0.0", "npm": ">=6.4.1"` installed 
-
-
-##### Notes
-
 
 ##### LICENSE
-
 * LICENCE: CC BY-SA
 * SOURCE: https://creativecommons.org/licenses/by-sa/4.0/
+
 
 
 ##### Contact
