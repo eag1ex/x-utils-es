@@ -1,6 +1,6 @@
 {
-  "name": "x-utils",
-  "version": "1.0.1",
+  "name": "x-utils-es",
+  "version": "1.0.0",
   "description": "helper utility tools for javascript",
   "main": "index.js",
   "module": "src/x-utils.es.js",
@@ -15,12 +15,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "example": "node -r esm ./examples.js"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@anonym101"
-  },
+
   "repository": {
     "type": "git",
-    "url": "https://github.com/anonym101/x-utils"
+    "url": "https://github.com/anonym101/x-utils-es"
   },
   "type": "module",
   "author": "anon",

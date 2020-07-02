@@ -19,6 +19,7 @@ Files compiled and minified in `./dist`
 
 
 ##### Installation
+- `npm i x-utils-es`
 - For Node.js users, and `esm/esnext` version, you need `"node": ">=11.0.0", "npm": ">=6.4.1"` installed 
 
 
