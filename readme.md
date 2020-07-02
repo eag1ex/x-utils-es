@@ -13,7 +13,7 @@
 
 #### Documentation
 
-|METHODS                |DESCRIPTION                          |RETURN                         |
+|METHODS                |RETURN                          |DESCRIPTION                         |
 |----------------|-------------------------------|-----------------------------|
 |**objectSize({})** | `Number` |Checks if provided items is an object, with properties |
 |**last([])** | `last index` |provide array and return last from index |
