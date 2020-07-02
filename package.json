@@ -1,5 +1,5 @@
 {
-  "name": "x-units",
+  "name": "x-utils",
   "version": "1.0.1",
   "description": "helper utility tools for javascript",
   "main": "index.js",
