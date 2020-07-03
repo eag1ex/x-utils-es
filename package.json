@@ -12,8 +12,8 @@
     "minify:esm": "uglifyjs src/x-utils.es.js -o dist/esnext/x-utils.esnext.min.js --compress --mangle",
     "build:es5": "npm run lint:fix&& babel src -d dist/es2015&& npm run minify:es2015",
     "build:esm": "npm run lint:fix&& npm run minify:esm",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "example": "node -r esm ./examples.js"
+    "example": "node -r esm ./examples.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -24,17 +24,24 @@
   "license": "CC-BY-SA-4.0",
   "keywords": [
     "validation",
-    "data validation",
-    "data type checker",
-    "lodash alternative",
+    "data-validation",
+    "data-type-checker",
+    "lodash-alternative",
     "utilities",
     "utils",
-    "library helpers",
+    "library-helpers",
     "tools",
     "es6",
     "anon"
   ],
   "esm": {
     "mode": "auto"
-  }
+  },
+  "homepage":"https://eaglex.net",
+  "engines":{
+    "node":"*",
+    "npm":"*"
+  },
+  "dependencies":{},
+  "contributors":[]
 }

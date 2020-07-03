@@ -6,8 +6,10 @@
 
 
 #### Installation
-- `npm i x-utils-es`
 - For Node.js users, and `esm/esnext` version, you need `"node": ">=11.0.0", "npm": ">=6.4.1"` installed 
+```shell
+$ npm i x-utils-es
+```
 
 
 #### Compatibility
@@ -52,7 +54,7 @@ Location: `./examples.js` `/$ node -r esm ./examples.js`
 - esnext/esm: `import {} from ./index` (minified), or `/src/x-utils.es` (un-minified)
 - es2015: `import {} from ./dist/es2015` (minified) or  `/dist/es2015/x-utils.es` (un-minified)
 
-```
+```js
 
 import { log, objectSize, isObject, isPromise, last, head, isNumber, isArray, timer, isFalsy, someKeyMatch } from './index'
 
