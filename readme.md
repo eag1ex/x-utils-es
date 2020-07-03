@@ -10,7 +10,6 @@
 - For Node.js users, and `esm/esnext` version, you need `"node": ">=11.0.0", "npm": ">=6.4.1"` installed 
 
 
-
 #### Compatibility
 Files compiled and minified in `./dist`
 - **node.js** > esm/esnext  > support with es6+ functionality
@@ -66,7 +65,9 @@ log({ isPromiseA: isPromise(function () { }), isPromiseC: isPromise(Promise.reso
 /** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' ') })
 /** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }) })
 /** */ log({ someKeyMatch1: someKeyMatch({ a: 2, b: 1, c: 2 }, { g: 1, e: 1, a: 1 }), someKeyMatch2: someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
+
 ```
+
 
 
 ##### LICENSE
