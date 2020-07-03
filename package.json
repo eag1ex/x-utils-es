@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.0.1",
+  "version": "1.0.1-alpha",
   "description": "helper tools for javascript",
   "main": "index.js",
   "module": "src/x-utils.es.js",
@@ -21,7 +21,7 @@
   },
   "type": "module",
   "author": "anon",
-  "license": "CC-BY-SA",
+  "license": "CC-BY-SA-4.0",
   "keywords": [
     "validation",
     "data validation",

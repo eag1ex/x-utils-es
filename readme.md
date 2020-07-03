@@ -71,7 +71,7 @@ log({ isPromiseA: isPromise(function () { }), isPromiseC: isPromise(Promise.reso
 
 
 ##### LICENSE
-* LICENCE: CC BY-SA
+* LICENCE: CC-BY-SA-4.0
 * SOURCE: https://creativecommons.org/licenses/by-sa/4.0/
 
 
