@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.0.0-beta",
+  "version": "1.0.0-rc.1",
   "description": "helper tools for javascript",
   "main": "index.js",
   "module": "src/x-utils.es.js",
@@ -24,6 +24,7 @@
   "license": "CC-BY-SA",
   "keywords": [
     "validation",
+    "data validation",
     "data type checker",
     "lodash alternative",
     "utilities",
