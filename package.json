@@ -1,8 +1,8 @@
 {
   "name": "x-utils-es",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "helper tools for javascript validation",
-  "main": "./ems/index.js",
+  "main": "./esm/index.js",
   "module": "src/x-utils.es.js",
   "scripts": {
     "lint:install": "npm i babel-eslint eslint eslint-plugin-node eslint-plugin-standard",
@@ -11,8 +11,7 @@
     "build:esm": "babel --config-file ./esm/.babelrc ./src/x-utils.es.js --out-file ./esm/index.js",
     "build:umd": "babel --config-file ./umd/.babelrc ./src/x-utils.es.js --out-file ./umd/index.js",
     "build:all":"npm run lint:fix&& npm run build:esm&& npm run build:umd", 
-    "example": "node -r esm ./examples.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "example": "node -r esm ./examples.js"
   },
   "repository": {
     "type": "git",
@@ -32,7 +31,8 @@
     "library helpers",
     "tools",
     "es6",
-    "anon"
+    "anon",
+    "x-utils-es"
   ],
   "esm": {
     "mode": "auto"
