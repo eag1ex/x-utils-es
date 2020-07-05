@@ -1,17 +1,16 @@
 {
   "name": "x-utils-es",
-  "version": "1.0.1",
-  "description": "helper tools for javascript",
-  "main": "index.js",
+  "version": "1.1.0",
+  "description": "helper tools for javascript validation",
+  "main": "./ems/index.js",
   "module": "src/x-utils.es.js",
   "scripts": {
     "lint:install": "npm i babel-eslint eslint eslint-plugin-node eslint-plugin-standard",
     "lint": "./node_modules/.bin/eslint  --ext .js src",
     "lint:fix": "./node_modules/.bin/eslint --fix --ext .js src",
-    "minify:es2015": "uglifyjs dist/es2015/x-utils.es.js -o dist/es2015/x-utils.es2015.min.js --compress --mangle",
-    "minify:esm": "uglifyjs src/x-utils.es.js -o dist/esnext/x-utils.esnext.min.js --compress --mangle",
-    "build:es5": "npm run lint:fix&& babel src -d dist/es2015&& npm run minify:es2015",
-    "build:esm": "npm run lint:fix&& npm run minify:esm",
+    "build:esm": "babel --config-file ./esm/.babelrc ./src/x-utils.es.js --out-file ./esm/index.js",
+    "build:umd": "babel --config-file ./umd/.babelrc ./src/x-utils.es.js --out-file ./umd/index.js",
+    "build:all":"npm run lint:fix&& npm run build:esm&& npm run build:umd", 
     "example": "node -r esm ./examples.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -37,11 +36,31 @@
   "esm": {
     "mode": "auto"
   },
-  "homepage":"https://eaglex.net",
-  "engines":{
-    "node":"*",
-    "npm":"*"
+  "homepage": "https://eaglex.net",
+  "engines": {
+    "node": "*",
+    "npm": "*"
   },
-  "dependencies":{},
-  "contributors":[]
+  "dependencies": {},
+  "contributors": [],
+  "devDependencies": {
+    "@babel/cli": "^7.10.4",
+    "@babel/core": "^7.10.4",
+    "@babel/plugin-external-helpers": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.4",
+    "@babel/plugin-transform-typescript": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/register": "^7.10.4",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "babel-preset-minify": "^0.5.1",
+    "eslint": "^7.4.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "esm": "^3.2.25"
+  }
 }

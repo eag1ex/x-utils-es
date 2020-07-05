@@ -1,4 +1,4 @@
-// NOTE if you have older node.js version, you have to install esm, then run `node -r esm ./examples.js`
+
 import {
     objectSize,
     last,
@@ -23,13 +23,12 @@ import {
     warn,
     onerror,
     error
-
     /** 
-     * `esnext` > `./index` (default). For full property names >  /src/x-utils.es
-     *  `es2015` > `./dist/es2015` For full property names >  /dist/es2015/x-utils.es
+     * `esm` > (default) and node support for with esnext,  // node -r esm examples 
+     * `umd` > univarsal module/es2015 
     */
-} from './index'
-
+} from './esm'
+    // or {} = require('./umd') 
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) })
 /** */ log({ last: last([{}, { value: 1 }]) })

@@ -1,0 +1,35 @@
+{
+    "comments": false,
+    "presets": [
+        // will also level down to es2015, but we want to support for node and keep untainted
+        // [
+        //     "@babel/preset-env",
+        //     {
+        //         "loose": true,
+        //         "modules": false,
+        //         "targets": {
+        //             "esmodules": true
+        //         }
+        //     }
+        // ],
+        "@babel/preset-react",
+        [
+            "minify",
+            {
+                "simplifyComparisons": false, // not a good idea
+                "keepFnName": true,
+                "mangle": false, // keep original method prop names for clarity
+                "deadcode": true
+            }
+        ]
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                "absoluteRuntime": false,
+                "useESModules": true
+            }
+        ]
+    ]
+}

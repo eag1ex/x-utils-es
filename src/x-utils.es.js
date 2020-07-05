@@ -3,8 +3,19 @@
 /* eslint-disable no-proto */
 
 /**
- * lodash alternative `x-utils-es`
+ * @xtils
+ * * Simple javascript, lodash alternative library
+ * * Developed by Anon
+ * * license: CC-BY-SA-4.0
  */
+
+// try {
+//     // NOTE patch umd issue
+//     if (window) global = global || self || window  // eslint-disable-line no-undef
+
+// } catch (err) {
+//     // 
+// }
 
 export const objectSize = (obj = {}) => (obj && (Object.prototype === (obj).__proto__)) ? Object.entries(obj).length : 0
 
@@ -49,7 +60,7 @@ export const interval = (cb, every = 0, endTime = 0) => {
 
 export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
 // @ts-ignore
-export const isNumber = (n = null) => n !== undefined ? (n).__proto__ === Number.prototype : false
+export const isNumber = (n) => n !== undefined ? (n).__proto__ === Number.prototype : false
 export const isPromise = (defer) => Promise.prototype === (defer || {}).__proto__
 export const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
 export const isObject = (obj) => {
@@ -152,8 +163,8 @@ export const log = function (...args) {
         return
     } catch (err) {
         // using node
-        const util = require('util')
-        args = args.map(z => util.inspect(z, false, 3, true))
+        const util1 = require('util')
+        args = args.map(z => util1.inspect(z, false, 3, true))
     }
 
     console.log.apply(null, args)
@@ -166,8 +177,8 @@ export const warn = function (...args) {
         return
     } catch (err) {
         // using node
-        const util = require('util')
-        args = args.map(z => util.inspect(z, false, 3, true))
+        const util2 = require('util')
+        args = args.map(z => util2.inspect(z, false, 3, true))
     }
     console.warn.apply(null, args)
 }
@@ -182,8 +193,8 @@ export const onerror = function (...args) {
         }
     } catch (err) {
         // using node
-        const util = require('util')
-        args = args.map(z => util.inspect(z, false, 3, true))
+        const util3 = require('util')
+        args = args.map(z => util3.inspect(z, false, 3, true))
     }
     console.error.apply(null, args)
     console.log('  ')
@@ -199,8 +210,8 @@ export const error = function (...args) {
         }
     } catch (err) {
         // using node
-        const util = require('util')
-        args = args.map(z => util.inspect(z, false, 3, true))
+        const util4 = require('util')
+        args = args.map(z => util4.inspect(z, false, 3, true))
     }
     console.error.apply(null, args)
     console.log('  ')

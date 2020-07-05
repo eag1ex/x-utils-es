@@ -1,0 +1,49 @@
+{
+    "moduleId": "xutils",
+    "comments": false,
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "loose": true,
+                "targets": {
+                    "browsers": [
+                        "last 2 versions",
+                        "safari >= 7"
+                    ]
+                }
+            } 
+        ],
+        [
+            "minify",
+            {
+                "simplifyComparisons": false, // not a good idea
+                "keepFnName": true,
+                "mangle": false, // keep original method prop names for clarity
+                "deadcode": true
+            }
+        ]
+    ],
+    "plugins": [
+        "@babel/plugin-external-helpers",
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                "useESModules": true
+            }
+        ],
+        [
+            "transform-es2015-modules-commonjs",
+            {
+                "allowTopLevelThis": true
+            }
+        ],
+        ["transform-es2015-modules-umd",{
+            "globals": {
+                "xutils": "xutils"
+              },
+              "exactGlobals": true
+        }]
+    ]
+}
+
