@@ -10,7 +10,7 @@
     "lint:fix": "./node_modules/.bin/eslint --fix --ext .js src",
     "build:esm": "babel --config-file ./esm/.babelrc ./src/x-utils.es.js --out-file ./esm/index.js",
     "build:umd": "babel --config-file ./umd/.babelrc ./src/x-utils.es.js --out-file ./umd/index.js",
-    "build:all":"npm run lint:fix&& npm run build:esm&& npm run build:umd", 
+    "build:all": "npm run lint:fix&& npm run build:esm&& npm run build:umd",
     "example": "node -r esm ./examples.js"
   },
   "repository": {
@@ -20,7 +20,7 @@
   "type": "module",
   "author": "anon",
   "license": "CC-BY-SA-4.0",
-  "url":"https://eaglex.net",
+  "url": "https://eaglex.net",
   "keywords": [
     "validation",
     "data validation",
