@@ -28,7 +28,7 @@ $/ npm i x-utils-es
 ```js
 import {} from 'x-utils-es' // (defaults to esm)
 import {} from 'x-utils-es/umd' // for browser and commonjs support
-const {} require('x-utils-es/umd') // with node
+const {} require('x-utils-es/umd') // with node support
 
 // browser
 <script src="..path/x-dispatcher/umd"></script>
@@ -51,7 +51,7 @@ import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,i
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
-/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) })
+/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
 /** */ log({ last: last([{}, { value: 1 }]) })
 /** */ log({ copyBy: copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) })
 /** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(function () { }) }) // {false, true}
