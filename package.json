@@ -21,7 +21,6 @@
   "type": "module",
   "author": "anon",
   "license": "CC-BY-SA-4.0",
-  "url":"https://eaglex.net",
   "keywords": [
     "validation",
     "data validation",
@@ -37,7 +36,7 @@
   "esm": {
     "mode": "auto"
   },
-  "homepage": "https://github.com/anonym101/x-utils-es#readme",
+  "homepage": "https://eaglex.net",
   "engines": {
     "node": "*",
     "npm": "*"

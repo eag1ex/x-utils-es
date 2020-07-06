@@ -31,9 +31,11 @@ import {} from 'x-utils-es/umd' // for browser and commonjs support
 const {} require('x-utils-es/umd') // with node
 
 // browser
-<script src="..path/x-dispatcher/umd">
-   const {...} = window.exutils // get access to all utils
+<script src="..path/x-dispatcher/umd"></script>
+<script>
+    const {...} = window.xutils // get access to all utils
 </script>
+  
 ```
 &nbsp;
 &nbsp;
@@ -75,8 +77,8 @@ from 'x-utils-es' // require(x-utils-es/umd)
 /** */ log({ exectKeyMatch1: exectKeyMatch({ a: 2, b: 1, c: 2 }, { a: 1, b: 1, c: 1 }), exectKeyMatc2: exectKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) }) // {true, false}
 
 /** */ log({ head: head([[{ value: 1 }, { value: 2 }]]) })
-/** */ error("ups")
-/** */ warn("attention")
+/** */ error("ups") // '[error]','ups'
+/** */ warn("attention") // '[warning]','attention'
 ```
 &nbsp;
 &nbsp;
