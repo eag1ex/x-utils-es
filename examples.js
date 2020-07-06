@@ -30,10 +30,10 @@ import {
 } from './esm'
     // or {} = require('./umd') 
 
-/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) })
+/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // {2}
 /** */ log({ last: last([{}, { value: 1 }]) })
 /** */ log({ copyBy: copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) })
-/** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(function () { }) })
+/** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(function () { }) }) // {false, true}
 /** */ timer(() => log('timer called'), 2000)
 /** */ interval(() => log('interval called'), 100, 300)
 /** */ log({ validID: validID('sdfkj 45 AMKD') })
