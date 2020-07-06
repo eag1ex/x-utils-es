@@ -27,7 +27,7 @@ $/ npm i x-utils-es
 ### Version support
 ```js
 import {} from 'x-utils-es' // (defaults to esm)
-import {} from 'x-utils-es/umd' // browser and commonjs support
+import {} from 'x-utils-es/umd' // for browser and commonjs support
 const {} require('x-utils-es/umd') // with node support
 
 // browser
@@ -35,7 +35,6 @@ const {} require('x-utils-es/umd') // with node support
 <script>
     const {...} = window.xutils // get access to all utils
 </script>
-  
 ```
 &nbsp;
 &nbsp;
