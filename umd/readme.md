@@ -3,7 +3,9 @@
 - compressed and stripped of comments
 
 
-### append to each file after creation
+### after each transpite add:
+
+- remove `'util', 'util', 'util', 'util'` from define, since we dont use ams for node so it wont matter
 ```js
 /* tslint:disable */
 /* eslint-disable */
