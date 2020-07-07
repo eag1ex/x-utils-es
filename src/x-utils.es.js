@@ -9,14 +9,6 @@
  * * license: CC-BY-SA-4.0
  */
 
-// try {
-//     // NOTE patch umd issue
-//     if (window) global = global || self || window  // eslint-disable-line no-undef
-
-// } catch (err) {
-//     // 
-// }
-
 export const objectSize = (obj = {}) => (obj && (Object.prototype === (obj).__proto__)) ? Object.entries(obj).length : 0
 
 // @ts-ignore
@@ -114,10 +106,10 @@ export const delay = (time = 100) => {
 */
 export const someKeyMatch = (object = {}, source = {}) => {
     // test if its an object
-    if (!(!object ? false : (Object.prototype === (object).__proto__ || (object) instanceof Object))) {
+    if (!(!object ? false : Object.prototype === (object).__proto__)) {
         return false
     }
-    if (!(!source ? false : (Object.prototype === (source).__proto__ || (source) instanceof Object))) {
+    if (!(!source ? false : Object.prototype === (source).__proto__)) {
         return false
     }
     const a = Object.keys(object)
@@ -132,10 +124,10 @@ export const someKeyMatch = (object = {}, source = {}) => {
 */
 export const exectKeyMatch = (object = {}, source = {}) => {
     // test if its an object
-    if (!(!object ? false : (Object.prototype === (object).__proto__ || (object) instanceof Object))) {
+    if (!(!object ? false : Object.prototype === (object).__proto__)) {
         return 0
     }
-    if (!(!source ? false : (Object.prototype === (source).__proto__ || (source) instanceof Object))) {
+    if (!(!source ? false : Object.prototype === (source).__proto__)) {
         return 0
     }
     const a = Object.keys(object)
@@ -162,11 +154,10 @@ export const log = function (...args) {
         if (window) console.log.apply(null, args)
         return
     } catch (err) {
-        // using node
-        const util1 = require('util')
-        args = args.map(z => util1.inspect(z, false, 3, true))
+        // using node     
     }
-
+    const util1 = require('util')
+    args = args.map(z => util1.inspect(z, false, 3, true))
     console.log.apply(null, args)
 }
 
@@ -176,10 +167,10 @@ export const warn = function (...args) {
         if (window) console.warn.apply(null, args)
         return
     } catch (err) {
-        // using node
-        const util2 = require('util')
-        args = args.map(z => util2.inspect(z, false, 3, true))
+        // using node     
     }
+    const util2 = require('util')
+    args = args.map(z => util2.inspect(z, false, 3, true))
     console.warn.apply(null, args)
 }
 
@@ -193,9 +184,9 @@ export const onerror = function (...args) {
         }
     } catch (err) {
         // using node
-        const util3 = require('util')
-        args = args.map(z => util3.inspect(z, false, 3, true))
     }
+    const util3 = require('util')
+    args = args.map(z => util3.inspect(z, false, 3, true))
     console.error.apply(null, args)
     console.log('  ')
 }
@@ -210,9 +201,9 @@ export const error = function (...args) {
         }
     } catch (err) {
         // using node
-        const util4 = require('util')
-        args = args.map(z => util4.inspect(z, false, 3, true))
     }
+    const util4 = require('util')
+    args = args.map(z => util4.inspect(z, false, 3, true))
     console.error.apply(null, args)
     console.log('  ')
 }
