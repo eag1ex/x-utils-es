@@ -94,7 +94,7 @@ from 'x-utils-es' // require(x-utils-es/umd)
 
 ### Documentation
 
-|METHODS                |RETURN&nbsp;&nbsp;                          |DESCRIPTION                         |
+|METHODS                |RETURN&nbsp;&nbsp;&nbsp;&nbsp;                           |DESCRIPTION                         |
 |----------------|-------------------------------|-----------------------------|
 |objectSize({}) | `Number` |Checks provided item is an object with properties |
 |head( arr) | `first index` |return first index from up to 2 level array: [[1,2]]|
