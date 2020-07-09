@@ -63,7 +63,7 @@ import {
 /** */ log({ trueVal: trueVal([1, 2, 3, {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined]) })
 
     // depth is two so with return for { val: 1, name: null }
-/** */ log({ trueValDeep: trueValDeep([1, 0, 2, 3, [], "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined]) })
+/** */ log({ trueValDeep: trueValDeep([[],{a:null}]) })
 /** */ log({ trueProp: trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined }) })
 /** */ error("ups")
 /** */ warn("attention")
