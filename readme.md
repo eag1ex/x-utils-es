@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 ### Example
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,log,warn,onerror,error } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp, log,warn,onerror,error } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -75,6 +75,14 @@ from 'x-utils-es' // require(x-utils-es/umd)
 /** */ log({ someKeyMatch1: someKeyMatch({ a: 2, b: 1, c: 2 }, { g: 1, e: 1, a: 1 }), someKeyMatch2: someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) }) // {true, false}
 /** */ log({ exectKeyMatch1: exectKeyMatch({ a: 2, b: 1, c: 2 }, { a: 1, b: 1, c: 1 }), exectKeyMatc2: exectKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) }) // {true, false}
 
+/** */ log({ trueVal: trueVal([1, 2, 3, {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined]) })
+
+    // 2 levels deep
+/** */ log({ trueValDeep: trueValDeep([1, 0, 2, 3, [], "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined]) })
+
+/** */ log({ trueProp: trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined }) })
+
+
 /** */ log({ head: head([[{ value: 1 }, { value: 2 }]]) })
 /** */ error("ups") // '[error]','ups'
 /** */ warn("attention") // '[warning]','attention'
@@ -83,12 +91,14 @@ from 'x-utils-es' // require(x-utils-es/umd)
 &nbsp;
 
 
+
 ### Documentation
 
 |METHODS                |RETURN                          |DESCRIPTION                         |
 |----------------|-------------------------------|-----------------------------|
 |objectSize({}) | `Number` |Checks provided item is an object with properties |
-|last([]) | `last index` |provide array and return last index |
+|head( arr) | `first index` |return first index from up to 2 level array: [[1,2]]|
+|last([]) | `last index` |provide array and return last index _(only first level)_ |
 |isFunction(data) | `boolean` |check if a function |
 |copyBy(data{},refs[]) | `Object copy` |provide data{} with array[] of property references to match |
 |timer(cb=>,time=0) | `-` |you can replace setTimeOut with this method, same principal applies, additionally timer is cleared after callback |
@@ -100,12 +110,14 @@ from 'x-utils-es' // require(x-utils-es/umd)
 |isObject(data) |`boolean` |check if provided data is true Object.prototype not Array.prototype|
 |isArray(data) |`boolean` |check if provided data is true Array.prototype |
 |isString(data) |`boolean` |check if provided data is string |
-|isFalsy(data) |`boolean` |check if any data provided is: '', false, null, =<0, undefined, or empty data type |
+|isFalsy(data) |`boolean` |check if data provided matched any:`[NaN,'',0 /** x<1 */, false, null, undefined,NaN]` |
 |copy(data) |`copy of data` |return copy of data, or return error.toString() if undefined|
 |delay(time=0) | `Promise` |resolve promise by specified time in ms|
 |someKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if any key names match, object and source order placement doesn't matter :)|
 |exectKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if ALL keys names match, object and source order placement doesn't matter :)|
-|head( arr) | `first index` |return first index from up to 2 level array: [[1,2]]|
+|trueVal( arr) | `return true entity value array` |provided mixed array with true/falsy entities, return only positive, excluding :`[0,null,false,{},undefined, -1,'',[],NaN]`. _(It uses `isFalsy` to eval conditions)_ |
+|trueValDeep( arr) | `return true entity value array` | Same as `trueVal` except it goes 1 level deeper, so: [[1,[]]], so nested empty arrays and objects when falsy, with empty properties will also be filtered out.  _(It uses `isFalsy` to eval conditions)_ |
+|trueProp( obj )  | `return object with true prop values` | return new object with only true entities `{prop:values,...}`, ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined}`.  _(It uses `isFalsy` to eval conditions)_ |
 |log(,,,) | `-` |console.log, with prefix `[log]` |
 |warn(,,,) | `-` |console.warn, with prefix `[warning]` |
 |onerror(,,,), error(,,,) | `-` |console.error, with prefix `[error]` |

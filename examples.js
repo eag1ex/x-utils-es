@@ -19,6 +19,9 @@ import {
     someKeyMatch,
     exectKeyMatch,
     head,
+    trueVal,
+    trueValDeep,
+    trueProp,
     log,
     warn,
     onerror,
@@ -30,10 +33,10 @@ import {
 } from './esm'
     // or {} = require('./umd') 
 
-/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // {2}
+/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) })
 /** */ log({ last: last([{}, { value: 1 }]) })
 /** */ log({ copyBy: copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) })
-/** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(function () { }) }) // {false, true}
+/** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(function () { }) })
 /** */ timer(() => log('timer called'), 2000)
 /** */ interval(() => log('interval called'), 100, 300)
 /** */ log({ validID: validID('sdfkj 45 AMKD') })
@@ -56,5 +59,12 @@ import {
 /** */ log({ exectKeyMatch1: exectKeyMatch({ a: 2, b: 1, c: 2 }, { a: 1, b: 1, c: 1 }), exectKeyMatc2: exectKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
 
 /** */ log({ head: head([[{ value: 1 }, { value: 2 }]]) })
+
+/** */ log({ trueVal: trueVal([1, 2, 3, {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined]) })
+
+    // depth is two so with return for { val: 1, name: null }
+/** */ log({ trueValDeep: trueValDeep([1, 0, 2, 3, [], "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined]) })
+/** */ log({ trueProp: trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined }) })
 /** */ error("ups")
 /** */ warn("attention")
+

@@ -9,7 +9,38 @@
  * * license: CC-BY-SA-4.0
  */
 
+const isFalsy = (el = null) => {
+    if (el === undefined) return true
+    if (el === false && typeof el === 'boolean') return true
+    if (el === null) return true
+    if (String.prototype === (el).__proto__) return el.length < 1
+    if (Array.prototype === (el).__proto__) return (el || []).length === 0
+    if (Promise.prototype === (el || {}).__proto__) return false
+    if (typeof el === 'function') return false
+    if ((Object.prototype === (el).__proto__)) return Object.entries(el).length === 0
+    if (el !== undefined && (el).__proto__ === Number.prototype) {
+        if (el.toString() === "NaN") return true
+        else return el <= 0
+    }
+    if ((+(el) > 0) === false) return true
+    if (el) return false
+    else return false
+}
+
+export { isFalsy }
+
 export const objectSize = (obj = {}) => (obj && (Object.prototype === (obj).__proto__)) ? Object.entries(obj).length : 0
+
+/** 
+ * - allow 1 level [[1,2]]
+ * @returns first array[] item[0] 
+*/
+export const head = (arr = []) => {
+    // @ts-ignore
+    if (Array.prototype !== (arr || null).__proto__) return []
+    // @ts-ignore
+    return arr.flat().shift()
+}
 
 // @ts-ignore
 export const last = (arr = []) => (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : null
@@ -66,20 +97,6 @@ export const isArray = (arr) => !arr ? false : Array.prototype === (arr).__proto
 // @ts-ignore
 export const isString = (str) => str === '' ? true : String.prototype === (str).__proto__
 export const isFunction = (el) => typeof el === 'function'
-export const isFalsy = (el = null) => {
-    if (el === undefined) return true
-    if (el === false && typeof el === 'boolean') return true
-    if (el === null) return true
-    if (String.prototype === (el).__proto__) return el.length < 1
-    if (Array.prototype === (el).__proto__) return (el || []).length === 0
-    if (Promise.prototype === (el || {}).__proto__) return false
-    if (typeof el === 'function') return false
-    if ((Object.prototype === (el).__proto__)) return Object.entries(el).length === 0
-    if (el !== undefined && (el).__proto__ === Number.prototype) return el <= 0
-    if ((+(el) > 0) === false) return true
-    if (el) return false
-    else return false
-}
 
 export const copy = (data) => {
     if (data === undefined) return data
@@ -106,12 +123,9 @@ export const delay = (time = 100) => {
 */
 export const someKeyMatch = (object = {}, source = {}) => {
     // test if its an object
-    if (!(!object ? false : Object.prototype === (object).__proto__)) {
-        return false
-    }
-    if (!(!source ? false : Object.prototype === (source).__proto__)) {
-        return false
-    }
+    if (!(!object ? false : Object.prototype === (object).__proto__)) return false
+    if (!(!source ? false : Object.prototype === (source).__proto__)) return false
+
     const a = Object.keys(object)
     const b = Object.keys(source)
     if (a.length >= b.length) return a.filter(z => b.filter(zz => zz === z).length).length > 0
@@ -124,27 +138,90 @@ export const someKeyMatch = (object = {}, source = {}) => {
 */
 export const exectKeyMatch = (object = {}, source = {}) => {
     // test if its an object
-    if (!(!object ? false : Object.prototype === (object).__proto__)) {
-        return 0
-    }
-    if (!(!source ? false : Object.prototype === (source).__proto__)) {
-        return 0
-    }
+    if (!(!object ? false : Object.prototype === (object).__proto__)) return 0
+    if (!(!source ? false : Object.prototype === (source).__proto__)) return 0
+
     const a = Object.keys(object)
     const b = Object.keys(source)
     if (a.length >= b.length) return a.filter(z => b.filter(zz => zz === z).length).length === a.length
     else return b.filter(z => a.filter(zz => zz === z).length).length === b.length
 }
 
-/** 
- * - allow 1 level [[1,2]]
- * @returns first array[] item[0] 
-*/
-export const head = (arr = []) => {
-    // @ts-ignore
-    if (Array.prototype !== (arr || null).__proto__) return []
-    // @ts-ignore
-    return arr.flat().shift()
+/**
+ * @withTrueVal
+ * - you have an array with false values: [0,null,false,{},undefined, -1,'',true,1, 'hello',[]], will only return any that are true, keeping same order: [true,1,'hello'], empty entities are also omited
+ * @param {*} arr array required
+ * @returns returns new array with only [<true?>] values
+ */
+export const trueVal = (arr = []) => {
+    // provided must be array
+    if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
+    return [].concat(arr).filter((itm, inx) => isFalsy(itm) !== true)
+}
+
+/**
+ * @trueValDeep
+ * - you have an array with false values: [0,null,false,[{}],undefined, -1,'',true,1, 'hello',[[]]], will only return any that are true entities, keeping same order: [true,1,'hello'], empty entities are omited.
+ * - similar to `withVal`, except it checks 1 depth> if entities them self are empty: [[]],[{}]
+ * @param {*} arr array required
+ * @returns returns new array with only [<true?>] values
+ */
+export const trueValDeep = (arr = []) => {
+    // provided must be array
+    if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
+
+    const falsyType = (el) => {
+        if (el === undefined) return { "type": "undefined", value: true }
+        if (el === false && typeof el === 'boolean') return { "type": "boolean", value: true }
+        if (el === null) return { "type": 'null', value: true }
+        if (String.prototype === (el).__proto__) return { 'type': 'string', value: el.length < 1 }
+        if (Array.prototype === (el).__proto__) return { "type": 'array', value: (el || []).length < 1 }
+        if (Promise.prototype === (el || {}).__proto__) return { type: "promise", value: false }
+        if (typeof el === 'function') return { type: "function", value: false }
+        if ((Object.prototype === (el).__proto__)) return { "type": "object", value: Object.entries(el).length < 1 }
+        if (el !== undefined && (el).__proto__ === Number.prototype) {
+            if (el.toString() === "NaN") return { "type": 'number', value: true }
+            else return { "type": 'number', value: el < 1 }
+        }
+        // Unary plus operator
+        if ((+(el) > 0) === false) return { 'type': 'unary/plus', value: true }
+        if (el) return { 'type': typeof el, value: false }
+        else return { 'other': false }
+    }
+
+    return [].concat(arr).map((itm, inx) => {
+        const falsy = falsyType(itm)
+        // this item has child, check for false entities
+        if (falsy.type === 'array' && falsy.value === false) {
+            return itm.map(child => {
+                // return only true entities, from 1 depth
+                if (falsyType(child).value === false) return child
+                else return null
+            }).filter(n => !!n)
+        }
+        if (falsy.type === 'object' && falsy.value === false) {
+            return Object.entries(itm).reduce((n, [k, v], i) => {
+                if (falsyType(k).value === false) n[k] = v
+                return n
+            }, {})
+        } else if (falsy.value === false) return itm
+        else return null
+    }).filter(n => !!n)
+}
+
+/**
+ * @trueProp
+ * - pass an object and only return object with true entities: `{a:1,b:2,c:null,d:-1}`, => `{a:1,b:2}`
+ * @param {*} obj required
+ * @returns object with props {} 
+ */
+export const trueProp = (obj = {}) => {
+    if (!(!obj ? false : Object.prototype === (obj).__proto__)) return 0
+
+    return Object.entries(obj).reduce((n, [key, val], inx) => {
+        if (!isFalsy(val)) n[key] = val
+        return n
+    }, {})
 }
 
 export const log = function (...args) {

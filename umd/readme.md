@@ -18,10 +18,4 @@
  * * license: CC-BY-SA-4.0
  */
 
-  try {
-    if (window) global = global || self || window  // eslint-disable-line no-undef
-  } catch (err) {
-      // 
-  }
-
 ```
