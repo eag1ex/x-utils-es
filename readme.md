@@ -94,7 +94,7 @@ from 'x-utils-es' // require(x-utils-es/umd)
 
 ### Documentation
 
-|METHODS                |RETURN                          |DESCRIPTION                         |
+|METHODS                |RETURN                           |DESCRIPTION                         |
 |----------------|-------------------------------|-----------------------------|
 |objectSize({}) | `Number` |Checks provided item is an object with properties |
 |head( arr) | `first index` |return first index from up to 2 level array: [[1,2]]|
@@ -115,9 +115,9 @@ from 'x-utils-es' // require(x-utils-es/umd)
 |delay(time=0) | `Promise` |resolve promise by specified time in ms|
 |someKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if any key names match, object and source order placement doesn't matter :)|
 |exectKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if ALL keys names match, object and source order placement doesn't matter :)|
-|trueVal( arr) | `return true entity value array` |provided mixed array with true/falsy entities, return only positive, excluding :`[0,null,false,{},undefined, -1,'',[],NaN]`. Does not change structure of valid data. _(Uses `isFalsy` to eval conditions)_ |
-|trueValDeep( arr) | `return true entity value array` | Same as `trueVal` except it goes 1 level deeper: [[1,[]]], so nested empty arrays and objects, will also be filtered out. Does not change structure of valid data  _(Uses `isFalsy` to eval conditions)_ |
-|trueProp( obj )  | `return object with true prop values` | return new object with only true entities `{prop:values,...}`, ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined}`. Does not change structure of valid data.  _(Uses `isFalsy` to eval conditions)_ |
+|trueVal( arr) | `true entity array` |provided mixed array with true/falsy entities, return only positive, excluding :`[0,null,false,{},undefined, -1,'',[],NaN]`. Does not change structure of valid data. _(Uses `isFalsy` to eval conditions)_ |
+|trueValDeep( arr) | `true entity array` | Same as `trueVal` except it goes 1 level deeper: [[1,[]]], so nested empty arrays and objects, will also be filtered out. Does not change structure of valid data  _(Uses `isFalsy` to eval conditions)_ |
+|trueProp( obj )  | `object with entity props` | return new object with only true entities `{prop:values,...}`, ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined}`. Does not change structure of valid data.  _(Uses `isFalsy` to eval conditions)_ |
 |log(,,,) | `-` |console.log, with prefix `[log]` |
 |warn(,,,) | `-` |console.warn, with prefix `[warning]` |
 |onerror(,,,), error(,,,) | `-` |console.error, with prefix `[error]` |
