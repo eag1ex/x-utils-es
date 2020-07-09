@@ -116,7 +116,7 @@ from 'x-utils-es' // require(x-utils-es/umd)
 |someKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if any key names match, object and source order placement doesn't matter :)|
 |exectKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if ALL keys names match, object and source order placement doesn't matter :)|
 |trueVal( arr) | `return true entity value array` |provided mixed array with true/falsy entities, return only positive, excluding :`[0,null,false,{},undefined, -1,'',[],NaN]`. _(It uses `isFalsy` to eval conditions)_ |
-|trueValDeep( arr) | `return true entity value array` | Same as `trueVal` except it goes 1 level deeper, so: [[1,[]]], so nested empty arrays and objects when falsy, with empty properties will also be filtered out.  _(It uses `isFalsy` to eval conditions)_ |
+|trueValDeep( arr) | `return true entity value array` | Same as `trueVal` except it goes 1 level deeper: [[[]],{a:{}}], so nested empty arrays and objects, will also be filtered out.  _(It uses `isFalsy` to eval conditions)_ |
 |trueProp( obj )  | `return object with true prop values` | return new object with only true entities `{prop:values,...}`, ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined}`.  _(It uses `isFalsy` to eval conditions)_ |
 |log(,,,) | `-` |console.log, with prefix `[log]` |
 |warn(,,,) | `-` |console.warn, with prefix `[warning]` |

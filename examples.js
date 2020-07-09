@@ -30,7 +30,7 @@ import {
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > univarsal module/es2015 
     */
-} from './esm'
+} from './src/x-utils.es'
     // or {} = require('./umd') 
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) })
