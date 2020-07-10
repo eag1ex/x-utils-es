@@ -40,7 +40,7 @@ import {
 /** */ timer(() => log('timer called'), 2000)
 /** */ interval(() => log('interval called'), 100, 300)
 /** */ log({ validID: validID('sdfkj 45 AMKD') })
-/** */ log({ isNumberA: isNumber(-1), isNumberB: isNumber({}) })
+/** */ log({ isNumberA: isNumber(-1), isNumberB: isNumber({}), isNumberC: isNumber(NaN) })
 /** */ log({ isPromiseA: isPromise(function () { }), isPromiseB: isPromise(Promise), isPromiseC: isPromise(Promise.resolve()) })
 /** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a']) })
 /** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }) })

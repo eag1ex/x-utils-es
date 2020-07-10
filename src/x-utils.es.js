@@ -29,7 +29,7 @@ const isFalsy = (el = null) => {
 
 export { isFalsy }
 
-export const objectSize = (obj = {}) => (obj && (Object.prototype === (obj).__proto__)) ? Object.entries(obj).length : 0
+
 
 /** 
  * - allow 1 level [[1,2]]
@@ -86,12 +86,33 @@ export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toL
 export const isNumber = (n) => n !== undefined ? (n).__proto__ === Number.prototype : false
 export const isPromise = (defer) => Promise.prototype === (defer || {}).__proto__
 export const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
+
+// TODO
+// check Error.prototype, (class{}).prototype.__proto__===Object.prototype , (new class{}).__proto__.__proto__ === Object.prototype
+export const objectSize = (obj = {}) => {
+    if(!obj) return 0
+    let a = ( (Object.prototype === (obj).__proto__) || Error.prototype===(obj).__proto__) ? Object.keys(obj).length : 0
+    let b = false // check prototype
+    if(obj.__proto__){
+      const testA = obj.__proto__ === Object.prototype
+
+      if(!testA && obj.__proto__.__proto__){
+          if(obj.__proto__.__proto__ === Object.prototype){
+              b = true
+          }
+      }
+    }
+}
+
+// TODO
+// check Error.prototype, (class{}).prototype.__proto__===Object.prototype , (new class{}).__proto__.__proto__ === Object.prototype
 export const isObject = (obj) => {
     const a = !obj ? false : (Object.prototype === (obj).__proto__)
     const b = a && (obj instanceof Object && (obj).__proto__ !== ([]).__proto__)
     return b
 
 }
+
 // @ts-ignore
 export const isArray = (arr) => !arr ? false : Array.prototype === (arr).__proto__
 // @ts-ignore
