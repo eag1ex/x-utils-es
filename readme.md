@@ -166,13 +166,13 @@ isString(new Date()) // false
  * @param any
  * @returns boolean
  * **/
-isFalsy({}) // true
-isFalsy({a:1}) // false
-isFalsy([]) // true
-isFalsy([1]) // false
-isFalsy(true) // false
-isFalsy(false) // true
-isFalsy(0) // true
+/** */ isFalsy({}) // true
+/** */ isFalsy({a:1}) // false
+/** */ isFalsy([]) // true
+/** */ isFalsy([1]) // false
+/** */ isFalsy(true) // false
+/** */ isFalsy(false) // true
+/** */ isFalsy(0) // true
 
 
 /**
@@ -181,10 +181,10 @@ isFalsy(0) // true
  * @param any
  * @returns copy of provided data
  * **/
-copy({ a: 1, function(){} }) // {a:1, {}}
-copy([1,2,3]) // [1,2,3]
-copy(null) // null 
-copy(true) // true
+/** */ copy({ a: 1, function(){} }) // {a:1, {}}
+/** */ copy([1,2,3]) // [1,2,3]
+/** */ copy(null) // null 
+/** */ copy(true) // true
 
 
 /**
