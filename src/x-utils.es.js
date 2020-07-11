@@ -173,8 +173,8 @@ export const isObject = (obj) => {
     if (ab) return true
 
     // testing (new class{})
-    if (obj.__proto__!==undefined) {
-        if (obj.__proto__.__proto__!==undefined) {
+    if (obj.__proto__ !== undefined) {
+        if (obj.__proto__.__proto__ !== undefined) {
             if (obj.__proto__.__proto__ === Object.prototype && obj instanceof Object) return true
         }
     }
@@ -186,7 +186,7 @@ export const isObject = (obj) => {
 // testing (class{}).prototype
 const isClass = (obj) => {
     if (!obj) return false
-    if ((obj).prototype!==undefined) return true
+    if ((obj).prototype !== undefined) return true
     if (isInstance(obj)) return false
     return false
 }
@@ -194,13 +194,12 @@ const isClass = (obj) => {
 /** 
  * @alias isClass
 */
-export const hasPrototype  = isClass
+export const hasPrototype = isClass
 
 export const hasProto = (el) => {
     if (!el) return
     return el.__proto__ !== undefined
 }
-
 
 // @ts-ignore
 export const isArray = (arr) => !arr ? false : Array.prototype === (arr).__proto__
@@ -381,7 +380,7 @@ export { isError }
 export { typeCheck }
 export { validDate }
 export { isInstance }
-export {isClass}
+export { isClass }
 /**
  * @prop {*} l any data to print
  * @prop {*} err display as error if set to true
