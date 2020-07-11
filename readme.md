@@ -43,13 +43,34 @@ const {} require('x-utils-es/umd') // with node support
 
 
 ### Example
+- examples available in `./examples.js`
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, validDate } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
-/* If item is an object with properties, returns key size */
+
+
+/**
+ * - If item is an object with properties, returns key size
+ * @param data:any
+ * @returns number , amount of keys in the object
+ * **/
 objectSize({ a: 1, b: 2 }) }) // 2
+objectSize([1,2]) // 0
+
+
+
+/**
+ * - Return first index from up to 2 level array: [[1,2]]
+ * @param arr:array
+ * @returns top first index
+ * **/
+head([[{ value: 1 }, { value: 2 }]]) // { value: 1 }
+head([[ [1], {value:1} ]]) // [1]
+head([1,2]) // 1
+
+
 
 /**
  * - If array, return last index 
@@ -58,16 +79,19 @@ objectSize({ a: 1, b: 2 }) }) // 2
  * **/
 last([{},{},[1], { value: 1 }]) // { value: 1 }
 
+
 /**
- * Provide data{} with arrayProp[] references to match, returns matched
+ * - Provide data{} with arrayProp[] references to match
  * @param any
- * @returns copy of the object
+ * @returns matched copy of the object
  * **/
 copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) } // {a: 1, c: 3}
+copyBy({ a: 1, b: 2, c: 3 }) } // {}
+copyBy({}) } // {}
 
 
 /**
- * - If item is a function, returns true
+ * - If item is a function, return true
  * @param any
  * @returns boolean
  * **/
@@ -76,7 +100,7 @@ isFunction(Promise.resolve) // true
 
 
 /**
- * - Replacement for setTimeOut, same principal, finaly clears setTimeOut 
+ * - Replacement for setTimeout, same principal, on `time` clears setTimeout 
  * @param function/callback
  * @param time:number
  * **/
@@ -84,7 +108,7 @@ timer(() => log('timer called'), 2000)
 
 
 /**
- * - just like setTinterval, calls `every` time, and clear interval on `endTime` 
+ * - just like setInterval, calls `every` time/until, and clears interval on `endTime` 
  * @param callback=>
  * @param every:number 
  * @param endTime:number
@@ -99,8 +123,9 @@ interval(() => log('interval called'), 100, 300)
 validID('sdfkj 45 AMKD') // sdfkj45amkd
 
 
+
 /**
- * - Check if provided num is type of number
+ * - Check if is type of number
  * @param any
  * @returns boolean
  * **/
@@ -108,6 +133,7 @@ isNumber(-1) // true
 isNumber(NaN) // true
 isNumber(true) // false
 isNumber([]) // false
+
 
 
 /**
@@ -118,6 +144,8 @@ isNumber([]) // false
 isPromise(function () { }) // false
 isPromise(Promise.resolve()) }) // true
 
+
+
 /**
  * - Provide array and return no repeats, (doesnt work with NaN)
  * @param array[]
@@ -126,9 +154,10 @@ isPromise(Promise.resolve()) }) // true
 uniq([1, 1, 3, 'a', 'b', 'a', null, null, true, true]) // [1,3,'a','b',null,true]
 
 
+
 /**
- * - Check if provided has object properties, and its not an array
- * @param any
+ * - Check if provided has object properties, and is not an array
+ * @param data:any
  * @returns boolean
  * **/
 isObject({}) // true
@@ -141,8 +170,8 @@ isObject(null) // false
 
 
 /**
- * - Check if provided data is true Array.prototype, not an Object symbling
- * @param any
+ * - Check if provided is Array.prototype, not an Object.prototype
+ * @param data:any
  * @returns boolean
  * **/
 isArray([]) // true
@@ -151,7 +180,7 @@ isArray(new Array()) // true
 
 
 /**
- * - check if provided data is string 
+ * - Check if provided data is a string 
  * @param any
  * @returns boolean
  * **/
@@ -162,9 +191,9 @@ isString(new Date()) // false
 
 
 /**
- * - check if provided identities matched: `['',0 x<1, false, null, undefined,NaN, [],{}]`
+ * - Check if provided identities match: `['',0 x<1, false, null, undefined,NaN, [],{}]`
  * @param any
- * @returns boolean
+ * @returns boolean 
  * **/
 isFalsy({}) // true
 isFalsy({a:1}) // false
@@ -175,20 +204,22 @@ isFalsy(false) // true
 isFalsy(0) // true
 
 
+
 /**
- * - return copy of provided data. When provided methods/prototypes 
- *   with no return value, primitiveValue will be returned
+ * - Return copy of provided data. 
+ * - Methods will not be copied, only its primitiveValue 
  * @param any
  * @returns copy of provided data
  * **/
-copy({ a: 1, function(){} }) // {a:1, {}}
-copy([1,2,3]) // [1,2,3]
-copy(null) // null 
-copy(true) // true
+copy({ a: 1, function(){} }) //=>  {a:1, {}}
+copy([1,2,3]) //=> / [1,2,3]
+copy(null) //=>  null 
+copy(true) //=>  true
+
 
 
 /**
- * - returns promise, that is resolved with time provided
+ * - Returns promise and resolved with time provided
  * @param time:number
  * **/
 async function f() {
@@ -199,76 +230,196 @@ async function f() {
 
 
 
+/**
+ * - Provide object/source, check if ANY key names match, object/source order placement doesn't matter :)
+ * @param obj:object
+ * @param source:object
+ * @returns boolean  true=> when at least 1 key name belongs to either obj/source
+ * **/
+someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }) //=>  true
 
-/** */ log({ someKeyMatch1: someKeyMatch({ a: 2, b: 1, c: 2 }, { g: 1, e: 1, a: 1 }), someKeyMatch2: someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) }) // {true, false}
 
-/** */ log({ exectKeyMatch1: exectKeyMatch({ a: 2, b: 1, c: 2 }, { a: 1, b: 1, c: 1 }), exectKeyMatc2: exectKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) }) // {true, false}
 
-/** */ log({ trueVal: trueVal([1, 2, 3, {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined]) })
+/**
+ * - Provide object/source, check if ALL key names match, object/source order placement doesn't matter :)
+ * @param obj:object
+ * @param source:object
+ * @returns boolean  true=> when ALL key names match each other
+ * **/
+exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 }) //=>  true
+exactKeyMatch({ a: 2, b: 1 }, { c: 1, a: 1, b: 1 }) //=> false
+exactKeyMatch({ a: 2, b: 1 }, { c: 1, d: 1}) //=>  false
+exactKeyMatch({}, { c: 1, d: 1}) //=>  false
+exactKeyMatch(['a','b','c'], { c: 1, d: 1}) //=> false
 
-    // 2 levels deep
-/** */ log({ trueValDeep: trueValDeep([1, 0, 2, 3, [], "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined]) })
 
-/** */ log({ trueProp: trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined }) }) // {g: 'hello'}
 
-/** */ log({ head: head([[{ value: 1 }, { value: 2 }]]) })
+/**
+ * - Provide mixed array, returns only positives entities, 
+ *   excluding :`[0, -1, x<1, null,false,{},undefined,'',[],NaN]`.
+ *   Does not change structure of data, uses `isFalsy()` to eval conditions.
+ * @param arr:array must provide array
+ * @returns mixed array with positive entities in same order 
+ * **/
+trueVal([-1, 0,1 {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined,true]) 
+//=> [1,'hello',{ name: 'jack' },true]
 
-/** */ log({
-    typeCheck1: typeCheck({}), typeCheck2: typeCheck({ val: 1 }), typeCheck3: typeCheck([1]), typeCheck4: typeCheck(Promise.resolve(null)), typeCheck5: typeCheck(function () { }), typeCheck6: typeCheck(''),
-    typeCheck7: typeCheck(false), typeCheck8: typeCheck(-1), typeCheck9: typeCheck(Date)
-}) // { "type": typeof/promise, value: number }
 
-/** */ log({ isEmpty1: isEmpty(new Error('err')), isEmpty2: isEmpty(-1), isEmpty3: isEmpty([1]), isEmpty4: isEmpty([]), isEmpty5: isEmpty({ v: 1 }), isEmpty6: isEmpty({}) }) // {false,false,false,true,false,true}
+/**
+ * - Same as `trueVal` except, it goes 2 levels deep: [[1,[]]], 
+ *   nested empty arrays and objects will also be filtered out. Does not change structure of valid data, 
+ *   Uses `isFalsy` to eval conditions.
+ * @param arr:array must provide array
+ * @returns mixed array with positive entities in same index order, 2 levels deep
+ * **/
+trueValDeep([1, 0, [], {}, "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined])
+//=> [ 1, 'hello', [ 1 ], { name: 'jack' } ] }
 
-/** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) }) // {true,true}
 
-/** */ log({ isInstance1: isInstance({}), isInstance2: isInstance(function () { }), isInstance3: isInstance(new function () { }) }) // {false, false, true}
 
-/** */ log({ isClass1: isClass(Date), isClas2: isClass(function () { }), isClas3: isClass(new function () { }) }) // {false, false, true}
+/**
+ * - Return new object with only true entities `{prop:values,...}`, 
+ *   ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined,j:''}`. 
+ *   Does not change structure of valid data. Uses `isFalsy` to eval conditions
+ * @param obj:object
+ * @returns new object with positive entities
+ * **/
+trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined, j:'' })
+//=> {g: 'hello'}
 
-/** */ error("ups") // '[error]','ups'
-/** */ warn("attention") // '[warning]','attention'
+
+/**
+ * - Evaluate given data and return type/value object. 
+ *   `value` is not the actual data, but an index from `-<+`. 
+ *   If array (index is incremented), if object (keys are incremented). You get the idea!
+ * @param data:anyType
+ * @param standard:boolean:true by default evaluation is using standard javascript return typeof , 
+ *        when standard=false, will use user friendly mixed/types: `date,NaN,promise,array,typeof/s`
+ * @returns { "type": date,NaN,promise,array,typeof/s, value: number, primitiveValue }
+ * **/
+typeCheck({}) // {type:object, value:0, primitiveValue: Object() }
+typeCheck({a:1,b:2}) // {type:'object', value:2, primitiveValue: Object() }
+typeCheck([2,3],false) // {type:'array', value:2, primitiveValue: Object() }
+typeCheck(Date,false) // {type:'date', value:1, primitiveValue: Date() }
+typeCheck(2) // {type:'number', value:2, primitiveValue: Number() }
+typeCheck(false) // {type:'boolean', value:0, primitiveValue: Boolean() }
+typeCheck(true) // {type:'boolean', value:1, primitiveValue: Boolean() }
+typeCheck(null,false) // {type:'null', value:0, primitiveValue: Object() }
+typeCheck(null) // {type:'object', value:0, primitiveValue: Object() }
+typeCheck(undefined) // {type:'undefined', value:0, primitiveValue: undefined }
+typeCheck(function () { }) // {type:'function', value:1, primitiveValue: Function() }
+typeCheck(Promise.resolve(),false) // {type:'promise', value:1, primitiveValue: Function() }
+typeCheck(Promise.resolve()) // {type:'function', value:1, primitiveValue: Function() }
+
+
+
+/**
+ * - Evaluate data contains true identities, and return true when: [NaN,'',x<1 , false, null, undefined,NaN,{},[]]
+ * @param data:any
+ * @returns boolean
+ * **/
+isEmpty({}) // true
+isEmpty({a:1}) // false
+isEmpty([]) // true
+isEmpty([0]) // false
+isEmpty(1) // false
+isEmpty(false) // true
+
+
+
+/**
+ * - Check is provided data is an Error.prototype
+ * @param data:any
+ * @returns boolean
+ * **/
+isError(Error()) // true
+isError(new Error()) // true
+isError(true) // false
+
+
+
+/**
+ * - Check if item is already an instance of an object, and not an array!
+ * @param data:any
+ * @returns boolean
+ * **/
+isInstance({}) // false
+isInstance(new function(){}) // true 
+isInstance(new class(){} ) // true 
+isInstance(function () { }) // false
+isInstance([]) // false
+
+
+/**
+ * - Check if provided data has .prototype, means it can be called as new. `hasPrototype` is an alias of `isClass`
+ * @param data:any
+ * @returns boolean
+ * **/
+hasPrototype(function(){})/**isClass()**/ // true 
+hasPrototype(new function(){}) // false
+hasPrototype(Date) // true
+hasPrototype(Object) // true
+
+
+/**
+ * - Will check if item has __proto__ example: `(new function(){}), {}, [],''` 
+ * - return false for: `null, undefined`
+ * @param data:any
+ * @returns boolean
+ * **/
+hasProto({}) // true
+hasProto('') // true
+hasProto(-1) // true
+hasProto(false) // true
+hasProto(undefined) // false
+hasProto(null) // false
+hasProto(NaN) // true
+
+
+
+/**
+ * - Check data is a valid Date
+ * @param data:any 
+ * @returns boolean
+ * **/
+validDate(new Date('')) // false
+validDate(new Date()) // true
+validDate(new Date(1)) // true
+validDate(Date()) // false because its a string haha
+
+
+
+/**
+ * - console.log, with prefix `[log]`
+ * @param data:any
+ * returns console.log
+ * **/
+log('my data',[1,2],...) //  '[log]','my data',[1,2]
+
+
+
+/**
+ * - console.error, with prefix `[error]`
+ * @param data:any
+ * returns console.error
+ * **/
+error('ups','1',...) //  '[error]','ups','1'
+onerror('ups','1',...) // '[error]','ups','1'
+
+
+
+/**
+ * - console.warn, with prefix `[warning]`
+ * @param data:any
+ * returns console.warn
+ * **/
+error('attention','1',...) //  '[warning]','attention','1'
+onerror('attention','1',...) // '[warning]','attention','1'
+
+
+
+
 ```
-&nbsp;
-&nbsp;
-
-
-
-### Documentation
-
-|METHODS                |RETURN                           |DESCRIPTION                         |
-|----------------|-------------------------------|-----------------------------|
-|objectSize({}) | `Number` |Checks provided item is an object with properties |
-|head( arr) | `first index` |return first index from up to 2 level array: [[1,2]]|
-|last([]) | `last index` |provide array and return last index _(only first level)_ |
-|isFunction(data) | `boolean` |check if a function |
-|copyBy(data{},refs[]) | `Object copy` |provide data{} with array[] of property references to match |
-|timer(cb=>,time=0) | `-` |you can replace setTimeOut with this method, same principal applies, additionally timer is cleared after callback |
-|interval(cb=>,every=0, endTime=0) |`-` |just like setTinterval, will call `every` time, and clear interval on `endTime`|
-|validID(id) |`string` |return string without space to lowerCase|
-|isNumber(num=null) |`boolean` |check if provided num is type of number|
-|isPromise(defer) |`boolean` |check if provided data is a Promise|
-|uniq(arr) |`array` |provide array[2,2,3,3,'b','b'], and returns uniq array: [2,3,'b']|
-|isObject(data) |`boolean` |check if provided data is true Object.prototype not Array.prototype|
-|isArray(data) |`boolean` |check if provided data is true Array.prototype |
-|isString(data) |`boolean` |check if provided data is string |
-|isFalsy(data) |`boolean` |check if data provided matched any:`[NaN,'',0 /** x<1 */, false, null, undefined,NaN]` |
-|copy(data) |`copy of data` |return copy of data, or return error.toString() if undefined|
-|delay(time=0) | `Promise` |resolve promise by specified time in ms|
-|someKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if any key names match, object and source order placement doesn't matter :)|
-|exectKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if ALL keys names match, object and source order placement doesn't matter :)|
-|trueVal( arr) | `true identity array` |provided mixed array with true/falsy entities, return only positive, excluding :`[0,null,false,{},undefined, -1,'',[],NaN]`. Does not change structure of valid data. _(Uses `isFalsy` to eval conditions)_ |
-|trueValDeep( arr) | `true identity array` | Same as `trueVal` except it goes 1 level deeper: [[1,[]]], so nested empty arrays and objects, will also be filtered out. Does not change structure of valid data  _(Uses `isFalsy` to eval conditions)_ |
-|trueProp( obj )  | `object with identity props` | return new object with only true entities `{prop:values,...}`, ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined}`. Does not change structure of valid data.  _(Uses `isFalsy` to eval conditions)_ |
-|isEmpty( data )  | `boolean` |evaluate type contains any true identity values, or return false: `NaN,'',x<1 , false, null, undefined,NaN` |
-|isError( data )  | `boolean` |check is provided data is an _Error.prototype_|
-|typeCheck( data )  | `{ "type": typeof/ or promise, value: number }` | evaluate given data and return type/value object. `value` is not actual data, but an index from `-<+`. If array _(index is counted)_, if object _(keys are counted)_, you get the idea |
-|isClass/hasPrototype( item )  | `boolean` | will check if provided `item` has _(item).prototype_, which means it can be called as new. `hasPrototype` is an alias of `isClass`|
-|isInstance( item )  | `boolean` | will check if item(__proto__)  parent.parent is an instance of Object |
-|hasProto( item )  | `boolean` | will check if item has __proto__ example: `(new function(){}), {}, []` |
-|log(,,,) | `-` |console.log, with prefix `[log]` |
-|warn(,,,) | `-` |console.warn, with prefix `[warning]` |
-|onerror(,,,), error(,,,) | `-` |console.error, with prefix `[error]` |
 &nbsp;
 &nbsp;
 
