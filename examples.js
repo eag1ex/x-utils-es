@@ -22,6 +22,9 @@ import {
     trueVal,
     trueValDeep,
     trueProp,
+    typeCheck,
+    isEmpty,
+    isError,
     log,
     warn,
     onerror,
@@ -34,19 +37,33 @@ import {
     // or {} = require('./umd') 
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) })
+
 /** */ log({ last: last([{}, { value: 1 }]) })
+
 /** */ log({ copyBy: copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) })
+
 /** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(function () { }) })
+
 /** */ timer(() => log('timer called'), 2000)
+
 /** */ interval(() => log('interval called'), 100, 300)
+
 /** */ log({ validID: validID('sdfkj 45 AMKD') })
+
 /** */ log({ isNumberA: isNumber(-1), isNumberB: isNumber({}), isNumberC: isNumber(NaN) })
+
 /** */ log({ isPromiseA: isPromise(function () { }), isPromiseB: isPromise(Promise), isPromiseC: isPromise(Promise.resolve()) })
+
 /** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a']) })
-/** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }) })
+
+/** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }), isObjectC: isObject(new Error('ups')), isObjectD: isObject((new class { })), isObjectF: isObject((new function () { })) })
+
 /** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }) })
+
 /** */ log({ isStringA: isString({}), isStringB: isString('') })
+
 /** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' ') })
+
 /** */ log({ copy1: copy({ a: 1 }), copy2: copy(undefined) })
 
 /** */ async function f() {
@@ -56,6 +73,7 @@ import {
 }; f()
 
 /** */ log({ someKeyMatch1: someKeyMatch({ a: 2, b: 1, c: 2 }, { g: 1, e: 1, a: 1 }), someKeyMatch2: someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
+
 /** */ log({ exectKeyMatch1: exectKeyMatch({ a: 2, b: 1, c: 2 }, { a: 1, b: 1, c: 1 }), exectKeyMatc2: exectKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
 
 /** */ log({ head: head([[{ value: 1 }, { value: 2 }]]) })
@@ -64,7 +82,15 @@ import {
 
     // depth is 2 leves [[],{}] > 3 levels not suported >`[[[1]],{a:{}}]`
 /** */ log({ trueValDeep: trueValDeep([1, 0, 2, 3, [], "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined]) })
+
+/** */ log({ typeCheck1: typeCheck({}), typeCheck2: typeCheck({ val: 1 }), typeCheck3: typeCheck([1]), typeCheck4: typeCheck(Promise.resolve(null)) }) // { "type": typeof/promise, value: true/null/false/number/undefined }
+
 /** */ log({ trueProp: trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined }) })
+
+/** */ log({isEmpty1:isEmpty(new Error('err')), isEmpty2:isEmpty(-1), isEmpty3:isEmpty([1]), isEmpty4:isEmpty([]), isEmpty5:isEmpty({v:1})})
+
+/** */ log({isError1:isError(Error()), isError2:isError(new Error('err'))})
+
 /** */ error("ups")
 /** */ warn("attention")
 

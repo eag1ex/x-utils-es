@@ -9,6 +9,52 @@
  * * license: CC-BY-SA-4.0
  */
 
+
+
+
+/** 
+ * - evaluate type of an element and check if its falsy
+ * @returns { "type": typeof/promise, value: true/null/false/number/undefined }
+*/
+const typeCheck = (el) => {
+
+    if (el === undefined) return { "type": "undefined", value: undefined }
+    if (el === false && typeof el === 'boolean') return { "type": "boolean", value: false }
+    if (el === null) return { "type": 'object', value: null }
+    if (String.prototype === (el).__proto__) return { 'type': 'string', value: el.length }
+    if (Array.prototype === (el).__proto__) return { "type": 'array', value: (el || []).length }
+    if (Promise.prototype === (el || '').__proto__) return { type: "promise", value: true }
+    if (typeof el === 'function') return { type: "function", value: true }
+    if ((Object.prototype === (el).__proto__)) return { "type": "object", value: Object.keys(el).length }
+    if ((Error.prototype === (el).__proto__)) return { "type": "object", value: Object.keys(el).length }
+
+    if (el !== undefined && (el).__proto__ === Number.prototype) {
+        if (isNaN(el)) return { "type": 'number', value: 0 } // so we can evaluate without worry
+        else return { "type": 'number', value: el }
+    }
+    // Unary plus operator
+    if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el) }
+
+    // testing (class{}).prototype
+    if ((el).prototype) {
+        if ((el).prototype.__proto__ === Object.prototype) return { "type": "object", value: 0 }
+    }
+    // testing (new class{}).prototype
+    if (el.__proto__) {
+        if (el.__proto__.__proto__) {
+            if (el.__proto__.__proto__ === Object.prototype) return { "type": "object", value: Object.keys(el).length }
+        }
+    }
+
+    if (el) return { 'type': typeof el, value: false }
+    else return { 'type': typeof el, value: undefined }
+}
+
+const isError = (el) => {
+    return (Error.prototype === (el || '').__proto__)
+}
+
+
 const isFalsy = (el = null) => {
     if (el === undefined) return true
     if (el === false && typeof el === 'boolean') return true
@@ -17,9 +63,10 @@ const isFalsy = (el = null) => {
     if (Array.prototype === (el).__proto__) return (el || []).length === 0
     if (Promise.prototype === (el || {}).__proto__) return false
     if (typeof el === 'function') return false
-    if ((Object.prototype === (el).__proto__)) return Object.entries(el).length === 0
+    if ((Object.prototype === (el).__proto__)) return Object.keys(el).length === 0
+    if ((Error.prototype === (el).__proto__)) return false
     if (el !== undefined && (el).__proto__ === Number.prototype) {
-        if (el.toString() === "NaN") return true
+        if (isNaN(el)) return true
         else return el <= 0
     }
     if ((+(el) > 0) === false) return true
@@ -27,9 +74,16 @@ const isFalsy = (el = null) => {
     else return false
 }
 
-export { isFalsy }
 
-
+/** 
+ * - check if given data has value or it is true, >0
+ * @param value any
+ * @extends typeCheck
+*/
+export const isEmpty = (value) => {
+    if (isError(value)) return false
+    return !typeCheck(value).value
+}
 
 /** 
  * - allow 1 level [[1,2]]
@@ -87,30 +141,33 @@ export const isNumber = (n) => n !== undefined ? (n).__proto__ === Number.protot
 export const isPromise = (defer) => Promise.prototype === (defer || {}).__proto__
 export const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
 
-// TODO
-// check Error.prototype, (class{}).prototype.__proto__===Object.prototype , (new class{}).__proto__.__proto__ === Object.prototype
 export const objectSize = (obj = {}) => {
-    if(!obj) return 0
-    let a = ( (Object.prototype === (obj).__proto__) || Error.prototype===(obj).__proto__) ? Object.keys(obj).length : 0
-    let b = false // check prototype
-    if(obj.__proto__){
-      const testA = obj.__proto__ === Object.prototype
-
-      if(!testA && obj.__proto__.__proto__){
-          if(obj.__proto__.__proto__ === Object.prototype){
-              b = true
-          }
-      }
-    }
+    if (!obj || !isNaN(+(obj))) return 0
+    return ((Object.prototype === (obj).__proto__) || Error.prototype === (obj).__proto__) ? Object.keys(obj).length : 0
 }
 
-// TODO
-// check Error.prototype, (class{}).prototype.__proto__===Object.prototype , (new class{}).__proto__.__proto__ === Object.prototype
 export const isObject = (obj) => {
-    const a = !obj ? false : (Object.prototype === (obj).__proto__)
-    const b = a && (obj instanceof Object && (obj).__proto__ !== ([]).__proto__)
-    return b
 
+    if (!isNaN((+obj)) || obj === undefined) return false
+    if ((obj).__proto__ === ([]).__proto__) return false  // is array 
+
+    // testing standard Object and Error
+    const a = (Object.prototype === (obj).__proto__ || Error.prototype === (obj).__proto__)
+    const ab = a && (obj instanceof Object)
+
+    if (ab) return true
+
+    // testing (new class{})
+    if (obj.__proto__) {
+        if (obj.__proto__.__proto__) {
+            if (obj.__proto__.__proto__ === Object.prototype) return true
+        }
+    }
+    // testing (class{}).prototype
+    if ((obj).prototype) {
+        if ((obj).prototype.__proto__ === Object.prototype) return true
+    }
+    return false
 }
 
 // @ts-ignore
@@ -191,41 +248,22 @@ export const trueValDeep = (arr = []) => {
     // provided must be array
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
 
-    const falsyType = (el) => {
-        if (el === undefined) return { "type": "undefined", value: true }
-        if (el === false && typeof el === 'boolean') return { "type": "boolean", value: true }
-        if (el === null) return { "type": 'null', value: true }
-        if (String.prototype === (el).__proto__) return { 'type': 'string', value: el.length < 1 }
-        if (Array.prototype === (el).__proto__) return { "type": 'array', value: (el || []).length < 1 }
-        if (Promise.prototype === (el || {}).__proto__) return { type: "promise", value: false }
-        if (typeof el === 'function') return { type: "function", value: false }
-        if ((Object.prototype === (el).__proto__)) return { "type": "object", value: Object.entries(el).length < 1 }
-        if (el !== undefined && (el).__proto__ === Number.prototype) {
-            if (el.toString() === "NaN") return { "type": 'number', value: true }
-            else return { "type": 'number', value: el < 1 }
-        }
-        // Unary plus operator
-        if ((+(el) > 0) === false) return { 'type': 'unary/plus', value: true }
-        if (el) return { 'type': typeof el, value: false }
-        else return { 'other': false }
-    }
-
     return [].concat(arr).map((itm, inx) => {
-        const falsy = falsyType(itm)
+        const typeIs = typeCheck(itm)
         // this item has child, check for false entities
-        if (falsy.type === 'array' && falsy.value === false) {
+        if (typeIs.type === 'array' && !isFalsy(typeIs.value)) {
             return itm.map(child => {
                 // return only true entities, from 1 depth
-                if (falsyType(child).value === false) return child
+                if (!isFalsy(typeCheck(child).value)) return child
                 else return null
             }).filter(n => !!n)
         }
-        if (falsy.type === 'object' && falsy.value === false) {
+        if (typeIs.type === 'object' && !isFalsy(typeIs.value)) {
             return Object.entries(itm).reduce((n, [k, v], i) => {
-                if (falsyType(k).value === false) n[k] = v
+                if (!isFalsy(typeCheck(k).value)) n[k] = v
                 return n
             }, {})
-        } else if (falsy.value === false) return itm
+        } else if (!isFalsy(typeIs.value)) return itm
         else return null
     }).filter(n => !!n)
 }
@@ -306,11 +344,15 @@ export const error = function (...args) {
     console.log('  ')
 }
 
+
+export { isFalsy }
+export { isError }
+export { typeCheck }
+
 /**
  * @prop {*} l any data to print
  * @prop {*} err display as error if set to true
  */
-
 // @ts-ignore
 export const notify = function (logData = null, err = null) {
     throw ('no notify support for x-utils-es, use: x-utils')
