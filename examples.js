@@ -27,7 +27,9 @@ import {
     isError,
     validDate,
     isClass,
+    hasPrototype,
     isInstance,
+    hasProto,
     log,
     warn,
     onerror,
@@ -36,8 +38,9 @@ import {
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > univarsal module/es2015 
     */
-} from './umd'
+} from './src/x-utils.es'
     // or {} = require('./umd') 
+
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
 
@@ -94,13 +97,18 @@ import {
     typeCheck7: typeCheck(false), typeCheck8: typeCheck(-1), typeCheck9: typeCheck(Date)
 }) // { "type": typeof/promise, value: number }
 
-/** */ log({ isEmpty1: isEmpty(new Error('err')), isEmpty2: isEmpty(-1), isEmpty3: isEmpty([1]), isEmpty4: isEmpty([]), isEmpty5: isEmpty({ v: 1 }), isEmpty6: isEmpty({}) })
+/** */ log({ isEmpty1: isEmpty(new Error('err')), isEmpty2: isEmpty(-1), isEmpty3: isEmpty([1]), isEmpty4: isEmpty([]), isEmpty5: isEmpty({ v: 1 }), isEmpty6: isEmpty({})})
 
 /** */ log({ validDate1: validDate(new Date()), validDate2: validDate(new Date('')) }) // {true, false}
 
 /** */ log({ isInstance1: isInstance({}), isInstance2: isInstance(function () { }), isInstance3: isInstance(new function () { }) }) // {false, false, true}
 
+/** */ log({ hasProto: hasProto({}), hasProto2: hasProto(function () { }), hasProto3: hasProto(new function () { }) }) // {false, false, true}
+
+
 /** */ log({ isClass1: isClass(Date), isClas2: isClass(function () { }), isClas3: isClass(new function () { }) }) // {false, false, true}
+
+/** */ log({ hasPrototype1: hasPrototype(Date), hasPrototyp2: hasPrototype(function () { }), hasPrototyp3: hasPrototype(new function () { }) }) // {false, false, true}
 
 /** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) })
 

@@ -45,7 +45,7 @@ const {} require('x-utils-es/umd') // with node support
 ### Example
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass, isInstance } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
@@ -129,14 +129,15 @@ from 'x-utils-es' // require(x-utils-es/umd)
 |delay(time=0) | `Promise` |resolve promise by specified time in ms|
 |someKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if any key names match, object and source order placement doesn't matter :)|
 |exectKeyMatch( object = {}, source = {}) | `boolean` |provide 2 objects and check if ALL keys names match, object and source order placement doesn't matter :)|
-|trueVal( arr) | `true entity array` |provided mixed array with true/falsy entities, return only positive, excluding :`[0,null,false,{},undefined, -1,'',[],NaN]`. Does not change structure of valid data. _(Uses `isFalsy` to eval conditions)_ |
-|trueValDeep( arr) | `true entity array` | Same as `trueVal` except it goes 1 level deeper: [[1,[]]], so nested empty arrays and objects, will also be filtered out. Does not change structure of valid data  _(Uses `isFalsy` to eval conditions)_ |
-|trueProp( obj )  | `object with entity props` | return new object with only true entities `{prop:values,...}`, ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined}`. Does not change structure of valid data.  _(Uses `isFalsy` to eval conditions)_ |
-|isEmpty( data )  | `boolean` |evaluate type contains any true entity values, or return false: `NaN,'',x<1 , false, null, undefined,NaN` |
+|trueVal( arr) | `true identity array` |provided mixed array with true/falsy entities, return only positive, excluding :`[0,null,false,{},undefined, -1,'',[],NaN]`. Does not change structure of valid data. _(Uses `isFalsy` to eval conditions)_ |
+|trueValDeep( arr) | `true identity array` | Same as `trueVal` except it goes 1 level deeper: [[1,[]]], so nested empty arrays and objects, will also be filtered out. Does not change structure of valid data  _(Uses `isFalsy` to eval conditions)_ |
+|trueProp( obj )  | `object with identity props` | return new object with only true entities `{prop:values,...}`, ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined}`. Does not change structure of valid data.  _(Uses `isFalsy` to eval conditions)_ |
+|isEmpty( data )  | `boolean` |evaluate type contains any true identity values, or return false: `NaN,'',x<1 , false, null, undefined,NaN` |
 |isError( data )  | `boolean` |check is provided data is an _Error.prototype_|
 |typeCheck( data )  | `{ "type": typeof/ or promise, value: number }` | evaluate given data and return type/value object. `value` is not actual data, but an index from `-<+`. If array _(index is counted)_, if object _(keys are counted)_, you get the idea |
-|isClass( item )  | `boolean` | will check if provided `item` has _(item).prototype_, which means it can be declared as new |
-|isInstance( item )  | `boolean` | will check if item(__proto__)  parent.parent is an instance Object |
+|isClass/hasPrototype( item )  | `boolean` | will check if provided `item` has _(item).prototype_, which means it can be called as new. `hasPrototype` is an alias of `isClass`|
+|isInstance( item )  | `boolean` | will check if item(__proto__)  parent.parent is an instance of Object |
+|hasProto( item )  | `boolean` | will check if item has __proto__ example: `(new function(){}), {}, []` |
 |log(,,,) | `-` |console.log, with prefix `[log]` |
 |warn(,,,) | `-` |console.warn, with prefix `[warning]` |
 |onerror(,,,), error(,,,) | `-` |console.error, with prefix `[error]` |
