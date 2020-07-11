@@ -207,7 +207,7 @@ isFalsy(0) // true
 
 /**
  * - Return copy of provided data. 
- * - Methods will not be copied, only its primitiveValue 
+ * - Methods will not be copied, only its primitiveValue, based of `typeCheck` evaluation
  * @param any
  * @returns copy of provided data
  * **/

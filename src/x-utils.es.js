@@ -48,27 +48,27 @@ const typeCheck = (el, standard = true) => {
 
     const ofType = (type) => {
         if (standard) return typeof el
-        else return type ? type : typeof el
+        else return type || typeof el
     }
 
     const asPrototype = (Type) => {
         return Type.prototype === el.prototype
     }
 
-    if (typeof el === 'symbol') return { "type": ofType(), value: 0, primitiveValue: Symbol() }
+    if (typeof el === 'symbol') return { "type": ofType(), value: 0, primitiveValue: Symbol('') }
 
     if (el === undefined) return { "type": ofType(), value: 0, primitiveValue: undefined }
 
     if (typeof el === 'boolean') return { "type": ofType(), value: +(el), primitiveValue: Boolean() }
 
-    if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": ofType(), value: 1, primitiveValue: BigInt('') }
+    if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": ofType(), value: 1, primitiveValue: BigInt('') } // eslint-disable-line no-undef
     if (el === null) return { "type": ofType('null'), value: 0, primitiveValue: Object() }
 
     if (el.__proto__ === Date.prototype || asPrototype(Date)) return { "type": ofType('date'), value: 1, primitiveValue: new Date() }
 
     if (String.prototype === (el).__proto__) return { 'type': ofType(), value: el.length, primitiveValue: String() }
 
-    if (Array.prototype === (el).__proto__ || asPrototype(Array)) return { "type": ofType('array'), value: (el || []).length, primitiveValue: Array() }
+    if (Array.prototype === (el).__proto__ || asPrototype(Array)) return { "type": ofType('array'), value: (el || []).length, primitiveValue: Array() } // eslint-disable-line no-array-constructor
 
     if (Promise.prototype === (el || '').__proto__ || asPrototype(Promise)) return { type: ofType('promise'), value: 1, primitiveValue: Function() }
 
@@ -79,18 +79,11 @@ const typeCheck = (el, standard = true) => {
     if ((Error.prototype === (el).__proto__) || asPrototype(Error)) return { "type": ofType('error'), value: Object.keys(el).length, primitiveValue: Error() }
 
     if ((el).__proto__ === Number.prototype || asPrototype(Number)) {
-        if (isNaN(el)) return { "type": ofType('NaN'), value: 0, primitiveValue: Number() } // so we can evaluate without worry
+        if (isNaN(el)) return { "type": ofType('NaN'), value: 0, primitiveValue: Number() }
         else return { "type": ofType(), value: el, primitiveValue: Number() }
-    }
-
-    // testing (class{}).prototype
-    //  if ((el).prototype) return { "type": ofType('prototype'), value: 1, primitiveValue: Object() }
-
-    // testing (new class{}).prototype
-    // if (isInstance(el)) return { "type": ofType('instance'), value: Object.keys(el).length, primitiveValue: Object() }
-
+    
     // Unary plus operator
-    else if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el), primitiveValue: undefined }
+    } else if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el), primitiveValue: undefined }
     else return { 'type': typeof el, value: 0, primitiveValue: undefined }
 }
 
@@ -140,7 +133,6 @@ export const head = (arr = []) => {
 
 // @ts-ignore
 export const last = (arr = []) => (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : null
-
 
 export const timer = (cb, time = 0) => {
     const isFN = typeof cb === 'function'
@@ -219,12 +211,9 @@ export const hasProto = (el) => {
     }
 }
 
-
 // @ts-ignore
 export const isString = (str) => str === '' ? true : String.prototype === (str).__proto__
 export const isFunction = (el) => typeof el === 'function'
-
-
 
 export const copyBy = (obj = {}, refs = []) => {
     if (!isObject(obj)) return {}
@@ -248,7 +237,6 @@ export const copy = (data) => {
         return typeCheck(data).primitiveValue
     }
 }
-
 
 export const delay = (time = 100) => {
     // @ts-ignore
@@ -291,7 +279,6 @@ export const exactKeyMatch = (object = {}, source = {}) => {
     if (a.length >= b.length) return a.filter(z => b.filter(zz => zz === z).length).length === a.length
     else return b.filter(z => a.filter(zz => zz === z).length).length === b.length
 }
-
 
 /**
  * @withTrueVal
