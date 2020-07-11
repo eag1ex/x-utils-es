@@ -394,7 +394,7 @@ validDate(Date()) // false because its a string haha
  * @param data:any
  * returns console.log
  * **/
-log('my data',[1,2],...) //  '[log]','my data',[1,2]
+log('my data',[1,2]) //  '[log]','my data',[1,2]
 
 
 
@@ -403,8 +403,8 @@ log('my data',[1,2],...) //  '[log]','my data',[1,2]
  * @param data:any
  * returns console.error
  * **/
-error('ups','1',...) //  '[error]','ups','1'
-onerror('ups','1',...) // '[error]','ups','1'
+error('ups','1') //  '[error]','ups','1'
+onerror('ups','1') // '[error]','ups','1'
 
 
 
@@ -413,8 +413,8 @@ onerror('ups','1',...) // '[error]','ups','1'
  * @param data:any
  * returns console.warn
  * **/
-error('attention','1',...) //  '[warning]','attention','1'
-onerror('attention','1',...) // '[warning]','attention','1'
+error('attention','1') //  '[warning]','attention','1'
+onerror('attention','1') // '[warning]','attention','1'
 
 
 
