@@ -49,7 +49,7 @@ import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,i
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 /* If item is an object with properties, returns key size */
-log( objectSize({ a: 1, b: 2 }) }) ) // 2
+/** */ log( objectSize({ a: 1, b: 2 }) }) ) // 2
 
 /**
  * - If array, return last index 
