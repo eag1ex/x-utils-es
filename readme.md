@@ -47,8 +47,8 @@ const {} require('x-utils-es/umd') // with node support
 ```js
 
 import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, validDate } 
-from 'x-utils-es' // require(x-utils-es/umd) 
-
+// from 'x-utils-es' // require(x-utils-es/umd) 
+from './src/x-utils.es'
 
 
 /**
