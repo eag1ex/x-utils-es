@@ -42,11 +42,10 @@ const {} require('x-utils-es/umd') // with node support
 
 
 
-
 ### Example
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass, isInstance } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
@@ -62,7 +61,9 @@ from 'x-utils-es' // require(x-utils-es/umd)
 /** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }), isObjectC:isObject( (new class{}) ) }) // {false, true, true}
 /** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }) }) // {true, false}
 /** */ log({ isStringA: isString({}), isStringB: isString('') }) // {false, true}
-/** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' ') }) // {true,true,true,false,false,false,false }
+
+/** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' '), isFalsyH: isFalsy(NaN) }) // {true, true, true, false, false, false,false, true}
+
 /** */ log({ copy1: copy({ a: 1 }), copy2: copy(undefined) })
 
 /** */ async function f() {
@@ -80,15 +81,22 @@ from 'x-utils-es' // require(x-utils-es/umd)
     // 2 levels deep
 /** */ log({ trueValDeep: trueValDeep([1, 0, 2, 3, [], "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined]) })
 
-/** */ log({ trueProp: trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined }) })
+/** */ log({ trueProp: trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined }) }) // {g: 'hello'}
 
 /** */ log({ head: head([[{ value: 1 }, { value: 2 }]]) })
 
-/** */ log({ typeCheck1: typeCheck({}), typeCheck2: typeCheck({ val: 1 }), typeCheck3: typeCheck([1]), typeCheck4: typeCheck(Promise.resolve(null)) }) // { "type": typeof/promise, value: index }
+/** */ log({
+    typeCheck1: typeCheck({}), typeCheck2: typeCheck({ val: 1 }), typeCheck3: typeCheck([1]), typeCheck4: typeCheck(Promise.resolve(null)), typeCheck5: typeCheck(function () { }), typeCheck6: typeCheck(''),
+    typeCheck7: typeCheck(false), typeCheck8: typeCheck(-1), typeCheck9: typeCheck(Date)
+}) // { "type": typeof/promise, value: number }
 
 /** */ log({ isEmpty1: isEmpty(new Error('err')), isEmpty2: isEmpty(-1), isEmpty3: isEmpty([1]), isEmpty4: isEmpty([]), isEmpty5: isEmpty({ v: 1 }), isEmpty6: isEmpty({}) }) // {false,false,false,true,false,true}
 
 /** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) }) // {true,true}
+
+/** */ log({ isInstance1: isInstance({}), isInstance2: isInstance(function () { }), isInstance3: isInstance(new function () { }) }) // {false, false, true}
+
+/** */ log({ isClass1: isClass(Date), isClas2: isClass(function () { }), isClas3: isClass(new function () { }) }) // {false, false, true}
 
 /** */ error("ups") // '[error]','ups'
 /** */ warn("attention") // '[warning]','attention'
@@ -124,9 +132,11 @@ from 'x-utils-es' // require(x-utils-es/umd)
 |trueVal( arr) | `true entity array` |provided mixed array with true/falsy entities, return only positive, excluding :`[0,null,false,{},undefined, -1,'',[],NaN]`. Does not change structure of valid data. _(Uses `isFalsy` to eval conditions)_ |
 |trueValDeep( arr) | `true entity array` | Same as `trueVal` except it goes 1 level deeper: [[1,[]]], so nested empty arrays and objects, will also be filtered out. Does not change structure of valid data  _(Uses `isFalsy` to eval conditions)_ |
 |trueProp( obj )  | `object with entity props` | return new object with only true entities `{prop:values,...}`, ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined}`. Does not change structure of valid data.  _(Uses `isFalsy` to eval conditions)_ |
-|isEmpty( data )  | `boolean` |evaluate type if contains any true data, or return false: `NaN,'',x<1 , false, null, undefined,NaN` |
-|isError( data )  | `boolean` |check is provided data is an Error.prototype|
-|typeCheck( data )  | `{ "type": typeof/ or promise, value: number }` | evaluate given data and return type/value object. `value` is not actual data, but an but an index from `-<+`. If array > index is counted, if object > keys are counted, you get the idea |
+|isEmpty( data )  | `boolean` |evaluate type contains any true entity values, or return false: `NaN,'',x<1 , false, null, undefined,NaN` |
+|isError( data )  | `boolean` |check is provided data is an _Error.prototype_|
+|typeCheck( data )  | `{ "type": typeof/ or promise, value: number }` | evaluate given data and return type/value object. `value` is not actual data, but an index from `-<+`. If array _(index is counted)_, if object _(keys are counted)_, you get the idea |
+|isClass( item )  | `boolean` | will check if provided `item` has _(item).prototype_, which means it can be declared as new |
+|isInstance( item )  | `boolean` | will check if item(__proto__)  parent.parent is an instance Object |
 |log(,,,) | `-` |console.log, with prefix `[log]` |
 |warn(,,,) | `-` |console.warn, with prefix `[warning]` |
 |onerror(,,,), error(,,,) | `-` |console.error, with prefix `[error]` |

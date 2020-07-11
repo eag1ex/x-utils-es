@@ -23,6 +23,17 @@ const validDate = (dt) => {
     }
 }
 
+// testing (new class{})
+const isInstance = (obj) => {
+    if (!obj) return false
+    if (obj.__proto__) {
+        if (obj.__proto__.__proto__) {
+            if (obj.__proto__.__proto__ === Object.prototype && obj instanceof Object) return true
+        }
+    }
+    return false
+}
+
 /**
  * - evaluate type of an element and check if its falsy
  * @returns { "type": typeof/promise/date, value: number }
@@ -47,19 +58,13 @@ const typeCheck = (el) => {
     }
 
     // testing (class{}).prototype
-    if ((el).prototype) {
-        if ((el).prototype.__proto__ === Object.prototype) return { "type": "object", value: 0 }
-    }
-    // testing (new class{}).prototype
-    if (el.__proto__) {
-        if (el.__proto__.__proto__) {
-            if (el.__proto__.__proto__ === Object.prototype) return { "type": "object", value: Object.keys(el).length }
-        }
-    }
-    // Unary plus operator
-    if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el) }
+    if ((el).prototype) return { "type": "object", value: 1 }
 
-    if (el) return { 'type': typeof el, value: 0 }
+    // testing (new class{}).prototype
+    if (isInstance(el)) return { "type": "object", value: Object.keys(el).length }
+    
+    // Unary plus operator
+    else if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el) }
     else return { 'type': typeof el, value: 0 }
 }
 
@@ -85,7 +90,6 @@ const isFalsy = (el = null) => {
     if (el) return false
     else return false
 }
-
 
 /** 
  * - check if given data has value or it is true, >0
@@ -161,7 +165,7 @@ export const objectSize = (obj = {}) => {
 export const isObject = (obj) => {
     if (typeof obj === 'function') return false
     if (!isNaN((+obj)) || obj === undefined) return false
-    if ((obj).__proto__ === ([]).__proto__) return false  // is array 
+    if ((obj).__proto__ === ([]).__proto__) return false // is array 
     // testing standard Object and Error
     const a = (Object.prototype === (obj).__proto__ || Error.prototype === (obj).__proto__)
     const ab = a && (obj instanceof Object)
@@ -175,34 +179,17 @@ export const isObject = (obj) => {
         }
     }
     // testing (class{}).prototype
-    if ((obj).prototype) {
-        if ((obj).prototype.__proto__ === Object.prototype) return true
-    }
+    if ((obj).prototype) return true
     return false
 }
-
-// testing (new class{})
-const isInstance = (obj)=>{
-    if(!obj) return false
-    if (obj.__proto__) {
-        if (obj.__proto__.__proto__) {
-            if (obj.__proto__.__proto__ === Object.prototype && obj instanceof Object) return true
-        }
-    }
-    return false
-}
-
 
 // testing (class{}).prototype
 export const isClass = (obj) => {
     if (!obj) return false
+    if ((obj).prototype) return true
     if (isInstance(obj)) return false
-    if ((obj).prototype) {
-        if ((obj).prototype.__proto__ === Object.prototype) return true
-    }
     return false
 }
-
 
 // @ts-ignore
 export const isArray = (arr) => !arr ? false : Array.prototype === (arr).__proto__
@@ -378,12 +365,11 @@ export const error = function (...args) {
     console.log('  ')
 }
 
-
 export { isFalsy }
 export { isError }
 export { typeCheck }
 export { validDate }
-export {isInstance}
+export { isInstance }
 /**
  * @prop {*} l any data to print
  * @prop {*} err display as error if set to true

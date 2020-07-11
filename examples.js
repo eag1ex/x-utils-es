@@ -36,7 +36,7 @@ import {
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > univarsal module/es2015 
     */
-} from './src/x-utils.es'
+} from './umd'
     // or {} = require('./umd') 
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
@@ -59,13 +59,13 @@ import {
 
 /** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a']) })
 
-/** */ log({ isObjectA: isObject(function(){}), isObjectB: isObject({ a: 1 }), isObjectC: isObject(new Error('ups')), isObjectD: isObject((new class { })), isObjectF: isObject((new function () { })) })
+/** */ log({ isObjectA: isObject(Date), isObjectB: isObject({ a: 1 }), isObjectC: isObject(new Error('ups')), isObjectD: isObject((new class { })), isObjectF: isObject((new function () { })) })
 
 /** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }) })
 
 /** */ log({ isStringA: isString({}), isStringB: isString('') })
 
-/** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' ') })
+/** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' '), isFalsyH: isFalsy(NaN) })
 
 /** */ log({ copy1: copy({ a: 1 }), copy2: copy(undefined) })
 
@@ -91,16 +91,16 @@ import {
 
 /** */ log({
     typeCheck1: typeCheck({}), typeCheck2: typeCheck({ val: 1 }), typeCheck3: typeCheck([1]), typeCheck4: typeCheck(Promise.resolve(null)), typeCheck5: typeCheck(function () { }), typeCheck6: typeCheck(''),
-    typeCheck7: typeCheck(false), typeCheck8: typeCheck(-1)
+    typeCheck7: typeCheck(false), typeCheck8: typeCheck(-1), typeCheck9: typeCheck(Date)
 }) // { "type": typeof/promise, value: number }
 
-/** */ log({ isEmpty1: isEmpty(new Error('err')), isEmpty2: isEmpty(-1), isEmpty3: isEmpty([1]), isEmpty4: isEmpty([]), isEmpty5: isEmpty({ v: 1 }),isEmpty6: isEmpty({}) })
+/** */ log({ isEmpty1: isEmpty(new Error('err')), isEmpty2: isEmpty(-1), isEmpty3: isEmpty([1]), isEmpty4: isEmpty([]), isEmpty5: isEmpty({ v: 1 }), isEmpty6: isEmpty({}) })
 
-/** */ log({validDate1:validDate(new Date()), validDate2:validDate(new Date(''))}) // {true, false}
+/** */ log({ validDate1: validDate(new Date()), validDate2: validDate(new Date('')) }) // {true, false}
 
-/** */ log({isInstance1:isInstance({}), isInstance2:isInstance(function(){}), isInstance3:isInstance(new function(){})}) // {false, false, true}
+/** */ log({ isInstance1: isInstance({}), isInstance2: isInstance(function () { }), isInstance3: isInstance(new function () { }) }) // {false, false, true}
 
-/** */ log({isClass1:isClass({}), isClas2:isClass(function(){}), isClas3:isInstance(new function(){})}) // {false, false, true}
+/** */ log({ isClass1: isClass(Date), isClas2: isClass(function () { }), isClas3: isClass(new function () { }) }) // {false, false, true}
 
 /** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) })
 
