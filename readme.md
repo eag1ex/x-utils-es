@@ -48,8 +48,8 @@ const {} require('x-utils-es/umd') // with node support
 import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
-
-/** */objectSize({ a: 1, b: 2 }) }) // 2
+/* If item is an object with properties, returns key size */
+log( objectSize({ a: 1, b: 2 }) }) ) // 2
 
 /**
  * - If array, return last index 
