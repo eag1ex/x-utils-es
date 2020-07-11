@@ -48,21 +48,132 @@ const {} require('x-utils-es/umd') // with node support
 import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
-/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
-/** */ log({ last: last([{}, { value: 1 }]) })
-/** */ log({ copyBy: copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) })
-/** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(function () { }) }) // {false, true}
-/** */ timer(() => log('timer called'), 2000)
-/** */ interval(() => log('interval called'), 100, 300)
-/** */ log({ validID: validID('sdfkj 45 AMKD') })
-/** */ log({ isNumberA: isNumber(-1), isNumberB: isNumber({}) }) // {true, false}
-/** */ log({ isPromiseA: isPromise(function () { }), isPromiseC: isPromise(Promise.resolve()) }) // {false, true}
-/** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a']) })
-/** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }), isObjectC:isObject( (new class{}) ) }) // {false, true, true}
-/** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }) }) // {true, false}
-/** */ log({ isStringA: isString({}), isStringB: isString('') }) // {false, true}
+/* If item is an object with properties, returns key size */
+objectSize({ a: 1, b: 2 }) }) // 2
 
-/** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' '), isFalsyH: isFalsy(NaN) }) // {true, true, true, false, false, false,false, true}
+/**
+ * - If array, return last index 
+ * @param any
+ * @returns last index in an array
+ * **/
+last([{},{},[1], { value: 1 }]) // { value: 1 }
+
+/**
+ * Provide data{} with arrayProp[] references to match, returns matched
+ * @param any
+ * @returns copy of the object
+ * **/
+copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) } // {a: 1, c: 3}
+
+
+/**
+ * - If item is a function, returns true
+ * @param any
+ * @returns boolean
+ * **/
+isFunction(true) // false
+isFunction(Promise.resolve) // true
+
+
+/**
+ * - Replacement for setTimeOut, same principal, finaly clears setTimeOut 
+ * @param function/callback
+ * @param time:number
+ * **/
+timer(() => log('timer called'), 2000)
+
+
+/**
+ * - just like setTinterval, calls `every` time, and clear interval on `endTime` 
+ * @param callback=>
+ * @param every:number 
+ * @param endTime:number
+ * **/
+interval(() => log('interval called'), 100, 300)
+
+
+/**
+ * - Return string without space to lowerCase
+ * @param string
+ * **/
+validID('sdfkj 45 AMKD') // sdfkj45amkd
+
+
+/**
+ * - Check if provided num is type of number
+ * @param any
+ * @returns boolean
+ * **/
+isNumber(-1) // true
+isNumber(NaN) // true
+isNumber(true) // false
+isNumber([]) // false
+
+
+/**
+ * - Check if provided item is a Promise
+ * @param any
+ * @returns boolean
+ * **/
+isPromise(function () { }) // false
+isPromise(Promise.resolve()) }) // true
+
+/**
+ * - Provide array and return no repeats, (doesnt work with NaN)
+ * @param array[]
+ * @returns array with uniq values
+ * **/
+uniq([1, 1, 3, 'a', 'b', 'a', null, null, true, true]) // [1,3,'a','b',null,true]
+
+
+/**
+ * - Check if provided has object properties, and its not an array
+ * @param any
+ * @returns boolean
+ * **/
+isObject({}) // true
+isObject([]) // false
+isObject( (new function(){}) ) // true
+isObject((function () { })) }) // false
+isObject((new class { })) // true
+isObject(new Error()) // true
+isObject(null) // false
+
+
+/**
+ * - Check if provided data is true Array.prototype, not an Object symbling
+ * @param any
+ * @returns boolean
+ * **/
+isArray([]) // true
+isArray({}) // false
+isArray(new Array()) // true
+
+
+/**
+ * - check if provided data is string 
+ * @param any
+ * @returns boolean
+ * **/
+isString('') // true
+isString(new String()) // true
+isString(NaN) // false
+isString(new Date()) // false
+
+
+/**
+ * - check if provided identities matched: `['',0 x<1, false, null, undefined,NaN, [],{}]`
+ * @param any
+ * @returns boolean
+ * **/
+isFalsy({}) // true
+isFalsy({a:1}) // false
+isFalsy([]) // true
+isFalsy([1]) // false
+isFalsy(true) // false
+isFalsy(false) // true
+isFalsy(0) // true
+
 
 /** */ log({ copy1: copy({ a: 1 }), copy2: copy(undefined) })
 

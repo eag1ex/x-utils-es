@@ -48,7 +48,7 @@ import {
 
 /** */ log({ copyBy: copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) })
 
-/** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(function () { }) })
+/** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(Promise.resolve)})
 
 /** */ timer(() => log('timer called'), 2000)
 
@@ -60,17 +60,17 @@ import {
 
 /** */ log({ isPromiseA: isPromise(function () { }), isPromiseB: isPromise(Promise), isPromiseC: isPromise(Promise.resolve()) })
 
-/** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a']) })
+/** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a',true,true, false,false, null, null, undefined,undefined]) })
 
-/** */ log({ isObjectA: isObject(Date), isObjectB: isObject({ a: 1 }), isObjectC: isObject(new Error('ups')), isObjectD: isObject((new class { })), isObjectF: isObject((new function () { })) })
+/** */ log({ isObjectA: isObject(Date), isObjectB: isObject({ a: 1 }), isObjectC: isObject(new Error()), isObjectD: isObject((new class { })), isObjectF: isObject((new function () { })) })
 
-/** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }) })
+/** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }), isArrayC: isArray(new Array()) })
 
-/** */ log({ isStringA: isString({}), isStringB: isString('') })
+/** */ log({ isStringA: isString({}), isStringB: isString(new String()),isStringC: isString(NaN)  })
 
 /** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' '), isFalsyH: isFalsy(NaN) })
 
-/** */ log({ copy1: copy({ a: 1 }), copy2: copy(undefined) })
+/** */ log({ copy1: copy({ a: 1 }), copy2: copy(undefined), copy3: copy(function(){}) })
 
 /** */ async function f() {
     log('delay start')

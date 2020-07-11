@@ -36,36 +36,44 @@ const isInstance = (obj) => {
 
 /**
  * - evaluate type of an element and check if its falsy
- * @returns { "type": typeof/promise/date, value: number }
+ * @param el any data
+ * @param standard:boolean `standard==true` > return javascript standard types, `standard==false` > return user friendly definition types:`[date,NaN,promise,instance,prototype,...typeof]`
+ * @returns { "type": typeof/promise/date/NaN, value: number, primitiveValue }
 */
-const typeCheck = (el) => {
-    if (typeof el === 'symbol') return { "type": "symbol", value: 0 }
-    if (el === undefined) return { "type": "undefined", value: 0 }
-    if (typeof el === 'boolean') return { "type": "boolean", value: +(el) }
-    if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": "bigint", value: 1 }
-    if (el === null) return { "type": 'object', value: 0 }
-    if (el.__proto__ === Date.prototype) return { "type": "date", value: 1 }
-    if (String.prototype === (el).__proto__) return { 'type': 'string', value: el.length }
-    if (Array.prototype === (el).__proto__) return { "type": 'array', value: (el || []).length }
-    if (Promise.prototype === (el || '').__proto__) return { type: "promise", value: 1 }
-    if (typeof el === 'function') return { type: "function", value: 1 }
-    if ((Object.prototype === (el).__proto__)) return { "type": "object", value: Object.keys(el).length }
-    if ((Error.prototype === (el).__proto__)) return { "type": "object", value: Object.keys(el).length }
+const typeCheck = (el, standard = true) => {
 
-    if ((el).__proto__ === Number.prototype || typeof el === 'bigint') {
-        if (isNaN(el)) return { "type": 'number', value: 0 } // so we can evaluate without worry
-        else return { "type": 'number', value: el }
+    const ofType = (type) => {
+        if (standard) return typeof el
+        else return type ? type : typeof el
+    }
+    
+    if (typeof el === 'symbol') return { "type": ofType(), value: 0, primitiveValue: Symbol() }
+    if (el === undefined) return { "type": ofType('undefined'), value: 0, primitiveValue: Object() }
+    if (typeof el === 'boolean') return { "type": ofType(), value: +(el), primitiveValue: Boolean() }
+    if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": ofType(), value: 1, primitiveValue: BigInt('') }
+    if (el === null) return { "type": ofType('null'), value: 0, primitiveValue: Object() }
+    if (el.__proto__ === Date.prototype) return { "type": ofType('date'), value: 1, primitiveValue: Date() }
+    if (String.prototype === (el).__proto__) return { 'type': ofType(), value: el.length, primitiveValue: String() }
+    if (Array.prototype === (el).__proto__) return { "type": ofType(), value: (el || []).length, primitiveValue: Array() }
+    if (Promise.prototype === (el || '').__proto__) return { type: ofType('promise'), value: 1, primitiveValue: Function() }
+    if (typeof el === 'function') return { type: ofType(), value: 1, primitiveValue: Function() }
+    if ((Object.prototype === (el).__proto__)) return { "type": ofType(), value: Object.keys(el).length, primitiveValue: Object() }
+    if ((Error.prototype === (el).__proto__)) return { "type": ofType('error'), value: Object.keys(el).length, primitiveValue: Error() }
+
+    if ((el).__proto__ === Number.prototype) {
+        if (isNaN(el)) return { "type": ofType('NaN'), value: 0, primitiveValue: Number() } // so we can evaluate without worry
+        else return { "type": ofType(), value: el, primitiveValue: Number() }
     }
 
     // testing (class{}).prototype
-    if ((el).prototype) return { "type": "object", value: 1 }
+    if ((el).prototype) return { "type": ofType('prototype'), value: 1, primitiveValue: Object() }
 
     // testing (new class{}).prototype
-    if (isInstance(el)) return { "type": "object", value: Object.keys(el).length }
-    
+    if (isInstance(el)) return { "type": ofType('instance'), value: Object.keys(el).length, primitiveValue: Object() }
+
     // Unary plus operator
-    else if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el) }
-    else return { 'type': typeof el, value: 0 }
+    else if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el), primitiveValue: undefined }
+    else return { 'type': typeof el, value: 0, primitiveValue: undefined }
 }
 
 const isError = (el) => {
@@ -208,11 +216,13 @@ export const isString = (str) => str === '' ? true : String.prototype === (str).
 export const isFunction = (el) => typeof el === 'function'
 
 export const copy = (data) => {
-    if (data === undefined) return data
+    // if (data === undefined) return undefined
+    // if (data === null) return null
+    // if(isNaN(data)) return NaN
     try {
         return JSON.parse(JSON.stringify(data))
-    } catch (err) {
-        return err.toString()
+    } catch (err) {      
+        return typeCheck(data).primitiveValue
     }
 }
 
