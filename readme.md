@@ -175,13 +175,30 @@ isFalsy(false) // true
 isFalsy(0) // true
 
 
-/** */ log({ copy1: copy({ a: 1 }), copy2: copy(undefined) })
+/**
+ * - return copy of provided data. When provided methods/prototypes 
+ *   with no return value, primitiveValue will be returned
+ * @param any
+ * @returns copy of provided data
+ * **/
+copy({ a: 1, function(){} }) // {a:1, {}}
+copy([1,2,3]) // [1,2,3]
+copy(null) // null 
+copy(true) // true
 
-/** */ async function f() {
+
+/**
+ * - returns promise, that is resolved with time provided
+ * @param time:number
+ * **/
+async function f() {
     log('delay start')
     await delay(2000)
     log('delay end')
 }; f()
+
+
+
 
 /** */ log({ someKeyMatch1: someKeyMatch({ a: 2, b: 1, c: 2 }, { g: 1, e: 1, a: 1 }), someKeyMatch2: someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) }) // {true, false}
 

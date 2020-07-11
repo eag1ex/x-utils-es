@@ -226,8 +226,11 @@ export const copy = (data) => {
     }
 }
 
+
 export const delay = (time = 100) => {
     // @ts-ignore
+    const isNum = typeof time === 'number' && time >= 0 // must provide number
+    if(!isNum) return Promise.resolve(true) // or resolve 
     return new Promise((resolve, reject) => {
         const t = setTimeout(() => {
             clearTimeout(t)
