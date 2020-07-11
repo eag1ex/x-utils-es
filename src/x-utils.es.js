@@ -9,31 +9,42 @@
  * * license: CC-BY-SA-4.0
  */
 
-
-
-
 /** 
+ * - evaluate provided DATA is an actual `date` and its valid
+ * @param date 
+ * @returns true or false
+*/
+const validDate = (dt) => {
+    try {
+        if (dt.__proto__ === Date.prototype && (dt).toString() !== 'Invalid Date') return true
+        else return false
+    } catch (err) {
+        return false
+    }
+}
+
+/**
  * - evaluate type of an element and check if its falsy
- * @returns { "type": typeof/promise, value: true/null/false/number/undefined }
+ * @returns { "type": typeof/promise/date, value: number }
 */
 const typeCheck = (el) => {
-
-    if (el === undefined) return { "type": "undefined", value: undefined }
-    if (el === false && typeof el === 'boolean') return { "type": "boolean", value: false }
-    if (el === null) return { "type": 'object', value: null }
+    if (typeof el === 'symbol') return { "type": "symbol", value: 0 }
+    if (el === undefined) return { "type": "undefined", value: 0 }
+    if (typeof el === 'boolean') return { "type": "boolean", value: +(el) }
+    if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": "bigint", value: 1 }
+    if (el === null) return { "type": 'object', value: 0 }
+    if (el.__proto__ === Date.prototype) return { "type": "date", value: 1 }
     if (String.prototype === (el).__proto__) return { 'type': 'string', value: el.length }
     if (Array.prototype === (el).__proto__) return { "type": 'array', value: (el || []).length }
-    if (Promise.prototype === (el || '').__proto__) return { type: "promise", value: true }
-    if (typeof el === 'function') return { type: "function", value: true }
+    if (Promise.prototype === (el || '').__proto__) return { type: "promise", value: 1 }
+    if (typeof el === 'function') return { type: "function", value: 1 }
     if ((Object.prototype === (el).__proto__)) return { "type": "object", value: Object.keys(el).length }
     if ((Error.prototype === (el).__proto__)) return { "type": "object", value: Object.keys(el).length }
 
-    if (el !== undefined && (el).__proto__ === Number.prototype) {
+    if ((el).__proto__ === Number.prototype || typeof el === 'bigint') {
         if (isNaN(el)) return { "type": 'number', value: 0 } // so we can evaluate without worry
         else return { "type": 'number', value: el }
     }
-    // Unary plus operator
-    if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el) }
 
     // testing (class{}).prototype
     if ((el).prototype) {
@@ -45,15 +56,16 @@ const typeCheck = (el) => {
             if (el.__proto__.__proto__ === Object.prototype) return { "type": "object", value: Object.keys(el).length }
         }
     }
+    // Unary plus operator
+    if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el) }
 
-    if (el) return { 'type': typeof el, value: false }
-    else return { 'type': typeof el, value: undefined }
+    if (el) return { 'type': typeof el, value: 0 }
+    else return { 'type': typeof el, value: 0 }
 }
 
 const isError = (el) => {
     return (Error.prototype === (el || '').__proto__)
 }
-
 
 const isFalsy = (el = null) => {
     if (el === undefined) return true
@@ -82,7 +94,7 @@ const isFalsy = (el = null) => {
 */
 export const isEmpty = (value) => {
     if (isError(value)) return false
-    return !typeCheck(value).value
+    return typeCheck(value).value > 0
 }
 
 /** 
@@ -147,10 +159,9 @@ export const objectSize = (obj = {}) => {
 }
 
 export const isObject = (obj) => {
-
+    if (typeof obj === 'function') return false
     if (!isNaN((+obj)) || obj === undefined) return false
     if ((obj).__proto__ === ([]).__proto__) return false  // is array 
-
     // testing standard Object and Error
     const a = (Object.prototype === (obj).__proto__ || Error.prototype === (obj).__proto__)
     const ab = a && (obj instanceof Object)
@@ -160,7 +171,7 @@ export const isObject = (obj) => {
     // testing (new class{})
     if (obj.__proto__) {
         if (obj.__proto__.__proto__) {
-            if (obj.__proto__.__proto__ === Object.prototype) return true
+            if (obj.__proto__.__proto__ === Object.prototype && obj instanceof Object) return true
         }
     }
     // testing (class{}).prototype
@@ -169,6 +180,29 @@ export const isObject = (obj) => {
     }
     return false
 }
+
+// testing (new class{})
+const isInstance = (obj)=>{
+    if(!obj) return false
+    if (obj.__proto__) {
+        if (obj.__proto__.__proto__) {
+            if (obj.__proto__.__proto__ === Object.prototype && obj instanceof Object) return true
+        }
+    }
+    return false
+}
+
+
+// testing (class{}).prototype
+export const isClass = (obj) => {
+    if (!obj) return false
+    if (isInstance(obj)) return false
+    if ((obj).prototype) {
+        if ((obj).prototype.__proto__ === Object.prototype) return true
+    }
+    return false
+}
+
 
 // @ts-ignore
 export const isArray = (arr) => !arr ? false : Array.prototype === (arr).__proto__
@@ -251,19 +285,19 @@ export const trueValDeep = (arr = []) => {
     return [].concat(arr).map((itm, inx) => {
         const typeIs = typeCheck(itm)
         // this item has child, check for false entities
-        if (typeIs.type === 'array' && !isFalsy(typeIs.value)) {
+        if (typeIs.type === 'array' && typeIs.value > 0) {
             return itm.map(child => {
                 // return only true entities, from 1 depth
-                if (!isFalsy(typeCheck(child).value)) return child
+                if (typeCheck(child).value > 0) return child
                 else return null
             }).filter(n => !!n)
         }
-        if (typeIs.type === 'object' && !isFalsy(typeIs.value)) {
+        if (typeIs.type === 'object' && typeIs.value) {
             return Object.entries(itm).reduce((n, [k, v], i) => {
-                if (!isFalsy(typeCheck(k).value)) n[k] = v
+                if (typeCheck(k).value > 0) n[k] = v
                 return n
             }, {})
-        } else if (!isFalsy(typeIs.value)) return itm
+        } else if (typeIs.value > 0) return itm
         else return null
     }).filter(n => !!n)
 }
@@ -348,7 +382,8 @@ export const error = function (...args) {
 export { isFalsy }
 export { isError }
 export { typeCheck }
-
+export { validDate }
+export {isInstance}
 /**
  * @prop {*} l any data to print
  * @prop {*} err display as error if set to true

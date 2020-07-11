@@ -25,6 +25,9 @@ import {
     typeCheck,
     isEmpty,
     isError,
+    validDate,
+    isClass,
+    isInstance,
     log,
     warn,
     onerror,
@@ -36,7 +39,7 @@ import {
 } from './src/x-utils.es'
     // or {} = require('./umd') 
 
-/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) })
+/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
 
 /** */ log({ last: last([{}, { value: 1 }]) })
 
@@ -56,7 +59,7 @@ import {
 
 /** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a']) })
 
-/** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }), isObjectC: isObject(new Error('ups')), isObjectD: isObject((new class { })), isObjectF: isObject((new function () { })) })
+/** */ log({ isObjectA: isObject(function(){}), isObjectB: isObject({ a: 1 }), isObjectC: isObject(new Error('ups')), isObjectD: isObject((new class { })), isObjectF: isObject((new function () { })) })
 
 /** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }) })
 
@@ -83,13 +86,23 @@ import {
     // depth is 2 leves [[],{}] > 3 levels not suported >`[[[1]],{a:{}}]`
 /** */ log({ trueValDeep: trueValDeep([1, 0, 2, 3, [], "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined]) })
 
-/** */ log({ typeCheck1: typeCheck({}), typeCheck2: typeCheck({ val: 1 }), typeCheck3: typeCheck([1]), typeCheck4: typeCheck(Promise.resolve(null)) }) // { "type": typeof/promise, value: true/null/false/number/undefined }
 
 /** */ log({ trueProp: trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined }) })
 
-/** */ log({isEmpty1:isEmpty(new Error('err')), isEmpty2:isEmpty(-1), isEmpty3:isEmpty([1]), isEmpty4:isEmpty([]), isEmpty5:isEmpty({v:1})})
+/** */ log({
+    typeCheck1: typeCheck({}), typeCheck2: typeCheck({ val: 1 }), typeCheck3: typeCheck([1]), typeCheck4: typeCheck(Promise.resolve(null)), typeCheck5: typeCheck(function () { }), typeCheck6: typeCheck(''),
+    typeCheck7: typeCheck(false), typeCheck8: typeCheck(-1)
+}) // { "type": typeof/promise, value: number }
 
-/** */ log({isError1:isError(Error()), isError2:isError(new Error('err'))})
+/** */ log({ isEmpty1: isEmpty(new Error('err')), isEmpty2: isEmpty(-1), isEmpty3: isEmpty([1]), isEmpty4: isEmpty([]), isEmpty5: isEmpty({ v: 1 }),isEmpty6: isEmpty({}) })
+
+/** */ log({validDate1:validDate(new Date()), validDate2:validDate(new Date(''))}) // {true, false}
+
+/** */ log({isInstance1:isInstance({}), isInstance2:isInstance(function(){}), isInstance3:isInstance(new function(){})}) // {false, false, true}
+
+/** */ log({isClass1:isClass({}), isClas2:isClass(function(){}), isClas3:isInstance(new function(){})}) // {false, false, true}
+
+/** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) })
 
 /** */ error("ups")
 /** */ warn("attention")

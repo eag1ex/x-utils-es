@@ -46,9 +46,8 @@ const {} require('x-utils-es/umd') // with node support
 ### Example
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp, log,warn,onerror,error } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exectKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error } 
 from 'x-utils-es' // require(x-utils-es/umd) 
-
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
 /** */ log({ last: last([{}, { value: 1 }]) })
@@ -60,7 +59,7 @@ from 'x-utils-es' // require(x-utils-es/umd)
 /** */ log({ isNumberA: isNumber(-1), isNumberB: isNumber({}) }) // {true, false}
 /** */ log({ isPromiseA: isPromise(function () { }), isPromiseC: isPromise(Promise.resolve()) }) // {false, true}
 /** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a']) })
-/** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }) }) // {false, true}
+/** */ log({ isObjectA: isObject([1, 2, 3]), isObjectB: isObject({ a: 1 }), isObjectC:isObject( (new class{}) ) }) // {false, true, true}
 /** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }) }) // {true, false}
 /** */ log({ isStringA: isString({}), isStringB: isString('') }) // {false, true}
 /** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' ') }) // {true,true,true,false,false,false,false }
@@ -73,6 +72,7 @@ from 'x-utils-es' // require(x-utils-es/umd)
 }; f()
 
 /** */ log({ someKeyMatch1: someKeyMatch({ a: 2, b: 1, c: 2 }, { g: 1, e: 1, a: 1 }), someKeyMatch2: someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) }) // {true, false}
+
 /** */ log({ exectKeyMatch1: exectKeyMatch({ a: 2, b: 1, c: 2 }, { a: 1, b: 1, c: 1 }), exectKeyMatc2: exectKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) }) // {true, false}
 
 /** */ log({ trueVal: trueVal([1, 2, 3, {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined]) })
@@ -82,8 +82,14 @@ from 'x-utils-es' // require(x-utils-es/umd)
 
 /** */ log({ trueProp: trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined }) })
 
-
 /** */ log({ head: head([[{ value: 1 }, { value: 2 }]]) })
+
+/** */ log({ typeCheck1: typeCheck({}), typeCheck2: typeCheck({ val: 1 }), typeCheck3: typeCheck([1]), typeCheck4: typeCheck(Promise.resolve(null)) }) // { "type": typeof/promise, value: index }
+
+/** */ log({ isEmpty1: isEmpty(new Error('err')), isEmpty2: isEmpty(-1), isEmpty3: isEmpty([1]), isEmpty4: isEmpty([]), isEmpty5: isEmpty({ v: 1 }), isEmpty6: isEmpty({}) }) // {false,false,false,true,false,true}
+
+/** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) }) // {true,true}
+
 /** */ error("ups") // '[error]','ups'
 /** */ warn("attention") // '[warning]','attention'
 ```
@@ -118,6 +124,9 @@ from 'x-utils-es' // require(x-utils-es/umd)
 |trueVal( arr) | `true entity array` |provided mixed array with true/falsy entities, return only positive, excluding :`[0,null,false,{},undefined, -1,'',[],NaN]`. Does not change structure of valid data. _(Uses `isFalsy` to eval conditions)_ |
 |trueValDeep( arr) | `true entity array` | Same as `trueVal` except it goes 1 level deeper: [[1,[]]], so nested empty arrays and objects, will also be filtered out. Does not change structure of valid data  _(Uses `isFalsy` to eval conditions)_ |
 |trueProp( obj )  | `object with entity props` | return new object with only true entities `{prop:values,...}`, ignoring top level: `{a:NaN,b:0,c:false,d:-1,e:NaN,f:[],g:{},h:undefined}`. Does not change structure of valid data.  _(Uses `isFalsy` to eval conditions)_ |
+|isEmpty( data )  | `boolean` |evaluate type if contains any true data, or return false: `NaN,'',x<1 , false, null, undefined,NaN` |
+|isError( data )  | `boolean` |check is provided data is an Error.prototype|
+|typeCheck( data )  | `{ "type": typeof/ or promise, value: number }` | evaluate given data and return type/value object. `value` is not actual data, but an but an index from `-<+`. If array > index is counted, if object > keys are counted, you get the idea |
 |log(,,,) | `-` |console.log, with prefix `[log]` |
 |warn(,,,) | `-` |console.warn, with prefix `[warning]` |
 |onerror(,,,), error(,,,) | `-` |console.error, with prefix `[error]` |
