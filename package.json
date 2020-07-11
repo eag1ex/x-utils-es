@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "helper tools for javascript validation",
   "main": "esm/index.js",
   "module": "src/x-utils.es.js",
@@ -29,6 +29,15 @@
     "utils",
     "library helpers",
     "tools",
+    "isEmpty",
+    "isArray",
+    "isObject",
+    "isFunction",
+    "isPromise",
+    "isNumber",
+    "hasPrototype",
+    "isError",
+    "isString",
     "es6",
     "anon",
     "x-utils-es"
