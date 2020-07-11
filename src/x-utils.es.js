@@ -140,6 +140,7 @@ export const copyBy = (obj = {}, refs = []) => {
 export const timer = (cb, time = 0) => {
     const isFN = typeof cb === 'function'
     if (!isFN) return null
+    time = (typeof time === 'number' && time >= 0 ) ? time:0 // must provide number
     const s = setTimeout(() => {
         cb()
         clearTimeout(s)
@@ -149,6 +150,8 @@ export const timer = (cb, time = 0) => {
 export const interval = (cb, every = 0, endTime = 0) => {
     const isFN = typeof cb === 'function'
     if (!isFN) return null
+    every = (typeof every === 'number' && every >= 0 ) ? every:0 // must provide number
+    endTime = (typeof endTime === 'number' && endTime >= 0 ) ? endTime:0 // must provide number  
 
     let counter = 0
     const c = setInterval(() => {

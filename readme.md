@@ -49,7 +49,7 @@ import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,i
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 /* If item is an object with properties, returns key size */
-/** */ log( objectSize({ a: 1, b: 2 }) }) ) // 2
+objectSize({ a: 1, b: 2 }) }) // 2
 
 /**
  * - If array, return last index 
@@ -181,10 +181,10 @@ isFalsy(0) // true
  * @param any
  * @returns copy of provided data
  * **/
-/** */ copy({ a: 1, function(){} }) // {a:1, {}}
-/** */ copy([1,2,3]) // [1,2,3]
-/** */ copy(null) // null 
-/** */ copy(true) // true
+copy({ a: 1, function(){} }) // {a:1, {}}
+copy([1,2,3]) // [1,2,3]
+copy(null) // null 
+copy(true) // true
 
 
 /**
