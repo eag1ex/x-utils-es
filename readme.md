@@ -82,12 +82,29 @@ last([{},{},[1], { value: 1 }]) // { value: 1 }
 
 /**
  * - Provide data{} with arrayProp[] references to match
- * @param any
+ * @param data:object
+ * @param refs:array string array of keys to reference
  * @returns matched copy of the object
  * **/
 copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) } // {a: 1, c: 3}
 copyBy({ a: 1, b: 2, c: 3 }) } // {}
 copyBy({}) } // {}
+
+
+
+/**
+ * - Return copy of provided data. 
+ * - Methods will not be copied, only its primitiveValue, based of `typeCheck` evaluation
+ * @param any
+ * @returns copy of provided data
+ * **/
+copy({ a: 1, function(){} }) //=>  {a:1}
+copy([1,2,3]) //=> / [1,2,3]
+copy( function(){}) //=>  Function: anonymous
+copy(null) //=>  null 
+copy(true) //=>  true
+
+
 
 
 /**
@@ -190,6 +207,7 @@ isString(NaN) // false
 isString(new Date()) // false
 
 
+
 /**
  * - Check if provided identities match: `['',0 x<1, false, null, undefined,NaN, [],{}]`
  * @param any
@@ -202,19 +220,6 @@ isFalsy([1]) // false
 isFalsy(true) // false
 isFalsy(false) // true
 isFalsy(0) // true
-
-
-
-/**
- * - Return copy of provided data. 
- * - Methods will not be copied, only its primitiveValue, based of `typeCheck` evaluation
- * @param any
- * @returns copy of provided data
- * **/
-copy({ a: 1, function(){} }) //=>  {a:1, {}}
-copy([1,2,3]) //=> / [1,2,3]
-copy(null) //=>  null 
-copy(true) //=>  true
 
 
 
@@ -413,8 +418,7 @@ onerror('ups','1') // '[error]','ups','1'
  * @param data:any
  * returns console.warn
  * **/
-error('attention','1') //  '[warning]','attention','1'
-onerror('attention','1') // '[warning]','attention','1'
+warn('attention','1') //  '[warning]','attention','1'
 
 
 

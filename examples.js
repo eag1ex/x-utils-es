@@ -69,7 +69,7 @@ import {
 
 /** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' '), isFalsyH: isFalsy(NaN) })
 
-/** */ log({ copy1: copy({ a: 1 }), copy2: copy(undefined), copy3: copy(function () { }) })
+/** */ log({ copy1: copy({ a: 1, b:function(){} }), copy2: copy(undefined), copy3: copy(function () { }) })
 
 /** */ async function f() {
     log('delay start')
