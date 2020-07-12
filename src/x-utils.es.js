@@ -26,17 +26,6 @@ const validDate = (dt) => {
 // @ts-ignore
 const isArray = (arr) => !arr ? false : Array.prototype === (arr).__proto__
 
-// testing (new class{})
-const isInstance = (obj) => {
-    if (!obj) return false
-    if (isArray(obj)) return false
-    if (obj.__proto__) {
-        if (obj.__proto__.__proto__) {
-            if (obj.__proto__.__proto__ === Object.prototype && obj instanceof Object) return true
-        }
-    }
-    return false
-}
 
 /**
  * - evaluate type of an element and check if its falsy
@@ -210,6 +199,21 @@ export const hasProto = (el) => {
         return false
     }
 }
+
+// testing (new class{})
+const isInstance = (obj) => {
+    if (!obj) return false
+    if (isArray(obj)) return false
+    if (obj.__proto__ &&!isClass(obj)) {
+        if (obj.__proto__.__proto__) {
+            if (obj.__proto__.__proto__ === Object.prototype && obj instanceof Object) return true
+        }
+    }
+    return false
+}
+
+
+
 
 // @ts-ignore
 export const isString = (str) => str === '' ? true : String.prototype === (str).__proto__

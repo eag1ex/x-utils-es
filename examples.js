@@ -37,7 +37,7 @@ import {
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
     */
-} from './umd'
+} from './src/x-utils.es'
     // or {} = require('./umd') 
 
 
