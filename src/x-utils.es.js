@@ -9,6 +9,51 @@
  * * license: CC-BY-SA-4.0
  */
 
+const log = function (...args) {
+    args = [].concat('[log]', args)
+
+    try {
+        if (window) console.log.apply(null, args)
+        return
+    } catch (err) {
+        // using node     
+    }
+    const util1 = require('util')
+    args = args.map(z => util1.inspect(z, false, 3, true))
+    console.log.apply(null, args)
+}
+
+const warn = function (...args) {
+    args = [].concat('[warning]', args)
+    try {
+        if (window) console.warn.apply(null, args)
+        return
+    } catch (err) {
+        // using node     
+    }
+    const util2 = require('util')
+    args = args.map(z => util2.inspect(z, false, 3, true))
+    console.warn.apply(null, args)
+}
+
+const error = function (...args) {
+    args = [].concat('[error]', args)
+    try {
+        if (window) {
+            console.error.apply(null, args)
+            console.log('  ')
+            return
+        }
+    } catch (err) {
+        // using node
+    }
+    const util3 = require('util')
+    args = args.map(z => util3.inspect(z, false, 3, true))
+    console.error.apply(null, args)
+    console.log('  ')
+}
+const onerror = error
+
 /** 
  * - evaluate provided DATA is an actual `date` and its valid
  * @param date 
@@ -43,36 +88,41 @@ const typeCheck = (el, standard = true) => {
         return Type.prototype === el.prototype
     }
 
-    if (typeof el === 'symbol') return { "type": ofType(), value: 0, primitiveValue: Symbol('') }
+    try {
+        if (typeof el === 'symbol') return { "type": ofType(), value: 0, primitiveValue: Symbol('') }
 
-    if (el === undefined) return { "type": ofType(), value: 0, primitiveValue: undefined }
+        if (el === undefined) return { "type": ofType(), value: 0, primitiveValue: undefined }
 
-    if (typeof el === 'boolean') return { "type": ofType(), value: +(el), primitiveValue: Boolean() }
+        if (typeof el === 'boolean') return { "type": ofType(), value: +(el), primitiveValue: Boolean() }
 
-    if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": ofType(), value: 1, primitiveValue: BigInt('') } // eslint-disable-line no-undef
-    if (el === null) return { "type": ofType('null'), value: 0, primitiveValue: Object() }
+        if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": ofType(), value: 1, primitiveValue: BigInt('') } // eslint-disable-line no-undef
+        if (el === null) return { "type": ofType('null'), value: 0, primitiveValue: Object() }
 
-    if (el.__proto__ === Date.prototype || asPrototype(Date)) return { "type": ofType('date'), value: 1, primitiveValue: new Date() }
+        if (el.__proto__ === Date.prototype || asPrototype(Date)) return { "type": ofType('date'), value: 1, primitiveValue: new Date() }
 
-    if (String.prototype === (el).__proto__) return { 'type': ofType(), value: el.length, primitiveValue: String() }
+        if (String.prototype === (el).__proto__) return { 'type': ofType(), value: el.length, primitiveValue: String() }
 
-    if (Array.prototype === (el).__proto__ || asPrototype(Array)) return { "type": ofType('array'), value: (el || []).length, primitiveValue: Array() } // eslint-disable-line no-array-constructor
+        if (Array.prototype === (el).__proto__ || asPrototype(Array)) return { "type": ofType('array'), value: (el || []).length, primitiveValue: Array() } // eslint-disable-line no-array-constructor
 
-    if (Promise.prototype === (el || '').__proto__ || asPrototype(Promise)) return { type: ofType('promise'), value: 1, primitiveValue: Function() }
+        if (Promise.prototype === (el || '').__proto__ || asPrototype(Promise)) return { type: ofType('promise'), value: 1, primitiveValue: Function() }
 
-    if (Function.prototype === (el).__proto__ || asPrototype(Function)) return { type: ofType(), value: 1, primitiveValue: Function() }
+        if (Function.prototype === (el).__proto__ || asPrototype(Function)) return { type: ofType(), value: 1, primitiveValue: Function() }
 
-    if ((Object.prototype === (el).__proto__) || asPrototype(Object)) return { "type": ofType(), value: Object.keys(el).length, primitiveValue: Object() }
+        if ((Object.prototype === (el).__proto__) || asPrototype(Object)) return { "type": ofType(), value: Object.keys(el).length, primitiveValue: Object() }
 
-    if ((Error.prototype === (el).__proto__) || asPrototype(Error)) return { "type": ofType('error'), value: Object.keys(el).length, primitiveValue: Error() }
+        if ((Error.prototype === (el).__proto__) || asPrototype(Error)) return { "type": ofType('error'), value: Object.keys(el).length, primitiveValue: Error() }
 
-    if ((el).__proto__ === Number.prototype || asPrototype(Number)) {
-        if (isNaN(el)) return { "type": ofType('NaN'), value: 0, primitiveValue: Number() }
-        else return { "type": ofType(), value: el, primitiveValue: Number() }
-    
-    // Unary plus operator
-    } else if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el), primitiveValue: undefined }
-    else return { 'type': typeof el, value: 0, primitiveValue: undefined }
+        if ((el).__proto__ === Number.prototype || asPrototype(Number)) {
+            if (isNaN(el)) return { "type": ofType('NaN'), value: 0, primitiveValue: Number() }
+            else return { "type": ofType(), value: el, primitiveValue: Number() }
+
+            // Unary plus operator
+        } else if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el), primitiveValue: undefined }
+        else return { 'type': typeof el, value: 0, primitiveValue: undefined }
+    } catch (err) {
+        error(err)
+        return {}
+    }
 }
 
 const isError = (el) => {
@@ -338,52 +388,10 @@ export const trueProp = (obj = {}) => {
     }, {}))
 }
 
-export const log = function (...args) {
-    args = [].concat('[log]', args)
-
-    try {
-        if (window) console.log.apply(null, args)
-        return
-    } catch (err) {
-        // using node     
-    }
-    const util1 = require('util')
-    args = args.map(z => util1.inspect(z, false, 3, true))
-    console.log.apply(null, args)
-}
-
-export const warn = function (...args) {
-    args = [].concat('[warning]', args)
-    try {
-        if (window) console.warn.apply(null, args)
-        return
-    } catch (err) {
-        // using node     
-    }
-    const util2 = require('util')
-    args = args.map(z => util2.inspect(z, false, 3, true))
-    console.warn.apply(null, args)
-}
-
-const onerror = function (...args) {
-    args = [].concat('[error]', args)
-    try {
-        if (window) {
-            console.error.apply(null, args)
-            console.log('  ')
-            return
-        }
-    } catch (err) {
-        // using node
-    }
-    const util3 = require('util')
-    args = args.map(z => util3.inspect(z, false, 3, true))
-    console.error.apply(null, args)
-    console.log('  ')
-}
-
-export const error = onerror
-
+export { log }
+export { warn }
+export { onerror }
+export { error }
 export { isObject }
 export { isFalsy }
 export { isError }
@@ -392,7 +400,7 @@ export { validDate }
 export { isInstance }
 export { isClass }
 export { isArray }
-export { onerror }
+
 /**
  * @prop {*} l any data to print
  * @prop {*} err display as error if set to true
