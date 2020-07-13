@@ -400,7 +400,7 @@ export { validDate }
 export { isInstance }
 export { isClass }
 export { isArray }
-
+//
 /**
  * @prop {*} l any data to print
  * @prop {*} err display as error if set to true

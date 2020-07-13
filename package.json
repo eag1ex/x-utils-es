@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "helper tools for javascript validation",
   "main": "esm/index.js",
   "module": "src/x-utils.es.js",
@@ -22,7 +22,7 @@
   "license": "CC-BY-SA-4.0",
   "keywords": [
     "validation",
-    "data validation",
+    "data validation", 
     "data type checker",
     "lodash alternative",
     "utilities",

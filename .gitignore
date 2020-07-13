@@ -47,6 +47,8 @@ journal
 *.png
 *.tif
 
+!.npmignore
+
 
 # Logs and databases #
 ######################

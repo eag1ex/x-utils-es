@@ -22,7 +22,7 @@ import {
     trueVal,
     trueValDeep,
     trueProp,
-    typeCheck,
+    typeCheck,  
     isEmpty,
     isError,
     validDate,
