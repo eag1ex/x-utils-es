@@ -98,7 +98,7 @@ copyBy({}) } // {}
  * @param any
  * @returns copy of provided data
  * **/
-copy({ a: 1, function(){} }) //=>  {a:1}
+copy({ a: 1, b:function(){} }) //=>  {a:1}
 copy([1,2,3]) //=> / [1,2,3]
 copy( function(){}) //=>  Function: anonymous
 copy(null) //=>  null 
