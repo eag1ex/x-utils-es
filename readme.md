@@ -438,7 +438,7 @@ warn('attention','1') //  '[warning]','attention','1'
  * - console.log() stack trace to where trace() was called
  * @param data:any optional
  * @param {boolean} asArray if set true, will output stack trace as an array, otherwise a string
- * @returns console.log [STACK TRACE]: xxxx
+ * @returns console.log `[STACK TRACE]`: xxxx
  * **/
 trace('some data'/**, true*/)
 
@@ -447,9 +447,9 @@ trace('some data'/**, true*/)
  * - console.error() stack trace to where trace() was called
  * @param data:any optional
  * @param {boolean} asArray if set true, will output error stack trace as an array, otherwise a string
- * @returns console.log [STACK TRACE]: xxxx
+ * @returns console.log [ERROR]: xxxx
  * **/
-errorTrace('error data', true) // returns ["[STACK TRACE]",... ]
+errorTrace('error data', true) // returns ["[ERROR]",... ]
 
 
 
