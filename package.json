@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "helper tools for javascript validation",
   "main": "esm/index.js",
   "module": "src/x-utils.es.js",
@@ -39,6 +39,8 @@
     "isError",
     "isString",
     "es6",
+    "stack trace",
+    "array chunks",
     "anon",
     "x-utils-es"
   ],

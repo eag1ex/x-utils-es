@@ -32,7 +32,10 @@ import {
     hasProto,
     log,
     warn,
-    onerror
+    onerror,
+    stack,
+    chunks,
+    errorTrace
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -49,7 +52,7 @@ import {
 
 /** */ log({ isFunction1: isFunction(true), isFunction2: isFunction(Promise.resolve) })
 
-/** */ timer(() => log('timer called'), 2000)
+/** */ timer(() => log('timer called'), 1000)
 
 /** */ interval(() => log('interval called'), 100, 300)
 
@@ -109,8 +112,20 @@ import {
 
 /** */ log({ hasPrototype1: hasPrototype(Object), hasPrototype2: hasPrototype(function () { }), hasPrototype3: hasPrototype(new function () { }) }) // {false, false, true}
 
+/** */ log({chunks:chunks( [1,2,3,4,5,6] , 2) })
+
+
+
 /** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) })
 
 /** */ onerror("ups")
 /** */ warn("attention")
+
+// timer(() =>  
+//     /** */ stack('stack trace test')
+// ,2000)
+
+timer(() =>  
+    /** */ errorTrace('stack trace error test'/**,true */)
+,2000)
 

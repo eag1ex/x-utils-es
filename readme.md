@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, validDate } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,trace,errorTrace } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -194,6 +194,18 @@ isObject(null) // false
 isArray([]) // true
 isArray({}) // false
 isArray(new Array()) // true
+
+
+/** 
+  * - return array in batch specified by size
+  * @param {array} arr required
+  * @param {number} size required larger then 0
+  * @returns arr[]
+ */
+chunks( [1,2,3,4,5,6] , 2) // [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ]
+
+
+
 
 
 /**
@@ -420,6 +432,24 @@ onerror('ups','1') // '[error]','ups','1'
  * **/
 warn('attention','1') //  '[warning]','attention','1'
 
+
+
+/**
+ * - console.log() stack trace to where trace() was called
+ * @param data:any optional
+ * @param {boolean} asArray if set true, will output stack trace as an array, otherwise a string
+ * @returns console.log [STACK TRACE]: xxxx
+ * **/
+trace('some data'/**, true*/)
+
+
+/**
+ * - console.error() stack trace to where trace() was called
+ * @param data:any optional
+ * @param {boolean} asArray if set true, will output error stack trace as an array, otherwise a string
+ * @returns console.log [STACK TRACE]: xxxx
+ * **/
+errorTrace('error data', true) // returns ["[STACK TRACE]",... ]
 
 
 

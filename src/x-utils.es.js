@@ -36,6 +36,40 @@ const warn = function (...args) {
     console.warn.apply(null, args)
 }
 
+/** 
+ * - good for stack tracing
+ * @param {*} data optional any
+ * @param {boolean} asArray if set true, will output stack trace as array, otherwise a string
+ * @returns console.log `[STACK TRACE]`: xxx
+*/
+export const stack = (data, asArray = false) => {
+    let stackList = new Error(JSON.stringify(data)).stack.split('(')
+    stackList.splice(1, 1)
+    let stackHead = stackList[0].split(/\n/)[0].replace('Error', '[STACK TRACE]')
+    stackList.splice(0, 1)
+    stackList.unshift(stackHead)
+    if (asArray) console.log(stackList)
+    else console.log.apply(null, stackList)
+    return undefined
+}
+
+/**
+ * - console.error stack trace
+ * @param {*} data optional any
+ * @param {boolean} asArray if set true, will output stack trace as array, otherwise a string
+ * @returns console.error `[ERROR]`: xxx
+ */
+export const errorTrace = (data, asArray = false) => {
+    let stackList = new Error(JSON.stringify(data)).stack.split('(')
+    stackList.splice(1, 1)
+    let errHead = stackList[0].split(/\n/)[0].replace('Error', '[ERROR]')
+    stackList.splice(0, 1)
+    stackList.unshift(errHead)
+    if (asArray) console.error(stackList)
+    else console.error.apply(null, stackList)
+    return undefined
+}
+
 const error = function (...args) {
     args = [].concat('[error]', args)
     try {
@@ -387,6 +421,18 @@ export const trueProp = (obj = {}) => {
         return n
     }, {}))
 }
+
+/** 
+  * @chunks
+  * - return array in batch specified by size
+  * @param {array} arr required
+  * @param {number} size required larger then 0
+  * @returns arr[]
+ */
+export const chunks = (arr, size) =>
+    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+        arr.slice(i * size, i * size + size)
+    )
 
 export { log }
 export { warn }

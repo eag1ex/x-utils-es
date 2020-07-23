@@ -1,5 +1,5 @@
 umd/.babelrc
-umd/.readme.md
+umd/readme.md
 esm/.babelrc
-esm/.readme.md
+esm/readme.md
 .vscode
