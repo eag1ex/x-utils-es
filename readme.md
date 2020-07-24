@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,trace,errorTrace } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -435,19 +435,19 @@ warn('attention','1') //  '[warning]','attention','1'
 
 
 /**
- * - console.log() stack trace to where trace() was called
+ * - console.log() stack stack to where stack() was called
  * @param data:any optional
- * @param {boolean} asArray if set true, will output stack trace as an array, otherwise a string
+ * @param {boolean} asArray if set true, will output stack stack as an array, otherwise a string
  * @returns console.log `[STACK TRACE]`: xxxx
  * **/
-trace('some data'/**, true*/)
+stack('some data'/**, true*/)
 
 
 /**
  * - console.error() stack trace to where trace() was called
  * @param data:any optional
  * @param {boolean} asArray if set true, will output error stack trace as an array, otherwise a string
- * @returns console.log [ERROR]: xxxx
+ * @returns console.error [ERROR]: xxxx
  * **/
 errorTrace('error data', true) // returns ["[ERROR]",... ]
 
