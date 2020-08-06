@@ -19,7 +19,12 @@ const log = function (...args) {
         // using node     
     }
     const util1 = require('util')
-    args = args.map(z => util1.inspect(z, false, 3, true))
+    args = args.map(z => util1.inspect(
+        z,       
+        true, // showHidden 
+        3, // depth
+        true // customInspect 
+    ))
     console.log.apply(null, args)
 }
 
@@ -32,7 +37,12 @@ const warn = function (...args) {
         // using node     
     }
     const util2 = require('util')
-    args = args.map(z => util2.inspect(z, false, 3, true))
+    args = args.map(z => util2.inspect(
+        z,     
+        true, // showHidden 
+        3, // depth
+        true // customInspect 
+    ))
     console.warn.apply(null, args)
 }
 
@@ -82,7 +92,12 @@ const error = function (...args) {
         // using node
     }
     const util3 = require('util')
-    args = args.map(z => util3.inspect(z, false, 3, true))
+
+    args = args.map(z => util3.inspect(z, 
+        true, // showHidden 
+        3, // depth
+        true // customInspect 
+    ))
     console.error.apply(null, args)
     console.log('  ')
 }
