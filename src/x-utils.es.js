@@ -43,7 +43,7 @@ const warn = function (...args) {
         3, // depth
         true // customInspect 
     ))
-    console.warn.apply(null, args)
+    console.log.apply(null, args)
 }
 
 /** 
@@ -92,13 +92,12 @@ const error = function (...args) {
         // using node
     }
     const util3 = require('util')
-
     args = args.map(z => util3.inspect(z, 
         true, // showHidden 
         3, // depth
         true // customInspect 
     ))
-    console.error.apply(null, args)
+    console.log.apply(null, args)
     console.log('  ')
 }
 const onerror = error
