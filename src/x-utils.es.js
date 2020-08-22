@@ -497,7 +497,7 @@ export const trueProp = (obj = {}) => {
 /** 
  * @resolver 
  * - this method will test `fn()` until timeout or when data/ not  undefined becomes available
- * @param fn:function, method with data, returning value to access when ready
+ * @param fn:function, callable method with data to return
  * @param timeout:Number, specify max time to wait for data
  * @param testEvery:Number, how ofter to check for data availability
  * @returns Promise/always resolves, no reject, if no data returns Promise.resolve(undefined)

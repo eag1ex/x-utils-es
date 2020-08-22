@@ -31,7 +31,7 @@ import {} from 'x-utils-es/umd' // for browser and commonjs support
 const {} require('x-utils-es/umd') // with node support
 
 // browser
-<script src="..path/x-dispatcher/umd"></script>
+<script src="..path/umd"></script>
 <script>
     const {...} = window.xutils // get access to all utils
 </script>
@@ -453,8 +453,8 @@ errorTrace('error data', true) // returns ["[ERROR]",... ]
 
 
 /**
- * - recursive selecttion of array objects by reference
- * @param selectBy:Array required, properties to targed selectively from left/up to right/down
+ * - recursive selection of array objects by reference
+ * @param selectBy:Array required, properties to target selectively from left/up to right/down
  * @param data:Array[{},{}] required, array of Objects with properties to target 
  * @returns always returns array []
  * **/
