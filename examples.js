@@ -32,6 +32,8 @@ import {
     hasProto,
     log,
     warn,
+    selectiveArray,
+    resolver,
     onerror,
     stack,
     chunks,
@@ -114,9 +116,16 @@ import {
 
 /** */ log({chunks:chunks( [1,2,3,4,5,6] , 2) })
 
+/** */ log({ selectiveArray: selectiveArray(['a.b.c.d'], [{ a: { b: { c: { d: 'hello' } } } }]) }) // ['hello']
+/** */ log({ selectiveArray: selectiveArray(['a.b.c.d','a.b.c.e'], [{ a: { b: { c: { d: 'hello',e:'world' } } } }]) } ) // ['hello','world']
+/** */log({selectiveArray: selectiveArray(['a.b.c.d','f.g'], [ { a: { b: { c: { d: 'hello' } } } },  { f: { g: 'world'} } ]) })  // ['hello','world']
 
 
 /** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) })
+
+/** */ resolver(()=>Promise.resolve({data:'hello resolver'}),5000,50).then(n=>{
+    log({resolver:n})
+})
 
 /** */ onerror("ups")
 /** */ warn("attention")

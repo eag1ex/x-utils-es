@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -451,6 +451,29 @@ stack('some data'/**, true*/)
  * **/
 errorTrace('error data', true) // returns ["[ERROR]",... ]
 
+
+/**
+ * - recursive selecttion of array objects by reference
+ * @param selectBy:Array required, properties to targed selectively from left/up to right/down
+ * @param data:Array[{},{}] required, array of Objects with properties to target 
+ * @returns always returns array []
+ * **/
+selectiveArray(['a.b.c.d'], [{ a: { b: { c: { d: 'hello' } } } }]) // returns ['hello']
+selectiveArray(['a.b.c.d','e.f'], [ { a: { b: { c: { d: 'hello' } } } },  { e: { f: 'world'} } ]) // ['hello','world']
+selectiveArray(['a.b.c.d','a.b.c.e'], [{ a: { b: { c: { d: 'hello',e:'world' } } } }]) // ['hello','world']
+selectiveArray(['a.b.c.d','f.g'], [ { a: { b: { c: { d: 'hello' } } } },  { f: { g: 'world'} } ]) // ['hello','world']
+
+
+/** 
+ * - will test `fn()` until timeout or data becomes available, or finaly return undefined
+ * @param fn:function, method with something to return, returns value to access when ready
+ * @param timeout:Number, specify max time to wait for data
+ * @param testEvery:Numner, how ofter to check for data availability
+ * @returns Promise/always resolves, no reject, if no data, returns Promise.resolve(undefined)
+* **/
+resolver(()=>Promise.resolve({data:'hello resolver'}),5000,50).then(n=>{
+    log({resolver:n})
+})
 
 
 ```

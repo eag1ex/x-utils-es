@@ -277,6 +277,64 @@ const isObject = (obj) => {
     return false
 }
 
+/** 
+ * @selectiveArray
+ * - select data from array of objects by reference
+ * - go down recursively, in order of selectBy references
+ * @param {array} selectBy:required, list of references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
+ * @param {array} data:required list of objects, to target by select ref
+*/
+export const selectiveArray = (selectBy = [], data = [{}]) => {
+    if (!isArray(data)) return []
+    if (!data.length) return []
+    // NOTE if selectBy is empty or invalid will return same data
+    if (!isArray(selectBy)) return data
+    if (!selectBy.length) return data 
+    let nData = []
+
+    // go down recursively
+    let findNest = (s, item, inx = 0) => {
+        let lastItem = null
+        let found
+        if (!s) return undefined
+        if (!isArray(s)) return undefined
+        if (!s.length) return undefined
+
+        try {
+            if (item[s[inx]] !== undefined) {
+                lastItem = item[s[inx]]
+                found = lastItem
+                inx = inx + 1
+               
+                if (s[inx]) return findNest(s, found, inx)
+                else return found
+            }
+
+        } catch (err) {
+            console.log(err.toString())
+            // found = undefined
+        }
+        return found
+    }
+
+    for (let i = 0; i < data.length; i++) {
+        let item = data[i]
+        let found
+        if (!isObject(item)) {
+            // each item in an array must be an object to be able to selectBy nested prop 
+            found = item
+            continue
+        }
+       
+        for (let o = 0; o < selectBy.length; o++) {
+            let sArr = (selectBy[o] || "").split('.')
+            found = findNest(sArr, item, 0)     
+            if (found !== undefined) nData.push(found)
+        }   
+    }
+    return nData
+}
+
 // testing (class{}).prototype
 const isClass = (obj) => {
     if (!obj) return false
@@ -434,6 +492,39 @@ export const trueProp = (obj = {}) => {
         if (!isFalsy(val)) n[key] = val
         return n
     }, {}))
+}
+
+/** 
+ * @resolver 
+ * - this method will test `fn()` until timeout or when data/ not  undefined becomes available
+ * @param fn:function, method with data, returning value to access when ready
+ * @param timeout:Number, specify max time to wait for data
+ * @param testEvery:Number, how ofter to check for data availability
+ * @returns Promise/always resolves, no reject, if no data returns Promise.resolve(undefined)
+*/
+export const resolver = (fn, timeout = 5000, testEvery = 50) => {
+    let isFunction = typeof fn === 'function'
+    if (!isFunction) {
+        return Promise.reject('fn() must be callable')
+    }
+    return new Promise((resolve, reject) => {
+        let every = testEvery || 50
+        let max = timeout
+        let inx = 0
+        let test = () => fn()
+        let t = setInterval(() => {
+            if (inx > max) {
+                resolve(undefined)
+                return clearInterval(t)
+            }
+            let anon = test()
+            if (anon !== undefined) {
+                resolve(anon)
+                return clearInterval(t)
+            }
+            inx = inx + every
+        }, every)
+    })
 }
 
 /** 
