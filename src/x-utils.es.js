@@ -519,7 +519,7 @@ export const resolver = (fn, timeout = 5000, testEvery = 50) => {
         /** 
          * - call only once if its a promise
         */
-        let test = async () => {
+        let test = () => {
             try {
                 if (!called) called = fn()
                 if (isPromise(called)) return called
@@ -534,25 +534,26 @@ export const resolver = (fn, timeout = 5000, testEvery = 50) => {
         }
 
         let t = setInterval(async () => {
-            if (inx > max) {
+            if (inx >= max) {
                 resolve(undefined)
                 return clearInterval(t)
             }
 
             let anon = test() // internaly execute only once if a promise
-
             if (isPromise(anon)) {
                 try {
-                    clearInterval(t)
+                  
                     let d = await anon
                     resolve(d)
+                    return clearInterval(t)
                 } catch (error) {
-                    clearInterval(t)
+                 
                     if (isError(error)) resolve({ error })
                     if (isObject(error)) {
                         if (error.error) resolve(error)
                         else resolve({ error })
                     } else resolve({ error: error.toString() })
+                    return clearInterval(t)
                 }
             }
 

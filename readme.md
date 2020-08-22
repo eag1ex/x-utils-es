@@ -471,10 +471,24 @@ selectiveArray(['a.b.c.d','f.g'], [ { a: { b: { c: { d: 'hello' } } } },  { f: {
  * @param testEvery:Numner, how ofter to check for data availability
  * @returns Promise/always resolves, and error, it will wrap it in {error} , if no data returns Promise.resolve(undefined), 
 * **/
-resolver(()=>Promise.resolve({data:'hello resolver'}),5000,50).then(n=>{
+resolver(()=>Promise.resolve({data:'hello world'}),5000,50).then(n=>{
     log({resolver:n})
 })
+resolver(()=>Promise.reject('some error'),5000,50).then(n=>{
+    log({resolver:n}) // {error: 'some error'}
+})
 
+
+let d = undefined
+setTimeout(()=>{
+    d = 'hello world'
+},3000) // if we change it to more then 10000m resolver would return undefined, since its after timeout (timeout is never guaranteed,)
+
+let fn=()=> d
+// iterate every 50m and with max wait 5000m 
+resolver(fn,5000,50).then(n=>{
+    console.log(n) // hello world
+})
 
 ```
 &nbsp;

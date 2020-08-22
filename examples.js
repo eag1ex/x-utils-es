@@ -127,10 +127,23 @@ import {
     log({resolver:n})
 })
 
-resolver(()=>Promise.reject('rejected data'),5000,50).then(n=>{
-    log({resolver:n})
+/** */ resolver(()=>Promise.reject('rejected data'),5000,50).then(n=>{
+    log({resolver1:n})
 })
+/** */
+let tempData = undefined
 
+
+let fn=()=> tempData
+
+resolver(fn,4000,20).then(n=>{
+    log({resolver2:n})
+})
+setTimeout(function(){
+    console.log('setTimeout called')
+    tempData = 'hello world'
+},10000)
+/** */
 
 /** */ onerror("ups")
 /** */ warn("attention")
