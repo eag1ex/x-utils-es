@@ -127,6 +127,11 @@ import {
     log({resolver:n})
 })
 
+resolver(()=>Promise.reject('rejected data'),5000,50).then(n=>{
+    log({resolver:n})
+})
+
+
 /** */ onerror("ups")
 /** */ warn("attention")
 

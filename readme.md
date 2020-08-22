@@ -469,7 +469,7 @@ selectiveArray(['a.b.c.d','f.g'], [ { a: { b: { c: { d: 'hello' } } } },  { f: {
  * @param fn:function, method with something to return, returns value to access when ready
  * @param timeout:Number, specify max time to wait for data
  * @param testEvery:Numner, how ofter to check for data availability
- * @returns Promise/always resolves, no reject, if no data, returns Promise.resolve(undefined)
+ * @returns Promise/always resolves, and error, it will wrap it in {error} , if no data returns Promise.resolve(undefined), 
 * **/
 resolver(()=>Promise.resolve({data:'hello resolver'}),5000,50).then(n=>{
     log({resolver:n})

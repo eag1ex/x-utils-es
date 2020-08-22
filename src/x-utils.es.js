@@ -248,13 +248,15 @@ export const interval = (cb, every = 0, endTime = 0) => {
 export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
 // @ts-ignore
 export const isNumber = (n) => n !== undefined ? (n).__proto__ === Number.prototype : false
-export const isPromise = (defer) => Promise.prototype === (defer || {}).__proto__
+
 export const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
 
 export const objectSize = (obj = {}) => {
     if (!obj || !isNaN(+(obj))) return 0
     return ((Object.prototype === (obj).__proto__) || Error.prototype === (obj).__proto__) ? Object.keys(obj).length : 0
 }
+
+const isPromise = (defer) => Promise.prototype === (defer || {}).__proto__
 
 const isObject = (obj) => {
     if (typeof obj === 'function') return false
@@ -500,7 +502,7 @@ export const trueProp = (obj = {}) => {
  * @param fn:function, callable method with data to return
  * @param timeout:Number, specify max time to wait for data
  * @param testEvery:Number, how ofter to check for data availability
- * @returns Promise/always resolves, no reject, if no data returns Promise.resolve(undefined)
+ * @returns Promise/always resolves, and error, it will wrap it in {error} , if no data returns Promise.resolve(undefined), 
 */
 export const resolver = (fn, timeout = 5000, testEvery = 50) => {
     let isFunction = typeof fn === 'function'
@@ -511,13 +513,49 @@ export const resolver = (fn, timeout = 5000, testEvery = 50) => {
         let every = testEvery || 50
         let max = timeout
         let inx = 0
-        let test = () => fn()
-        let t = setInterval(() => {
+        // in case fn throws we return as {error}
+        let called = null
+        
+        /** 
+         * - call only once if its a promise
+        */
+        let test = async () => {
+            try {
+                if (!called) called = fn()
+                if (isPromise(called)) return called
+                else return fn()
+            } catch (error) {
+                if (isError(error)) return { error }
+                if (isObject(error)) {
+                    if (error.error) return error
+                    else return { error: error }
+                } else return { error: error.toString() }
+            }
+        }
+
+        let t = setInterval(async () => {
             if (inx > max) {
                 resolve(undefined)
                 return clearInterval(t)
             }
-            let anon = test()
+
+            let anon = test() // internaly execute only once if a promise
+
+            if (isPromise(anon)) {
+                try {
+                    clearInterval(t)
+                    let d = await anon
+                    resolve(d)
+                } catch (error) {
+                    clearInterval(t)
+                    if (isError(error)) resolve({ error })
+                    if (isObject(error)) {
+                        if (error.error) resolve(error)
+                        else resolve({ error })
+                    } else resolve({ error: error.toString() })
+                }
+            }
+
             if (anon !== undefined) {
                 resolve(anon)
                 return clearInterval(t)
@@ -539,6 +577,7 @@ export const chunks = (arr, size) =>
         arr.slice(i * size, i * size + size)
     )
 
+export { isPromise }
 export { log }
 export { warn }
 export { onerror }
