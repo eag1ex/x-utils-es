@@ -37,12 +37,14 @@ import {
     onerror,
     stack,
     chunks,
-    errorTrace
+    errorTrace,
+    flattenDeep,
+    flatten,
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
     */
-} from './umd'
+} from './src/x-utils.es'
     // or {} = require('./umd') 
 
 
@@ -116,15 +118,18 @@ import {
 
 /** */ log({chunks:chunks( [1,2,3,4,5,6] , 2) })
 
-/** */ log({ selectiveArray: selectiveArray(['a.b.c.d'], [{ a: { b: { c: { d: 'hello' } } } }]) }) // ['hello']
-/** */ log({ selectiveArray: selectiveArray(['a.b.c.e'], [{ a: { b: { c: { d: 'hello',e:'world' } } } },{ a: { b: { c: { d: 'another',e:'one' } } } }]) } ) // ['hello','world']
-/** */log({selectiveArray: selectiveArray(['a.b.c'], [{}, { a: { b: { c: { d: 'hello' } } } },  { a: { b: { c: { d: 'hello' } } } }]) })  // ['hello','world']
 
-/** */ log({selectiveArray: selectiveArray(['a.b'], [ { a: { b:'hello' } },  { a: { b:'world' } } ]) }) // ['hello','world']
+/** */ log({selectiveArray: selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ])  })
 
-/** */ log({selectiveArray: selectiveArray(['a.b','a.b'], [ { a: { b:'hello' } },  { a: { b:'world' } } ]) })
- // ['hello','world']
+/** */ log({selectiveArray: selectiveArray(['a.b','a.b'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
+ })
+/** */ log({selectiveArray: selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }])  }) 
+let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) ) ).values()
+console.log('b/c example',b,c)
+ 
 
+ /** */ log({flattenDeep: flattenDeep([[[['hello']]]]) }) // ['hello']
+ /** */ log({flatten: flatten([[['hello']]]) }) // [['hello']]
 
 /** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) })
 

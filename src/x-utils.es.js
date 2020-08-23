@@ -249,7 +249,6 @@ export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toL
 // @ts-ignore
 export const isNumber = (n) => n !== undefined ? (n).__proto__ === Number.prototype : false
 
-export const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
 
 export const objectSize = (obj = {}) => {
     if (!obj || !isNaN(+(obj))) return 0
@@ -279,11 +278,15 @@ const isObject = (obj) => {
     return false
 }
 
+const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
+
+
+
 /** 
  * @selectiveArray
  * - select data from array of objects by reference
  * - go down recursively, in order of selectBy references
- * @param {array} selectBy:required, list of references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
+ * @param {array} selectBy:required, list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
  * @param {array} data:required list of objects, to target by select ref
 */
 export const selectiveArray = (selectBy = [], data = [{}]) => {
@@ -292,8 +295,10 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
     // NOTE if selectBy is empty or invalid will return same data
     if (!isArray(selectBy)) return data
     if (!selectBy.length) return data 
+    selectBy = uniq(selectBy)
+    
     let nData = []
-
+    
     // go down recursively
     let findNest = (s, item, inx = 0) => {
         let lastItem = null
@@ -341,7 +346,7 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
         } else if (found !== undefined) nData.push(found)        
     }
 
-    return nData.flatMap(n => n)
+    return nData//.flatMap(n => n)
 }
 
 // testing (class{}).prototype
@@ -456,6 +461,7 @@ export const trueVal = (arr = []) => {
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
     return [].concat(arr).filter((itm, inx) => isFalsy(itm) !== true)
 }
+
 
 /**
  * @trueValDeep
@@ -574,6 +580,29 @@ export const resolver = (fn, timeout = 5000, testEvery = 50) => {
 }
 
 /** 
+ * @flatten
+ * - flattens 2 level array to 1 level, [[]] > [], [[[]]] > [[]]
+*/
+export const flatten = (arr = []) => {
+    if (!isArray(arr)) return []
+    return [].concat(...arr)
+}
+
+/** 
+ * flatten all array levels, example :[[['hello']]] > ['hello']
+*/
+export const flattenDeep = (arr = []) => {
+    if (!isArray(arr)) return []
+    function test(arr, d = 1) {
+        return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? test(val, d - 1) : val), [])
+            : arr.slice();
+    };
+    return test(arr, Infinity);
+}
+
+
+
+/** 
   * @chunks
   * - return array in batch specified by size
   * @param {array} arr required
@@ -585,6 +614,7 @@ export const chunks = (arr, size) =>
         arr.slice(i * size, i * size + size)
     )
 
+export {uniq}
 export { isPromise }
 export { log }
 export { warn }

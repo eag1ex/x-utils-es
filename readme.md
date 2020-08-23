@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -69,6 +69,23 @@ objectSize([1,2]) // 0
 head([[{ value: 1 }, { value: 2 }]]) // { value: 1 }
 head([[ [1], {value:1} ]]) // [1]
 head([1,2]) // 1
+
+
+
+/**
+ * -Flattens array by one level [[]] > [], [[[]]]> [[]]
+ * @param arr:array
+ * @returns array
+ * **/
+flatten([['hello world']]) // ['hello world']
+
+
+/**
+ * -Flattens all array levels to 1 level
+ * @param arr:array
+ * @returns array
+ * **/
+flattenDeep([[[['hello world']]]) // ['hello world']
 
 
 
@@ -454,17 +471,23 @@ errorTrace('error data', true) // returns ["[ERROR]",... ]
 
 /**
  * - recursive selection of array objects by reference
- * @param selectBy:Array required, properties to target selectively from left/up to right/down
+ * @param selectBy:Array required, uniq properties to target selectively from left/up to right/down, (repeated props will be ignored)
  * @param data:Array[{},{}] required, array of Objects with properties to target 
  * @returns always returns array []
  * **/
-selectiveArray(['a.b.c.d'], [{ a: { b: { c: { d: 'hello' } } } }]) // returns ['hello']
-selectiveArray(['a.b.c.d','e.f'], [ { a: { b: { c: { d: 'hello' } } } },  { e: { f: 'world'} } ]) // ['hello','world']
-selectiveArray(['a.b.c.d','a.b.c.e'], [{ a: { b: { c: { d: 'hello',e:'world' } } } }]) // ['hello','world']
-selectiveArray(['a.b.c.d','f.g'], [ { a: { b: { c: { d: 'hello' } } } },  { f: { g: 'world'} } ]) // ['hello','world']
-selectiveArray(['a.b'], [ { a: { b:'hello' } },  { a: { b:'world' } } ]) // ['hello','world']
-selectiveArray(['a.b','a.b'], [ { a: { b:'hello' } },  { a: { b:'world' } } ])// ['hello','world','hello','world']
 
+// select >b from both arrays, and return same order
+selectiveArray(['a.b'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
+//  [ [ 'hello'], [ 'world'] ] 
+
+// select >b, and select >c from both arrays, and return same format
+selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
+// [ ['hello','hello'], ['world','world'] ]
+
+/* head(..) */ selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) 
+//  [ [ 'hello', 'world'] ] << one pair from data array
+// example : 
+let [b,c]=Array.from( selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }])  ).values()
 
 /** 
  * - will test `fn()` until timeout or data becomes available, or finaly return undefined
