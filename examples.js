@@ -117,8 +117,13 @@ import {
 /** */ log({chunks:chunks( [1,2,3,4,5,6] , 2) })
 
 /** */ log({ selectiveArray: selectiveArray(['a.b.c.d'], [{ a: { b: { c: { d: 'hello' } } } }]) }) // ['hello']
-/** */ log({ selectiveArray: selectiveArray(['a.b.c.d','a.b.c.e'], [{ a: { b: { c: { d: 'hello',e:'world' } } } }]) } ) // ['hello','world']
-/** */log({selectiveArray: selectiveArray(['a.b.c.d','f.g'], [ { a: { b: { c: { d: 'hello' } } } },  { f: { g: 'world'} } ]) })  // ['hello','world']
+/** */ log({ selectiveArray: selectiveArray(['a.b.c.e'], [{ a: { b: { c: { d: 'hello',e:'world' } } } },{ a: { b: { c: { d: 'another',e:'one' } } } }]) } ) // ['hello','world']
+/** */log({selectiveArray: selectiveArray(['a.b.c'], [{}, { a: { b: { c: { d: 'hello' } } } },  { a: { b: { c: { d: 'hello' } } } }]) })  // ['hello','world']
+
+/** */ log({selectiveArray: selectiveArray(['a.b'], [ { a: { b:'hello' } },  { a: { b:'world' } } ]) }) // ['hello','world']
+
+/** */ log({selectiveArray: selectiveArray(['a.b','a.b'], [ { a: { b:'hello' } },  { a: { b:'world' } } ]) })
+ // ['hello','world']
 
 
 /** */ log({ isError1: isError(Error()), isError2: isError(new Error('err')) })
@@ -131,18 +136,18 @@ import {
     log({resolver1:n})
 })
 /** */
-let tempData = undefined
+// let tempData = undefined
 
 
-let fn=()=> tempData
+// let fn=()=> tempData
 
-resolver(fn,4000,20).then(n=>{
-    log({resolver2:n})
-})
-setTimeout(function(){
-    console.log('setTimeout called')
-    tempData = 'hello world'
-},10000)
+// resolver(fn,4000,20).then(n=>{
+//     log({resolver2:n})
+// })
+// setTimeout(function(){
+//     console.log('setTimeout called')
+//     tempData = 'hello world'
+// },10000)
 /** */
 
 /** */ onerror("ups")

@@ -321,20 +321,27 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
 
     for (let i = 0; i < data.length; i++) {
         let item = data[i]
-        let found
+      
         if (!isObject(item)) {
             // each item in an array must be an object to be able to selectBy nested prop 
-            found = item
+            nData.push([item])
             continue
         }
-       
+        let found
+
+        let collectively = [] // insert collectively 
         for (let o = 0; o < selectBy.length; o++) {
-            let sArr = (selectBy[o] || "").split('.')
-            found = findNest(sArr, item, 0)     
-            if (found !== undefined) nData.push(found)
-        }   
+            let sArr = (selectBy[o] || "").split('.')        
+            found = findNest(sArr, item, 0)
+            if (found !== undefined) collectively.push(found)                           
+        }
+
+        if (collectively.length) {
+            nData.push([].concat(collectively))
+        } else if (found !== undefined) nData.push(found)        
     }
-    return nData
+
+    return nData.flatMap(n => n)
 }
 
 // testing (class{}).prototype
