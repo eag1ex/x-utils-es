@@ -487,8 +487,7 @@ selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'wo
 /* head(..) */ selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) 
 //  [ [ 'hello', 'world'] ] << one pair from data array
 // example : 
-let [b,c]=Array.from( selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }])  ).values()
-
+let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) ) ).values()
 /** 
  * - will test `fn()` until timeout or data becomes available, or finaly return undefined
  * @param fn:function, method with something to return, returns value to access when ready

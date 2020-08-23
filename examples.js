@@ -124,7 +124,7 @@ import {
 /** */ log({selectiveArray: selectiveArray(['a.b','a.b'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
  })
 /** */ log({selectiveArray: selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }])  }) 
-let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) ) ).values()
+let [b, c] = Array.from(flatten(selectiveArray(['a.b', 'b.c'], [{ a: { b: 'hello' }, b: { c: 'world' } }]))).values()
 console.log('b/c example',b,c)
  
 
