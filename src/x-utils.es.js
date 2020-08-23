@@ -249,7 +249,6 @@ export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toL
 // @ts-ignore
 export const isNumber = (n) => n !== undefined ? (n).__proto__ === Number.prototype : false
 
-
 export const objectSize = (obj = {}) => {
     if (!obj || !isNaN(+(obj))) return 0
     return ((Object.prototype === (obj).__proto__) || Error.prototype === (obj).__proto__) ? Object.keys(obj).length : 0
@@ -279,8 +278,6 @@ const isObject = (obj) => {
 }
 
 const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
-
-
 
 /** 
  * @selectiveArray
@@ -346,7 +343,7 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
         } else if (found !== undefined) nData.push(found)        
     }
 
-    return nData//.flatMap(n => n)
+    return nData// .flatMap(n => n)
 }
 
 // testing (class{}).prototype
@@ -461,7 +458,6 @@ export const trueVal = (arr = []) => {
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
     return [].concat(arr).filter((itm, inx) => isFalsy(itm) !== true)
 }
-
 
 /**
  * @trueValDeep
@@ -595,12 +591,10 @@ export const flattenDeep = (arr = []) => {
     if (!isArray(arr)) return []
     function test(arr, d = 1) {
         return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? test(val, d - 1) : val), [])
-            : arr.slice();
-    };
-    return test(arr, Infinity);
+            : arr.slice()
+    }
+    return test(arr, Infinity)
 }
-
-
 
 /** 
   * @chunks
@@ -614,7 +608,7 @@ export const chunks = (arr, size) =>
         arr.slice(i * size, i * size + size)
     )
 
-export {uniq}
+export { uniq }
 export { isPromise }
 export { log }
 export { warn }
