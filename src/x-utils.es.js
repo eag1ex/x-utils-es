@@ -291,11 +291,11 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
     if (!data.length) return []
     // NOTE if selectBy is empty or invalid will return same data
     if (!isArray(selectBy)) return data
-    if (!selectBy.length) return data 
+    if (!selectBy.length) return data
     selectBy = uniq(selectBy)
-    
+
     let nData = []
-    
+
     // go down recursively
     let findNest = (s, item, inx = 0) => {
         let lastItem = null
@@ -309,41 +309,49 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
                 lastItem = item[s[inx]]
                 found = lastItem
                 inx = inx + 1
-               
+
                 if (s[inx]) return findNest(s, found, inx)
                 else return found
             }
 
         } catch (err) {
             console.log(err.toString())
-            // found = undefined
         }
         return found
     }
 
     for (let i = 0; i < data.length; i++) {
         let item = data[i]
-      
+
         if (!isObject(item)) {
             // each item in an array must be an object to be able to selectBy nested prop 
             nData.push([item])
             continue
         }
-        let found
 
-        let collectively = [] // insert collectively 
+        let found
+        let collective = [] // insert collective 
         for (let o = 0; o < selectBy.length; o++) {
-            let sArr = (selectBy[o] || "").split('.')        
+            let sArr = (selectBy[o] || "").split('.')
             found = findNest(sArr, item, 0)
-            if (found !== undefined) collectively.push(found)                           
+            collective.push(found)                 
         }
 
-        if (collectively.length) {
-            nData.push([].concat(collectively))
-        } else if (found !== undefined) nData.push(found)        
+        // if all items are undef and selectBy/size matches collective/size
+        // if all collective are undef filter them out
+        // this helps with positioning of uneven results, and 1 side has match and the other does not, 
+        // valid exmaple:[ [ 'abc', undefined ], 'efg', undefined  ] << pairs should be consistent, when selectBy has more then 1
+        if (selectBy.length === collective.length) {
+            let allUndef = collective.filter(n => n === undefined)
+            if (allUndef.length === selectBy.length) collective = collective.filter(n => !!n)
+        }
+
+        if (collective.length) {
+            nData.push([].concat(collective))
+        } else if (found !== undefined) nData.push(found)
     }
 
-    return nData// .flatMap(n => n)
+    return nData
 }
 
 // testing (class{}).prototype
