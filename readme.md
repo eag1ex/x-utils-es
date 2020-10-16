@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver } 
+import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -513,6 +513,24 @@ let fn=()=> d
 resolver(fn,5000,50).then(n=>{
     console.log(n) // hello world
 })
+
+
+/**
+ * - console.error() stack trace to where trace() was called
+ * @param data:any optional
+ * @param {boolean} asArray if set true, will output error stack trace as an array, otherwise a string
+ * @returns console.error [ERROR]: xxxx
+ * **/
+
+/** 
+ * - duplicate original item x/times
+ * @param {*} item any value
+ * @param {number} index how many times to duplicate, when 0 then empty array is returned
+ * @returns {array} [...]
+ * **/
+dupes('any', 2) // ['any','any']
+dupes([{a:1},{b:1}], 2) // [ [{a:1},{b:1}], [{a:1},{b:1}] ]
+
 
 ```
 &nbsp;

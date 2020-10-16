@@ -40,6 +40,7 @@ import {
     errorTrace,
     flattenDeep,
     flatten,
+    dupes
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -165,4 +166,6 @@ console.log('b/c example',b,c)
 timer(() =>  
     /** */ errorTrace('stack trace error test'/**,true */)
 ,2000)
+
+log({dupes:dupes('hello world',3)}) // ['hello world','hello world','hello world']
 

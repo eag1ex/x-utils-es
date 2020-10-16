@@ -616,6 +616,22 @@ export const chunks = (arr, size) =>
         arr.slice(i * size, i * size + size)
     )
 
+/** 
+ * - duplicate original item x/times
+ * @param {*} item any value
+ * @param {number} index how many times to duplicate, when 0 then empty array is returned
+ * @returns {array} [...]
+*/
+const dupes = (item, index) => {
+    const dups = []
+    let n = parseInt(index)
+    while (n > 0) {
+        n--
+        dups.push(item)
+    }
+    return dups
+}
+
 export { uniq }
 export { isPromise }
 export { log }
@@ -630,7 +646,8 @@ export { validDate }
 export { isInstance }
 export { isClass }
 export { isArray }
-//
+export { dupes }
+
 /**
  * @prop {*} l any data to print
  * @prop {*} err display as error if set to true
