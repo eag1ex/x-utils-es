@@ -1,6 +1,7 @@
 
 import {
     objectSize,
+    stringSize,
     last,
     copyBy,
     timer,
@@ -51,6 +52,8 @@ import {
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
 
+/** */ log({ stringSize1: stringSize(-1), stringSize2: stringSize('abc'),stringSize3: stringSize(new String(' ')) }) // 2
+
 /** */ log({ last: last([{}, { value: 1 }]) })
 
 /** */ log({ copyBy: copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) })
@@ -63,7 +66,7 @@ import {
 
 /** */ log({ validID: validID('sdfkj 45 AMKD') })
 
-/** */ log({ isNumberA: isNumber(-1), isNumberB: isNumber({}), isNumberC: isNumber(NaN) })
+/** */ log({ isNumberA: isNumber(-1), isNumberB: isNumber({}), isNumberC: isNumber(NaN),isNumberD: isNumber(null) })
 
 /** */ log({ isPromiseA: isPromise(function () { }), isPromiseB: isPromise(Promise), isPromiseC: isPromise(Promise.resolve()) })
 

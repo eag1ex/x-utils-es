@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -60,6 +60,16 @@ objectSize({ a: 1, b: 2 }) }) // 2
 objectSize([1,2]) // 0
 
 
+/**
+ * - Check is item is a type of string, then check its length
+ * @param anyDataType
+ * @returns length
+ * **/
+stringSize('abc') // 3 
+stringSize(-1) // 0
+stringSize('-1') // 2
+stringSize(undefined) // 0
+stringSize([123]) // 0
 
 /**
  * - Return first index from up to 2 level array: [[1,2]]

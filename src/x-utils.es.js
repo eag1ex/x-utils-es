@@ -247,12 +247,14 @@ export const interval = (cb, every = 0, endTime = 0) => {
 
 export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
 // @ts-ignore
-export const isNumber = (n) => n !== undefined ? (n).__proto__ === Number.prototype : false
+export const isNumber = (n) => n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
 
 export const objectSize = (obj = {}) => {
     if (!obj || !isNaN(+(obj))) return 0
     return ((Object.prototype === (obj).__proto__) || Error.prototype === (obj).__proto__) ? Object.keys(obj).length : 0
 }
+
+export const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
 
 const isPromise = (defer) => Promise.prototype === (defer || {}).__proto__
 
