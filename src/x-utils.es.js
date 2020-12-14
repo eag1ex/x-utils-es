@@ -70,7 +70,7 @@ export const stack = (data, asArray = false) => {
  * @param cb((inx)=>) callback issed at end of each loop que
  * @returns always an array[], per length specified
 */
-export const loop = function(size = 0, cb){
+export const loop = function(size = 0, cb) {
     let isFN = typeof cb === 'function'
     let isNum = typeof size === 'number'
     if (!isFN || !isNum) return []
@@ -78,12 +78,11 @@ export const loop = function(size = 0, cb){
 
     let d = []
     for (let inx = 0; inx < Array(size).length; inx++) {
-        let r = cb.apply(this,[inx]);
+        let r = cb.apply(this, [inx])
         d.push(r) // always grun any data       
     }
     return d
 }
-
 
 /**
  * - console.error stack trace
