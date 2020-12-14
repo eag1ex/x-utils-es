@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -513,6 +513,10 @@ resolver(()=>Promise.reject('some error'),5000,50).then(n=>{
 })
 
 
+
+
+
+
 let d = undefined
 setTimeout(()=>{
     d = 'hello world'
@@ -525,13 +529,6 @@ resolver(fn,5000,50).then(n=>{
 })
 
 
-/**
- * - console.error() stack trace to where trace() was called
- * @param data:any optional
- * @param {boolean} asArray if set true, will output error stack trace as an array, otherwise a string
- * @returns console.error [ERROR]: xxxx
- * **/
-
 /** 
  * - duplicate original item x/times
  * @param {*} item any value
@@ -540,6 +537,26 @@ resolver(fn,5000,50).then(n=>{
  * **/
 dupes('any', 2) // ['any','any']
 dupes([{a:1},{b:1}], 2) // [ [{a:1},{b:1}], [{a:1},{b:1}] ]
+
+
+
+
+/** 
+ * - for loop with a callback, similar to times() from lodash, except you can access returned data,
+ * - when no data is return undefined is passed 
+ * @param {*} size:number
+ * @param {*} cb((inx)=>) add some data within callback, and munipulations
+ * @returns {array} [...] always returns an array depending on `size`
+ * **/
+
+loop(5,inx=>{
+    return 10+inx
+}) // [10, 11, 12, 13, 14]
+
+loop(2,inx=>{
+    console.log('hello world', inx)
+}) // [undefined, undefined]
+
 
 
 ```

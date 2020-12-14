@@ -41,7 +41,8 @@ import {
     errorTrace,
     flattenDeep,
     flatten,
-    dupes
+    dupes,
+    loop
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -49,6 +50,9 @@ import {
 } from './src/x-utils.es'
     // or {} = require('./umd') 
 
+/** */ log({ loop: loop(5,inx=>{
+        return 10+inx
+        })}) //  [10, 11, 12, 13, 14]
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
 

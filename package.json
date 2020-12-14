@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "helper tools for javascript validation",
   "main": "esm/index.js",
   "module": "src/x-utils.es.js",
@@ -48,7 +48,8 @@
     "anon",
     "x-utils-es",
     "dupes",
-    "stringSize"
+    "stringSize",
+    "loop"
   ],
   "esm": {
     "mode": "auto"
