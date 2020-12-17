@@ -66,6 +66,7 @@ export const stack = (data, asArray = false) => {
 /** 
  * - for loop initiating callback on each iteration
  * - when `cb` is returned this data is pushed to array
+ * - break support when returning {break:true} inside callback method
  * @param size:number
  * @param cb((inx)=>) callback issed at end of each loop que
  * @returns always an array[], per length specified
@@ -75,10 +76,19 @@ export const loop = function(size = 0, cb) {
     let isNum = typeof size === 'number'
     if (!isFN || !isNum) return []
     if (!size) return []
-
     let d = []
     for (let inx = 0; inx < Array(size).length; inx++) {
+
         let r = cb.apply(this, [inx])
+
+        // add support for break from the loop inside callback function
+        try {
+            if (r && Object.entries(r).length) {
+                if (r.break) break
+            }
+        } catch (err) {
+            // 
+        }
         d.push(r) // always grun any data       
     }
     return d

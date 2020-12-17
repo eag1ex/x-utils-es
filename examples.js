@@ -54,6 +54,11 @@ import {
         return 10+inx
         })}) //  [10, 11, 12, 13, 14]
 
+        log({loop:loop(3,inx=>{
+            if(inx===3) return {break:true}
+            return {[inx]:inx+1}
+        })})
+
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
 
 /** */ log({ stringSize1: stringSize(-1), stringSize2: stringSize('abc'),stringSize3: stringSize(new String(' ')) }) // 2

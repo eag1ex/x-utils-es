@@ -544,19 +544,23 @@ dupes([{a:1},{b:1}], 2) // [ [{a:1},{b:1}], [{a:1},{b:1}] ]
 /** 
  * - for loop with a callback, similar to times() from lodash, except you can access returned data,
  * - when no data is return undefined is passed 
+ * - added loop iteration break support, when returning {break:true}
  * @param {*} size:number
  * @param {*} cb((inx)=>) add some data within callback, and munipulations
  * @returns {array} [...] always returns an array depending on `size`
  * **/
 
-loop(5,inx=>{
-    return 10+inx
-}) // [10, 11, 12, 13, 14]
+loop(5,inx=>10+inx) // [10, 11, 12, 13, 14]
 
 loop(2,inx=>{
     console.log('hello world', inx)
 }) // [undefined, undefined]
 
+
+loop(3,inx=>{
+    if(inx===3) return {break:true}
+    return {[inx]:inx+1}
+}) //  [ { '0': 1 }, { '1': 2 }, { '2': 3 } ] // dont be fooled, 0 is also an index ;))
 
 
 ```
