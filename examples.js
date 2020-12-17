@@ -57,7 +57,8 @@ import {
         log({loop:loop(3,inx=>{
             if(inx===3) return {break:true}
             return {[inx]:inx+1}
-        })})
+        })}) //  [ { '0': 1 }, { '1': 2 }, { '2': 3 } ] 
+
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
 
