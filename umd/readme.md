@@ -5,7 +5,7 @@
 
 ### after each transpite add:
 
-- remove `'util', 'util', 'util', 'util'` from define, since we dont use ams for node so it wont matter
+
 ```js
 /* tslint:disable */
 /* eslint-disable */

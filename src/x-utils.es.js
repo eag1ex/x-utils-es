@@ -9,40 +9,132 @@
  * * license: CC-BY-SA-4.0
  */
 
-const log = function (...args) {
-    args = [].concat('[log]', args)
+/** 
+ * - if you used logging in your application from the moment this method was called allloggind will be disabled
+ * - on node `globa.xUtilsConfig` is set, in `window.xUtilsConfig` is set
+ * @effects `log, warn,error, onerror, errorTrace, stack`
+ * @returns boolean
+*/
+export const disableLogging = () => {
+    try {
+        if (window) {
+            //  on browser
+            window.xUtilsConfig = {
+                logging: 'off'
+            }
+            return true
+        }
+    } catch (err) {
+        //
+    }
 
+    try {
+        // in node
+        global.xUtilsConfig = {
+            logging: 'off'
+        }
+        return true
+    } catch (err) {
+        //
+    }
+
+    return false
+}
+
+/** 
+ * if you used logging in your application from the moment this method was called all loging will be enabled
+ * - on node `globa.xUtilsConfig` is rest, in `window.xUtilsConfig` is rest
+ * @effects `log, warn,error, onerror, errorTrace, stack`
+ * @returns boolean
+*/
+export const resetLogging = () => {
+    try {
+        if (window) {
+            window.xUtilsConfig = {
+                logging: 'on'
+            }
+            return true
+        }
+       
+    } catch (err) {
+        //
+    }
+
+    try {
+        global.xUtilsConfig = {
+            logging: 'on'
+        }
+        return true
+    } catch (err) {
+        //
+    }
+
+    return false
+}
+
+/** 
+ * - when xUtilsConfig wasnt set, then we are on, else if ..xUtilsConfig==='off', do not print logs
+ * @effects `log, warn,error, onerror, errorTrace, stack`
+ */
+let loggingON = () => {
+    try {
+        if (window) return (window.xUtilsConfig || {}).logging === 'on' || window.xUtilsConfig === undefined
+    } catch (err) {
+        //
+    }
+    try {
+        return (global.xUtilsConfig || {}).logging === 'on' || global.xUtilsConfig === undefined
+    } catch (err) {
+        //
+    }
+    return true
+}
+
+const log = function (...args) {
+    if (!loggingON()) return
+    let allData = args.filter(n => typeof n === 'string').length === 0
+    let format = allData ? '\%o' : ''
+    args = [].concat(`\x1b[90m[log]\x1b[0m\x1b[2m${format} `, args, '\x1b[0m')
     try {
         if (window) console.log.apply(null, args)
         return
     } catch (err) {
         // using node     
     }
-    const util1 = require('util')
-    args = args.map(z => util1.inspect(
-        z,       
-        true, // showHidden 
-        3, // depth
-        true // customInspect 
-    ))
     console.log.apply(null, args)
 }
 
 const warn = function (...args) {
-    args = [].concat('[warning]', args)
+    if (!loggingON()) return
+    let allData = args.filter(n => typeof n === 'string').length === 0
+    let format = allData ? '\%o' : ''
+
+    args = [].concat(`\x1b[90m[warning]\x1b[0m\x1b[1m${format} `, args, '\x1b[0m')
+
     try {
         if (window) console.warn.apply(null, args)
         return
     } catch (err) {
         // using node     
     }
-    const util2 = require('util')
-    args = args.map(z => util2.inspect(
-        z,     
-        true, // showHidden 
-        3, // depth
-        true // customInspect 
-    ))
+    console.log.apply(null, args)
+}
+
+const error = function (...args) {
+    if (!loggingON()) return
+    let allData = args.filter(n => typeof n === 'string').length === 0
+    let format = allData ? '\%o' : ''
+
+    try {
+        if (window) {
+            args = [].concat(`\x1b[31m[error]\x1b[0m\x1b[31m${format} `, args, '\x1b[0m')
+            console.error.apply(null, args)
+            return
+        }
+    } catch (err) {
+        // using node
+    }
+    args = [].concat(`\x1b[41m[error]\x1b[0m\x1b[31m${format} `, args, '\x1b[0m')
     console.log.apply(null, args)
 }
 
@@ -53,6 +145,7 @@ const warn = function (...args) {
  * @returns console.log `[STACK TRACE]`: xxx
 */
 export const stack = (data, asArray = false) => {
+    if (!loggingON()) return
     let stackList = new Error(JSON.stringify(data)).stack.split('(')
     stackList.splice(1, 1)
     let stackHead = stackList[0].split(/\n/)[0].replace('Error', '[STACK TRACE]')
@@ -62,6 +155,26 @@ export const stack = (data, asArray = false) => {
     else console.log.apply(null, stackList)
     return undefined
 }
+
+/**
+ * - console.error stack trace
+ * @param {*} data optional any
+ * @param {boolean} asArray if set true, will output stack trace as array, otherwise a string
+ * @returns console.error `[ERROR]`: xxx
+ */
+export const errorTrace = (data, asArray = false) => {
+    if (!loggingON()) return
+    let stackList = new Error(JSON.stringify(data)).stack.split('(')
+    stackList.splice(1, 1)
+    let errHead = stackList[0].split(/\n/)[0].replace('Error', '[ERROR]')
+    stackList.splice(0, 1)
+    stackList.unshift(errHead)
+    if (asArray) console.error(stackList)
+    else console.error.apply(null, stackList)
+    return undefined
+}
+
+const onerror = error
 
 /** 
  * - for loop initiating callback on each iteration
@@ -93,45 +206,6 @@ export const loop = function(size = 0, cb) {
     }
     return d
 }
-
-/**
- * - console.error stack trace
- * @param {*} data optional any
- * @param {boolean} asArray if set true, will output stack trace as array, otherwise a string
- * @returns console.error `[ERROR]`: xxx
- */
-export const errorTrace = (data, asArray = false) => {
-    let stackList = new Error(JSON.stringify(data)).stack.split('(')
-    stackList.splice(1, 1)
-    let errHead = stackList[0].split(/\n/)[0].replace('Error', '[ERROR]')
-    stackList.splice(0, 1)
-    stackList.unshift(errHead)
-    if (asArray) console.error(stackList)
-    else console.error.apply(null, stackList)
-    return undefined
-}
-
-const error = function (...args) {
-    args = [].concat('[error]', args)
-    try {
-        if (window) {
-            console.error.apply(null, args)
-            console.log('  ')
-            return
-        }
-    } catch (err) {
-        // using node
-    }
-    const util3 = require('util')
-    args = args.map(z => util3.inspect(z, 
-        true, // showHidden 
-        3, // depth
-        true // customInspect 
-    ))
-    console.log.apply(null, args)
-    console.log('  ')
-}
-const onerror = error
 
 /** 
  * - evaluate provided DATA is an actual `date` and its valid

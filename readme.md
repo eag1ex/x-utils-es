@@ -432,53 +432,6 @@ validDate(new Date(1)) // true
 validDate(Date()) // false because its a string haha
 
 
-
-/**
- * - console.log, with prefix `[log]`
- * @param data:any
- * returns console.log
- * **/
-log('my data',[1,2]) //  '[log]','my data',[1,2]
-
-
-
-/**
- * - console.error, with prefix `[error]`
- * @param data:any
- * returns console.error
- * **/
-error('ups','1') //  '[error]','ups','1'
-onerror('ups','1') // '[error]','ups','1'
-
-
-
-/**
- * - console.warn, with prefix `[warning]`
- * @param data:any
- * returns console.warn
- * **/
-warn('attention','1') //  '[warning]','attention','1'
-
-
-
-/**
- * - console.log() stack stack to where stack() was called
- * @param data:any optional
- * @param {boolean} asArray if set true, will output stack stack as an array, otherwise a string
- * @returns console.log `[STACK TRACE]`: xxxx
- * **/
-stack('some data'/**, true*/)
-
-
-/**
- * - console.error() stack trace to where trace() was called
- * @param data:any optional
- * @param {boolean} asArray if set true, will output error stack trace as an array, otherwise a string
- * @returns console.error [ERROR]: xxxx
- * **/
-errorTrace('error data', true) // returns ["[ERROR]",... ]
-
-
 /**
  * - recursive selection of array objects by reference
  * @param selectBy:Array required, uniq properties to target selectively from left/up to right/down, (repeated props will be ignored)
@@ -561,6 +514,71 @@ loop(3,inx=>{
     if(inx===3) return {break:true}
     return {[inx]:inx+1}
 }) //  [ { '0': 1 }, { '1': 2 }, { '2': 3 } ] // dont be fooled, 0 is also an index ;))
+
+
+
+
+
+/**SECTION: LOGGING **/
+
+
+/**
+ * - disable all future logs from showing
+ * @affects `log, warn,error, onerror, errorTrace, stack`
+ * **/
+disableLogging()
+
+/**
+ * - restore all logs when previously disabled, has no affect if disableLogging was never called
+ * @affects `log, warn,error, onerror, errorTrace, stack`
+ * **/
+resetLogging()
+
+
+/**
+ * - pretty console.log, with prefix [log]
+ * @param ...data:any
+ * returns console.log
+ * **/
+log('my data',[1,2]) //  [log],'my data',[1,2]
+
+
+/**
+ * - pretty console.error, with prefix [error]
+ * @param ...data:any
+ * returns console.error
+ * **/
+error('ups','1') //  [error],'ups','1'
+onerror('ups','1') // [error],'ups','1'
+
+/**!SECTION END**/
+
+/**
+ * - pretty console.warn, with prefix [warning]
+ * @param ...data:any
+ * returns console.warn
+ * **/
+warn('attention','1') //  [warning],'attention','1'
+
+
+
+/**
+ * - console.log() stack stack to where stack() was called
+ * @param data:any optional
+ * @param {boolean} asArray if set true, will output stack stack as an array, otherwise a string
+ * @returns console.log `[STACK TRACE]`: xxxx
+ * **/
+stack('some data'/**, true*/)
+
+
+/**
+ * - console.error() stack trace to where trace() was called
+ * @param data:any optional
+ * @param {boolean} asArray if set true, will output error stack trace as an array, otherwise a string
+ * @returns console.error [ERROR]: xxxx
+ * **/
+errorTrace('error data', true) // returns ["[ERROR]",... ]
+
 
 
 ```

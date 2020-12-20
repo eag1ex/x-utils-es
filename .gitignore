@@ -6,6 +6,7 @@ info.md
 *.dev
 .DS_Store
 example.test.js
+developer.code.js
 # Docker
 Dockerfile
 docker-compose.yml

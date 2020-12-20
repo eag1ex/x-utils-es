@@ -42,7 +42,10 @@ import {
     flattenDeep,
     flatten,
     dupes,
-    loop
+    loop,
+    disableLogging,
+    resetLogging,
+    error
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -50,6 +53,12 @@ import {
 } from './src/x-utils.es'
     // or {} = require('./umd') 
 
+     // disableLogging() // disable all loging below
+     // resetLogging() // reset previously disabled logging, has no effect if logging is already set or you called it before disableLogging() method
+
+       log('hello world')
+       warn('attention !')
+       error('ups i did it again')
 /** */ log({ loop: loop(5,inx=>{
         return 10+inx
         })}) //  [10, 11, 12, 13, 14]
