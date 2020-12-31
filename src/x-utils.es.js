@@ -19,9 +19,9 @@ export const disableLogging = () => {
     try {
         if (window) {
             //  on browser
-            if(window.xUtilsConfig){
-                window.xUtilsConfig.logging ='off'
-            }else{
+            if (window.xUtilsConfig) {
+                window.xUtilsConfig.logging = 'off'
+            } else {
                 window.xUtilsConfig = {
                     logging: 'off'
                 }
@@ -49,9 +49,6 @@ export const disableLogging = () => {
     }
     return false
 }
-
-
-
 
 /** 
  * if you used logging in your application from the moment this method was called all loging will be enabled
@@ -101,7 +98,7 @@ export const resetLogging = () => {
  * @param {String} logMode off/on
  * @returns boolean true/false if it was sucessfull
 */
-export const loggerSetting = (logType='log',logMode='off') => {
+export const loggerSetting = (logType = 'log', logMode = 'off') => {
 
     let availTypes = ['log', 'warn', 'onerror', 'error']
     let availModes = ['on', 'off']
@@ -143,7 +140,6 @@ export const loggerSetting = (logType='log',logMode='off') => {
     return false
 }
 
-
 /** 
  * @checkLoggerSetting
  * - internal method
@@ -156,7 +152,7 @@ const checkLoggerSetting = (logType) => {
         if (window) {
             //  on browser
             if (window.xUtilsConfig) {
-                return window.xUtilsConfig[logType]  ? window.xUtilsConfig[logType]:'on'
+                return window.xUtilsConfig[logType] ? window.xUtilsConfig[logType] : 'on'
             } else {
                 return 'on'
             }
@@ -168,7 +164,7 @@ const checkLoggerSetting = (logType) => {
     try {
         // in node
         if (global.xUtilsConfig) {
-            return global.xUtilsConfig[logType]  ? global.xUtilsConfig[logType]:'on'
+            return global.xUtilsConfig[logType] ? global.xUtilsConfig[logType] : 'on'
         } else {
             return 'on'
         }
@@ -179,19 +175,18 @@ const checkLoggerSetting = (logType) => {
     return 'on'
 }
 
-
 /** 
  * - when xUtilsConfig wasnt set, then we are on, else if ..xUtilsConfig==='off', do not print logs
  * @effects `log, warn,error, onerror, errorTrace, stack`
  */
 const loggingON = () => {
     try {
-        if (window) return (window.xUtilsConfig || {}).logging === 'on' || (window.xUtilsConfig ||{}).logging === undefined
+        if (window) return (window.xUtilsConfig || {}).logging === 'on' || (window.xUtilsConfig || {}).logging === undefined
     } catch (err) {
         //
     }
     try {
-        return (global.xUtilsConfig || {}).logging === 'on' || (global.xUtilsConfig ||{}).logging === undefined
+        return (global.xUtilsConfig || {}).logging === 'on' || (global.xUtilsConfig || {}).logging === undefined
     } catch (err) {
         //
     }
@@ -200,7 +195,7 @@ const loggingON = () => {
 
 const log = function (...args) {
     if (!loggingON()) return
-    if(checkLoggerSetting('log')==='off') return 
+    if (checkLoggerSetting('log') === 'off') return 
 
     if (!args.length) args[0] = ''
     let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
@@ -219,7 +214,7 @@ const log = function (...args) {
 
 const warn = function (...args) {
     if (!loggingON()) return
-    if(checkLoggerSetting('warn')==='off') return 
+    if (checkLoggerSetting('warn') === 'off') return 
     if (!args.length) args[0] = ''
     let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
     let format = allData ? '\%o' : ''
@@ -237,7 +232,7 @@ const warn = function (...args) {
 
 const error = function (...args) {
     if (!loggingON()) return
-    if(checkLoggerSetting('error')==='off' || checkLoggerSetting('onerror')==='off') return 
+    if (checkLoggerSetting('error') === 'off' || checkLoggerSetting('onerror') === 'off') return 
 
     if (!args.length) args[0] = ''
     let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
