@@ -45,13 +45,18 @@ import {
     loop,
     disableLogging,
     resetLogging,
-    error
+    error,
+    loggerSetting
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
     */
 } from './src/x-utils.es'
     // or {} = require('./umd') 
+
+
+    loggerSetting('log','off') // disable all log()
+    loggerSetting('log','on') // enable all log() // no effect if off was not set
 
      // disableLogging() // disable all loging below
      // resetLogging() // reset previously disabled logging, has no effect if logging is already set or you called it before disableLogging() method

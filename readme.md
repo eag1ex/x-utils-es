@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error, isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -521,9 +521,26 @@ loop(3,inx=>{
 
 /**SECTION: LOGGING **/
 
+/**
+ * - disable/enable individual log types
+ * @affects `log, warn,error, onerror, errorTrace, stack`
+ * @param logType:string can specify switch logtype to enable or disable,:log,warm,error,onerror
+ * @param logMode:string on/off, what to do for each logType
+ * @returns boolean:true/false 
+ * **/
+
+loggerSetting('log', 'off') // disables all future calls to any log() method
+loggerSetting('warn', 'off')// disables all future calls to any warn() method
+loggerSetting('error', 'off') // disables all future calls to any error/onerror() methods
+
+// if disabled before will be enabled again
+loggerSetting('log', 'on')
+loggerSetting('warn', 'on')
+loggerSetting('error', 'on')
 
 /**
  * - disable all future logs from showing
+ * - loggerSetting(...) need to be handled individually 
  * @affects `log, warn,error, onerror, errorTrace, stack`
  * **/
 disableLogging()
