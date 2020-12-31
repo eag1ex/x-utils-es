@@ -55,7 +55,8 @@ import {
 
      // disableLogging() // disable all loging below
      // resetLogging() // reset previously disabled logging, has no effect if logging is already set or you called it before disableLogging() method
-
+     log(undefined)
+     log()
        log('hello world')
        warn('attention !')
        error('ups i did it again')

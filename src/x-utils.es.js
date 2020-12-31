@@ -76,7 +76,7 @@ export const resetLogging = () => {
  * - when xUtilsConfig wasnt set, then we are on, else if ..xUtilsConfig==='off', do not print logs
  * @effects `log, warn,error, onerror, errorTrace, stack`
  */
-let loggingON = () => {
+const loggingON = () => {
     try {
         if (window) return (window.xUtilsConfig || {}).logging === 'on' || window.xUtilsConfig === undefined
     } catch (err) {
@@ -92,9 +92,13 @@ let loggingON = () => {
 
 const log = function (...args) {
     if (!loggingON()) return
-    let allData = args.filter(n => typeof n === 'string').length === 0
+    
+    if (!args.length) args[0] = ''
+    let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
     let format = allData ? '\%o' : ''
+
     args = [].concat(`\x1b[90m[log]\x1b[0m\x1b[2m${format} `, args, '\x1b[0m')
+
     try {
         if (window) console.log.apply(null, args)
         return
@@ -106,7 +110,9 @@ const log = function (...args) {
 
 const warn = function (...args) {
     if (!loggingON()) return
-    let allData = args.filter(n => typeof n === 'string').length === 0
+
+    if (!args.length) args[0] = ''
+    let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
     let format = allData ? '\%o' : ''
 
     args = [].concat(`\x1b[90m[warning]\x1b[0m\x1b[1m${format} `, args, '\x1b[0m')
@@ -122,7 +128,9 @@ const warn = function (...args) {
 
 const error = function (...args) {
     if (!loggingON()) return
-    let allData = args.filter(n => typeof n === 'string').length === 0
+
+    if (!args.length) args[0] = ''
+    let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
     let format = allData ? '\%o' : ''
 
     try {
@@ -134,7 +142,9 @@ const error = function (...args) {
     } catch (err) {
         // using node
     }
+
     args = [].concat(`\x1b[41m[error]\x1b[0m\x1b[31m${format} `, args, '\x1b[0m')
+    
     console.log.apply(null, args)
 }
 
