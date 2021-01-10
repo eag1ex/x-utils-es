@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -550,6 +550,16 @@ disableLogging()
  * @affects `log, warn,error, onerror, errorTrace, stack`
  * **/
 resetLogging()
+
+
+
+/**
+ * - pretty console.log, with prefix [debug] and green color
+ * @param ...data:any
+ * returns console.log
+ * **/
+debug('my data',[1,2]) //  [debug],'my data',[1,2]
+
 
 
 /**

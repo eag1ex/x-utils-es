@@ -212,6 +212,29 @@ const log = function (...args) {
     console.log.apply(null, args)
 }
 
+/** 
+ * - this is not a console.debug 
+ * - just like console.log but in green color output and [debug]
+*/
+const debug = function (...args) {
+    if (!loggingON()) return
+    if (checkLoggerSetting('debug') === 'off') return 
+
+    if (!args.length) args[0] = ''
+    let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
+    let format = allData ? '\%o' : ''
+    
+    args = [].concat(`\x1b[90m[debug]\x1b[0m\x1b[32m${format} `, args, '\x1b[0m')
+
+    try {
+        if (window) console.log.apply(null, args)
+        return
+    } catch (err) {
+        // using node     
+    }
+    console.log.apply(null, args)
+}
+
 const warn = function (...args) {
     if (!loggingON()) return
     if (checkLoggerSetting('warn') === 'off') return 
@@ -856,6 +879,7 @@ const dupes = (item, index) => {
 
 export { uniq }
 export { isPromise }
+export { debug }
 export { log }
 export { warn }
 export { onerror }
