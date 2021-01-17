@@ -34,6 +34,8 @@ import {
     log,
     warn,
     debug,
+    attention,
+    alert,
     selectiveArray,
     resolver,
     onerror,
@@ -59,13 +61,17 @@ import {
     loggerSetting('log','off') // disable all log()
     loggerSetting('log','on') // enable all log() // no effect if off was not set
     debug('hello debug in green')
+    loggerSetting('attention','off')
      // disableLogging() // disable all loging below
      // resetLogging() // reset previously disabled logging, has no effect if logging is already set or you called it before disableLogging() method
      log(undefined)
      log()
        log('hello world')
-       warn('attention !')
+       warn('warn !')
        error('ups i did it again')
+       attention('attention!')
+       alert('alert!')
+
 /** */ log({ loop: loop(5,inx=>{
         return 10+inx
         })}) //  [10, 11, 12, 13, 14]

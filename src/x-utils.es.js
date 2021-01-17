@@ -100,7 +100,7 @@ export const resetLogging = () => {
 */
 export const loggerSetting = (logType = 'log', logMode = 'off') => {
 
-    let availTypes = ['log', 'warn', 'onerror', 'error']
+    let availTypes = ['log', 'warn', 'onerror', 'error', 'alert', 'attention', 'debug']
     let availModes = ['on', 'off']
 
     if (!availTypes.includes(logType) || !logType) return false
@@ -177,7 +177,7 @@ const checkLoggerSetting = (logType) => {
 
 /** 
  * - when xUtilsConfig wasnt set, then we are on, else if ..xUtilsConfig==='off', do not print logs
- * @effects `log, warn,error, onerror, errorTrace, stack`
+ * @effects `log, warn,error, onerror, errorTrace, stack, debug, alert, attention`
  */
 const loggingON = () => {
     try {
@@ -193,15 +193,20 @@ const loggingON = () => {
     return true
 }
 
-const log = function (...args) {
-    if (!loggingON()) return
-    if (checkLoggerSetting('log') === 'off') return 
-
+/** 
+ * @param {string} type log,error,warn,debug
+*/
+const logConstract = function (type = '', args) {
+  
     if (!args.length) args[0] = ''
     let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
     let format = allData ? '\%o' : ''
 
-    args = [].concat(`\x1b[90m[log]\x1b[0m\x1b[2m${format} `, args, '\x1b[0m')
+    if (type === 'log') args = [].concat(`\x1b[90m[log]\x1b[0m\x1b[2m${format} `, args, '\x1b[0m')
+    if (type === 'debug') args = [].concat(`\x1b[90m[debug]\x1b[0m\x1b[32m${format} `, args, '\x1b[0m')
+    if (type === 'warn') args = [].concat(`\x1b[90m[warning]\x1b[0m\x1b[1m${format} `, args, '\x1b[0m')
+    if (type === 'alert') args = [].concat(`\x1b[90m[alert]\x1b[0m\x1b[33m${format} `, args, '\x1b[0m')
+    if (type === 'attention') args = [].concat(`\x1b[90m[attention]\x1b[0m\x1b[36m${format} `, args, '\x1b[0m')
 
     try {
         if (window) console.log.apply(null, args)
@@ -210,6 +215,13 @@ const log = function (...args) {
         // using node     
     }
     console.log.apply(null, args)
+}
+
+const log = function (...args) {
+    if (!loggingON()) return
+    if (checkLoggerSetting('log') === 'off') return 
+
+    return logConstract('log', args)
 }
 
 /** 
@@ -220,37 +232,28 @@ const debug = function (...args) {
     if (!loggingON()) return
     if (checkLoggerSetting('debug') === 'off') return 
 
-    if (!args.length) args[0] = ''
-    let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
-    let format = allData ? '\%o' : ''
-    
-    args = [].concat(`\x1b[90m[debug]\x1b[0m\x1b[32m${format} `, args, '\x1b[0m')
-
-    try {
-        if (window) console.log.apply(null, args)
-        return
-    } catch (err) {
-        // using node     
-    }
-    console.log.apply(null, args)
+    return logConstract('debug', args)
 }
 
 const warn = function (...args) {
     if (!loggingON()) return
     if (checkLoggerSetting('warn') === 'off') return 
-    if (!args.length) args[0] = ''
-    let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
-    let format = allData ? '\%o' : ''
+    
+    return logConstract('warn', args)
+}
 
-    args = [].concat(`\x1b[90m[warning]\x1b[0m\x1b[1m${format} `, args, '\x1b[0m')
+const alert = function (...args) {
+    if (!loggingON()) return
+    if (checkLoggerSetting('alert') === 'off') return 
+    
+    return logConstract('alert', args)
+}
 
-    try {
-        if (window) console.warn.apply(null, args)
-        return
-    } catch (err) {
-        // using node     
-    }
-    console.log.apply(null, args)
+const attention = function (...args) {
+    if (!loggingON()) return
+    if (checkLoggerSetting('attention') === 'off') return 
+    
+    return logConstract('attention', args)
 }
 
 const error = function (...args) {
@@ -884,6 +887,8 @@ export { log }
 export { warn }
 export { onerror }
 export { error }
+export { alert }
+export { attention }
 export { isObject }
 export { isFalsy }
 export { isError }

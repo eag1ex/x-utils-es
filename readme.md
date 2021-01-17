@@ -558,7 +558,7 @@ resetLogging()
  * @param ...data:any
  * returns console.log
  * **/
-debug('my data',[1,2]) //  [debug],'my data',[1,2]
+debug('my data',[1,2]) //  [debug] my data [1,2]
 
 
 
@@ -567,7 +567,7 @@ debug('my data',[1,2]) //  [debug],'my data',[1,2]
  * @param ...data:any
  * returns console.log
  * **/
-log('my data',[1,2]) //  [log],'my data',[1,2]
+log('my data',[1,2]) //  [log] my data [1,2]
 
 
 /**
@@ -575,8 +575,8 @@ log('my data',[1,2]) //  [log],'my data',[1,2]
  * @param ...data:any
  * returns console.error
  * **/
-error('ups','1') //  [error],'ups','1'
-onerror('ups','1') // [error],'ups','1'
+error('ups','1') //  [error] ups 1
+onerror('ups','1') // [error] ups 1
 
 /**!SECTION END**/
 
@@ -585,8 +585,24 @@ onerror('ups','1') // [error],'ups','1'
  * @param ...data:any
  * returns console.warn
  * **/
-warn('attention','1') //  [warning],'attention','1'
+warn('warn','1') //  [warning] attention 1
 
+
+
+/**
+ * - pretty console.log, with prefix [attention]
+ * @param ...data:any
+ * returns console.log
+ * **/
+attention('attention','1') //  [attention] attention 1
+
+/**
+ * - pretty console.log, with prefix [alert]
+ * - this is NOT console.alert() as it works on windows
+ * @param ...data:any
+ * returns console.log
+ * **/
+alert('alert','1') //  [alert] alert
 
 
 /**
