@@ -636,7 +636,7 @@ const isInstance = (obj) => {
 
 // @ts-ignore
 export const isString = (str) => {
-    if(typeof str ==='undefined') return false
+    if (typeof str === 'undefined') return false
     return str === '' ? true : String.prototype === (str).__proto__
 }
 export const isFunction = (el) => typeof el === 'function'
