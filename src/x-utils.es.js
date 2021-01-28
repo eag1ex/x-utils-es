@@ -635,7 +635,10 @@ const isInstance = (obj) => {
 }
 
 // @ts-ignore
-export const isString = (str) => str === '' ? true : String.prototype === (str).__proto__
+export const isString = (str) => {
+    if(typeof str ==='undefined') return false
+    return str === '' ? true : String.prototype === (str).__proto__
+}
 export const isFunction = (el) => typeof el === 'function'
 
 export const copyBy = (obj = {}, refs = []) => {

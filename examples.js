@@ -64,6 +64,7 @@ import {
     loggerSetting('attention','off')
      // disableLogging() // disable all loging below
      // resetLogging() // reset previously disabled logging, has no effect if logging is already set or you called it before disableLogging() method
+     
      log(undefined)
      log()
        log('hello world')
