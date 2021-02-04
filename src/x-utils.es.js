@@ -456,7 +456,6 @@ export const isFalse = (el) => {
     else return false
 }
 
-
 /** 
  * matching number >0
  * matching boolean ===true
@@ -465,7 +464,7 @@ export const isFalse = (el) => {
 */
 export const isTrue = (el) => {
     if (el === null) return false
-    if (typeof el === 'undefined' ) return false
+    if (typeof el === 'undefined') return false
     if (typeof el === 'number' && el > 0) return true
     if (typeof el === 'boolean' && el === true) return true
     else return false
@@ -477,10 +476,9 @@ export const isNull = (el) => {
 }
 
 export const isUndefined = (el) => {
-    if (typeof el === 'undefined' ) return true
+    if (typeof el === 'undefined') return true
     else return false
 }
-
 
 /** 
  * - check if given data has value or it is true, >0
