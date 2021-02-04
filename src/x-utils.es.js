@@ -443,6 +443,46 @@ const isFalsy = (el = null) => {
 }
 
 /** 
+ * matching number <1
+ * matching boolean ===false
+ * all else return isFalse()===true
+ * @param {*} el number/boolean
+*/
+export const isFalse = (el) => {
+    if (el === null) return true
+    if (typeof el === 'undefined') return true
+    if (typeof el === 'number' && el < 1) return true
+    if (typeof el === 'boolean' && el === false) return true
+    else return false
+}
+
+
+/** 
+ * matching number >0
+ * matching boolean ===true
+ * all else return isTrue()===false
+ * @param {*} el number/boolean
+*/
+export const isTrue = (el) => {
+    if (el === null) return false
+    if (typeof el === 'undefined' ) return false
+    if (typeof el === 'number' && el > 0) return true
+    if (typeof el === 'boolean' && el === true) return true
+    else return false
+}
+
+export const isNull = (el) => {
+    if (el === null) return true
+    else return false
+}
+
+export const isUndefined = (el) => {
+    if (typeof el === 'undefined' ) return true
+    else return false
+}
+
+
+/** 
  * - check if given data has value or it is true, >0
  * @param value any
  * @extends typeCheck

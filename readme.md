@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isUndefined,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -249,7 +249,7 @@ isString(new Date()) // false
 
 /**
  * - Check if provided identities match: `['',0 x<1, false, null, undefined,NaN, [],{}]`
- * @param any
+ * @param {*} el any
  * @returns boolean 
  * **/
 isFalsy({}) // true
@@ -259,6 +259,63 @@ isFalsy([1]) // false
 isFalsy(true) // false
 isFalsy(false) // true
 isFalsy(0) // true
+
+
+/**
+ * - number or boolean will be evaluated, all else `return false`
+ * @param {*} el any
+ * @returns boolean 
+ * **/
+
+isTrue(undefined) // false
+isTrue(5) // true
+isTrue(0) // false
+isTrue(-1) // false
+isTrue(true) // true
+isTrue(false) // false
+isTrue([]) // false
+
+
+
+
+/**
+ * - number or boolean will be evaluated, all else `return false`
+ * @param {*} el any
+ * @returns boolean 
+ * **/
+
+isFalse(undefined) // false
+isFalse(5) // false
+isFalse(0) // true
+isFalse(-1) // true
+isFalse(true) // false
+isFalse(false) // true
+isFalse({}) // false
+
+
+
+
+/**
+ * - test if value is of null
+ * @param {*} el any
+ * @returns boolean 
+ * **/
+
+isNull(null) // true
+isNull(undefined) // false
+
+
+
+/**
+ * - test if value is of undefined
+ * @param {*} el any
+ * @returns boolean 
+ * **/
+
+isUndefined(undefined) // true
+isUndefined(null) // false
+
+
 
 
 
@@ -578,14 +635,14 @@ log('my data',[1,2]) //  [log] my data [1,2]
 error('ups','1') //  [error] ups 1
 onerror('ups','1') // [error] ups 1
 
-/**!SECTION END**/
+
 
 /**
  * - pretty console.warn, with prefix [warning]
  * @param ...data:any
  * returns console.warn
  * **/
-warn('warn','1') //  [warning] attention 1
+warn('warn','1') //  [warning] warn 1
 
 
 
@@ -620,9 +677,9 @@ stack('some data'/**, true*/)
  * @param {boolean} asArray if set true, will output error stack trace as an array, otherwise a string
  * @returns console.error [ERROR]: xxxx
  * **/
-errorTrace('error data', true) // returns ["[ERROR]",... ]
+errorTrace('error data', true) // returns [[ERROR],... ]
 
-
+/**!SECTION END**/
 
 ```
 &nbsp;

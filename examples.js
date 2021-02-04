@@ -49,7 +49,11 @@ import {
     disableLogging,
     resetLogging,
     error,
-    loggerSetting
+    loggerSetting,
+    isTrue,
+    isFalse,
+    isUndefined,
+    isNull
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -72,6 +76,14 @@ import {
        error('ups i did it again')
        attention('attention!')
        alert('alert!')
+
+/** */ log({isFalse1:isFalse(true),isFalse2:isFalse(false)}) // false,true    
+
+/** */ log({isTrue1:isTrue(true),isTrue2:isTrue(false),isTrue3:isTrue(1)})   // true,false,true
+
+/** */ log({isNull:isNull(null),isNull2:isNull(undefined),isNull3:isNull(true)})   // true,false,fale
+
+/** */ log({isUndefined:isUndefined(undefined),isUndefined2:isUndefined(true),isUndefined3:isUndefined(null)}) //true,false,false  
 
 /** */ log({ loop: loop(5,inx=>{
         return 10+inx
