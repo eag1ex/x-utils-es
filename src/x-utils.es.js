@@ -484,8 +484,6 @@ export const isNull = (el) => {
     else return false
 }
 
-
-
 export const isUndefined = (el) => {
     if (typeof el === 'undefined') return true
     else return false
@@ -692,7 +690,7 @@ const isInstance = (obj) => {
 export const isString = (str) => {
     if (str === undefined) return false
     if (str === null) return false
-    if(typeof str ==='boolean') return false
+    if (typeof str === 'boolean') return false
     return str === '' ? true : String.prototype === (str).__proto__
 }
 export const isFunction = (el) => typeof el === 'function'
