@@ -710,13 +710,46 @@ export const copyBy = (obj = {}, refs = []) => {
     }
 }
 
-export const copy = (data) => {
+const copy = (data) => {
     try {
         return JSON.parse(JSON.stringify(data))
     } catch (err) {
         return typeCheck(data).primitiveValue
     }
 }
+
+/** 
+ * - for complex arrays of objects: [{...},{...}] we can use copy deep
+ * - will copy each item in array seperatly
+ * - will check for Object>object and make copy
+ * @return same type copy  
+*/
+export const copyDeep = (data) => {
+
+    if (isArray(data)) {
+        return data.map(n => copy(n))
+    }
+
+    if (isObject(data)) {
+        return Object.entries(data).reduce((n, [k, val]) => {
+            if (isObject(val)) n[k] = { ...copy(val) }
+            else n[k] = val
+            return n
+        }, {})
+    }
+
+    else {
+        try {
+            return JSON.parse(JSON.stringify(data))
+        } catch (err) {
+            return typeCheck(data).primitiveValue
+        }
+    }
+}
+
+
+
+
 
 export const delay = (time = 100) => {
     // @ts-ignore
@@ -936,7 +969,7 @@ const dupes = (item, index) => {
     }
     return dups
 }
-
+export { copy }
 export { uniq }
 export { isPromise }
 export { debug }

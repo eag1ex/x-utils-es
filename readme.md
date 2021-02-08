@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -132,6 +132,14 @@ copy(null) //=>  null
 copy(true) //=>  true
 
 
+/**
+ *  good for circular data, or nested class objects
+ * @param any
+ * @returns deep copy of provided data
+ * **/
+copyDeep({ a: {b:{c:{}}} }) //=>  { a: {b:{c:{}}} })
+copyDeep([{ a: (new function(){this.b=1}()) }]) //=>  [ { a: {b:1} } ]
+copyDeep({ a: (new function(){this.b=1}()) }) //=>  { a: { b:1 } }
 
 
 /**

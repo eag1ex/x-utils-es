@@ -54,7 +54,8 @@ import {
     isFalse,
     isUndefined,
     isNull,
-    isBoolean
+    isBoolean,
+    copyDeep
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -77,6 +78,8 @@ import {
        error('ups i did it again')
        attention('attention!')
        alert('alert!')
+
+/** */ log({copyDeep:copyDeep({el:{abc:{test:{abcd:null}}}}), copyDeep2:copyDeep( [{ a: (new function(){this.b=1}()) } ])})
 
 /** */ log({isBoolean:isBoolean(true),isBoolean2:isBoolean(1),isBoolean3:isBoolean(new Boolean(true))}) // true,false,false   
 
