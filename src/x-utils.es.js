@@ -736,9 +736,7 @@ export const copyDeep = (data) => {
             else n[k] = val
             return n
         }, {})
-    }
-
-    else {
+    } else {
         try {
             return JSON.parse(JSON.stringify(data))
         } catch (err) {
@@ -746,10 +744,6 @@ export const copyDeep = (data) => {
         }
     }
 }
-
-
-
-
 
 export const delay = (time = 100) => {
     // @ts-ignore
