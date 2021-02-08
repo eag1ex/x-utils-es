@@ -423,8 +423,6 @@ const isError = (el) => {
     return (Error.prototype === (el || '').__proto__)
 }
 
-
-
 /** 
  * matching number <1
  * matching boolean ===false
@@ -524,7 +522,6 @@ export const interval = (cb, every = 0, endTime = 0) => {
 export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
 // @ts-ignore
 export const isNumber = (n) => n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
-
 
 export const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
 
@@ -665,13 +662,11 @@ const isInstance = (obj) => {
     return false
 }
 
-
 export const objectSize = (obj = {}) => {
     if (!obj || !isNaN(+(obj))) return 0
-    if(isInstance(obj)) return Object.keys(obj).length
+    if (isInstance(obj)) return Object.keys(obj).length
     return ((Object.prototype === (obj).__proto__) || Error.prototype === (obj).__proto__) ? Object.keys(obj).length : 0
 }
-
 
 const isFalsy = (el = null) => {
     if (el === undefined) return true
@@ -692,7 +687,6 @@ const isFalsy = (el = null) => {
     if (el) return false
     else return false
 }
-
 
 // @ts-ignore
 export const isString = (str) => {
