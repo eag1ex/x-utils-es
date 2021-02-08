@@ -470,10 +470,21 @@ export const isTrue = (el) => {
     else return false
 }
 
+/** 
+ * check if an item is a boolean
+*/
+export const isBoolean = (el) => {
+    if (el === undefined) return false
+    if (el === null) return false
+    return typeof el === 'boolean' ? true : Boolean.prototype === (el).__proto__
+}
+
 export const isNull = (el) => {
     if (el === null) return true
     else return false
 }
+
+
 
 export const isUndefined = (el) => {
     if (typeof el === 'undefined') return true
@@ -603,6 +614,7 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
         } catch (err) {
             console.log(err.toString())
         }
+        
         return found
     }
 
@@ -619,8 +631,12 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
         let collective = [] // insert collective 
         for (let o = 0; o < selectBy.length; o++) {
             let sArr = (selectBy[o] || "").split('.')
-            found = findNest(sArr, item, 0)
-            collective.push(found)                 
+            try {
+                found = findNest(sArr, item, 0)
+                collective.push(found)
+            } catch (err) {
+                //
+            }                     
         }
 
         // if all items are undef and selectBy/size matches collective/size
@@ -674,7 +690,9 @@ const isInstance = (obj) => {
 
 // @ts-ignore
 export const isString = (str) => {
-    if (typeof str === 'undefined') return false
+    if (str === undefined) return false
+    if (str === null) return false
+    if(typeof str ==='boolean') return false
     return str === '' ? true : String.prototype === (str).__proto__
 }
 export const isFunction = (el) => typeof el === 'function'

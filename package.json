@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "helper tools for javascript validation",
   "main": "esm/index.js",
   "module": "src/x-utils.es.js",
@@ -52,6 +52,7 @@
     "loop",
     "isTrue",
     "isFalse",
+    "isBoolean",
     "isNull",
     "isUndefined",
     "log",

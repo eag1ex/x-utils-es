@@ -53,7 +53,8 @@ import {
     isTrue,
     isFalse,
     isUndefined,
-    isNull
+    isNull,
+    isBoolean
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -76,6 +77,8 @@ import {
        error('ups i did it again')
        attention('attention!')
        alert('alert!')
+
+/** */ log({isBoolean:isBoolean(true),isBoolean2:isBoolean(1),isBoolean3:isBoolean(new Boolean(true))}) // true,false,false   
 
 /** */ log({isFalse1:isFalse(true),isFalse2:isFalse(false)}) // false,true    
 
@@ -121,7 +124,7 @@ import {
 
 /** */ log({ isArrayA: isArray([1, 2, 3]), isArrayB: isArray({ a: 1 }), isArrayC: isArray(new Array()) })
 
-/** */ log({ isStringA: isString({}), isStringB: isString(new String()), isStringC: isString(NaN) })
+/** */ log({ isStringA: isString(null), isStringB: isString(new String()), isStringC: isString(NaN),isStringD: isString(false) })
 
 /** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' '), isFalsyH: isFalsy(NaN) })
 
@@ -135,7 +138,7 @@ import {
 
 /** */ log({ someKeyMatch1: someKeyMatch({ a: 2, b: 1, c: 2 }, { g: 1, e: 1, a: 1 }), someKeyMatch2: someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
 
-/** */ log({ exactKeyMatch1: exactKeyMatch({ a: 2, b: 1, c: 2 }, { a: 1, b: 1, c: 1 }), exactKeyMatch2: exactKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
+/** */ log({ exactKeyMatch1: exactKeyMatch({ a: 2, b: 1, c: 2 }, { b: undefined, a: 1, c: 1 }), exactKeyMatch2: exactKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 }) })
 
 /** */ log({ head: head([[{ value: 1 }, { value: 2 }]]), head2: head([[[1], [2]]]) })
 
