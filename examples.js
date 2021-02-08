@@ -101,7 +101,7 @@ import {
         })}) //  [ { '0': 1 }, { '1': 2 }, { '2': 3 } ] 
 
 
-/** */ log({ objectSize: objectSize({ a: 1, b: 2 }) }) // 2
+/** */ log({ objectSize: objectSize({ a: 1, b: 2 }),  objectSize2: objectSize( (new function(){}()) )}) // 2
 
 /** */ log({ stringSize1: stringSize(-1), stringSize2: stringSize('abc'),stringSize3: stringSize(new String(' ')) }) // 2
 
@@ -129,7 +129,8 @@ import {
 
 /** */ log({ isStringA: isString(null), isStringB: isString(new String()), isStringC: isString(NaN),isStringD: isString(false) })
 
-/** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' '), isFalsyH: isFalsy(NaN) })
+/** */ log({ isFalsyA: isFalsy({}), isFalsyB: isFalsy(''), isFalsyC: isFalsy([]), isFalsyD: isFalsy([0]), isFalsyE: isFalsy(true), isFalsyF: isFalsy(1), isFalsyG: isFalsy(' '), isFalsyH: isFalsy(NaN), 
+isFalsyJ: isFalsy( (new function(){}()) )  })
 
 /** */ log({ copy1: copy({ a: 1, b:function(){} }), copy2: copy(undefined), copy3: copy(function () { }) })
 

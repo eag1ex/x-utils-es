@@ -423,24 +423,7 @@ const isError = (el) => {
     return (Error.prototype === (el || '').__proto__)
 }
 
-const isFalsy = (el = null) => {
-    if (el === undefined) return true
-    if (el === false && typeof el === 'boolean') return true
-    if (el === null) return true
-    if (String.prototype === (el).__proto__) return el.length < 1
-    if (Array.prototype === (el).__proto__) return (el || []).length === 0
-    if (Promise.prototype === (el || {}).__proto__) return false
-    if (typeof el === 'function') return false
-    if ((Object.prototype === (el).__proto__)) return Object.keys(el).length === 0
-    if ((Error.prototype === (el).__proto__)) return false
-    if (el !== undefined && (el).__proto__ === Number.prototype) {
-        if (isNaN(el)) return true
-        else return el <= 0
-    }
-    if ((+(el) > 0) === false) return true
-    if (el) return false
-    else return false
-}
+
 
 /** 
  * matching number <1
@@ -542,10 +525,6 @@ export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toL
 // @ts-ignore
 export const isNumber = (n) => n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
 
-export const objectSize = (obj = {}) => {
-    if (!obj || !isNaN(+(obj))) return 0
-    return ((Object.prototype === (obj).__proto__) || Error.prototype === (obj).__proto__) ? Object.keys(obj).length : 0
-}
 
 export const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
 
@@ -685,6 +664,35 @@ const isInstance = (obj) => {
     }
     return false
 }
+
+
+export const objectSize = (obj = {}) => {
+    if (!obj || !isNaN(+(obj))) return 0
+    if(isInstance(obj)) return Object.keys(obj).length
+    return ((Object.prototype === (obj).__proto__) || Error.prototype === (obj).__proto__) ? Object.keys(obj).length : 0
+}
+
+
+const isFalsy = (el = null) => {
+    if (el === undefined) return true
+    if (el === false && typeof el === 'boolean') return true
+    if (el === null) return true
+    if (String.prototype === (el).__proto__) return el.length < 1
+    if (Array.prototype === (el).__proto__) return (el || []).length === 0
+    if (Promise.prototype === (el || {}).__proto__) return false
+    if (typeof el === 'function') return false
+    if ((Object.prototype === (el).__proto__) || isInstance(el)) return Object.keys(el).length === 0
+    if ((Error.prototype === (el).__proto__)) return false
+    if (el !== undefined && (el).__proto__ === Number.prototype) {
+        if (isNaN(el)) return true
+        else return el <= 0
+    }
+
+    if ((+(el) > 0) === false) return true
+    if (el) return false
+    else return false
+}
+
 
 // @ts-ignore
 export const isString = (str) => {

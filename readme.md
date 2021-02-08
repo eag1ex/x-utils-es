@@ -58,7 +58,8 @@ from 'x-utils-es' // require(x-utils-es/umd)
  * **/
 objectSize({ a: 1, b: 2 }) }) // 2
 objectSize([1,2]) // 0
-
+objectSize( (new function(){this.a=1}()) ) // 1
+objectSize( (new function(){}()) ) // 0
 
 /**
  * - Check is item is a type of string, then check its length
@@ -268,6 +269,8 @@ isFalsy(true) // false
 isFalsy(false) // true
 isFalsy(0) // true
 
+isFalsy( (new function(){}()) ) // true
+isFalsy( (new function(){this.a=false}()) ) // false
 
 /**
  * - number or boolean will be evaluated, all else `return false`
