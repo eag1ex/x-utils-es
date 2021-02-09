@@ -26,7 +26,7 @@ export const disableLogging = () => {
                     logging: 'off'
                 }
             }
-          
+
             return true
         }
     } catch (err) {
@@ -69,7 +69,7 @@ export const resetLogging = () => {
 
             return true
         }
-       
+
     } catch (err) {
         //
     }
@@ -106,7 +106,7 @@ export const loggerSetting = (logType = 'log', logMode = 'off') => {
     if (!availTypes.includes(logType) || !logType) return false
     if (!availModes.includes(logMode) || !logMode) return false
     if (logType === 'onerror') logType = 'error'
-    
+
     try {
         if (window) {
             //  on browser
@@ -197,7 +197,7 @@ const loggingON = () => {
  * @param {string} type log,error,warn,debug
 */
 const logConstract = function (type = '', args) {
-  
+
     if (!args.length) args[0] = ''
     let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
     let format = allData ? '\%o' : ''
@@ -219,7 +219,7 @@ const logConstract = function (type = '', args) {
 
 const log = function (...args) {
     if (!loggingON()) return
-    if (checkLoggerSetting('log') === 'off') return 
+    if (checkLoggerSetting('log') === 'off') return
 
     return logConstract('log', args)
 }
@@ -230,35 +230,35 @@ const log = function (...args) {
 */
 const debug = function (...args) {
     if (!loggingON()) return
-    if (checkLoggerSetting('debug') === 'off') return 
+    if (checkLoggerSetting('debug') === 'off') return
 
     return logConstract('debug', args)
 }
 
 const warn = function (...args) {
     if (!loggingON()) return
-    if (checkLoggerSetting('warn') === 'off') return 
-    
+    if (checkLoggerSetting('warn') === 'off') return
+
     return logConstract('warn', args)
 }
 
 const alert = function (...args) {
     if (!loggingON()) return
-    if (checkLoggerSetting('alert') === 'off') return 
-    
+    if (checkLoggerSetting('alert') === 'off') return
+
     return logConstract('alert', args)
 }
 
 const attention = function (...args) {
     if (!loggingON()) return
-    if (checkLoggerSetting('attention') === 'off') return 
-    
+    if (checkLoggerSetting('attention') === 'off') return
+
     return logConstract('attention', args)
 }
 
 const error = function (...args) {
     if (!loggingON()) return
-    if (checkLoggerSetting('error') === 'off' || checkLoggerSetting('onerror') === 'off') return 
+    if (checkLoggerSetting('error') === 'off' || checkLoggerSetting('onerror') === 'off') return
 
     if (!args.length) args[0] = ''
     let allData = args.filter(n => typeof n === 'string' || n === undefined).length === 0
@@ -275,7 +275,7 @@ const error = function (...args) {
     }
 
     args = [].concat(`\x1b[41m[error]\x1b[0m\x1b[31m${format} `, args, '\x1b[0m')
-    
+
     console.log.apply(null, args)
 }
 
@@ -325,7 +325,7 @@ const onerror = error
  * @param cb((inx)=>) callback issed at end of each loop que
  * @returns always an array[], per length specified
 */
-export const loop = function(size = 0, cb) {
+export const loop = function (size = 0, cb) {
     let isFN = typeof cb === 'function'
     let isNum = typeof size === 'number'
     if (!isFN || !isNum) return []
@@ -519,13 +519,149 @@ export const interval = (cb, every = 0, endTime = 0) => {
     }, every)
 }
 
+
+
+/** 
+ * @sq / simple Que / new Promsie / defer 
+ * simplified `new Promise()`
+ * access to {resolve,reject, promise}
+ * @returns {Object} `{resolve,reject, promise}`
+*/
+export const sq = () => {
+    let res
+    let rej
+
+    const promise = new Promise((resolve, reject) => {
+        res = resolve
+        rej = reject
+    })
+
+    return {
+        resolve: res,
+        reject: rej,
+        promise
+    }
+}
+
+
+
 export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
 // @ts-ignore
 export const isNumber = (n) => n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
 
 export const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
 
-const isPromise = (defer) => Promise.prototype === (defer || {}).__proto__
+/** 
+ * there are 2 types of promises available javascript standard Promise
+ * and the node.js `q.defer()` promise
+ * - this method tests for the q.defer node.js promise version, along with sq() promise
+ * - checks if its a resolvable promise
+ * @returns {boolean} `true/false`
+*/
+const isQPromise = (defer) => {
+
+    try {
+        if (
+            (defer.promise !== undefined &&
+                typeof defer.resolve === 'function' &&
+                typeof defer.reject === 'function') === true
+        ) {
+            return true
+        }
+    } catch (err) {
+        // 
+    }
+    return false
+}
+
+/** 
+ * check for Promise/ q.defer / and xutils promise ( sq() )
+ * - checks if its a resolvable promise
+ * @returns {Boolean} `true/false`
+*/
+const isPromise = (defer) => {
+    if (isQPromise(defer)) return true
+    else return Promise.prototype === (defer || {}).__proto__
+}
+
+
+
+/** 
+ * - how long to wait before we exit process
+ * - why use this ? If the promise never resolves or takes too long, so we can cancel it when `{maxWait}` time expires
+ * @param {Promise} `{defer}` (required)  resolved when process complete or called from callback on timeout
+ * @param {Number} `{maxWait}` (required)  long to wait before execiting with cbErr
+ * @param {Number} `{checkEvery}` (required) how frequently to check if promise is resolved
+ * @param {Function} `{cbErr}` (required) called on timeout `cbErr(({error,defer,id}))` > here you can either resolve or reject the pending promise
+ * @param {boolean} `{logging}`(optional)  when true will pront waiting process
+ * @param {String} `{message}` (optional)  defaults: `taken too long to respond` of provide your own
+ * @param {String} `{id}` (optional) added to error callback, and to logging when enabled
+ * @returns {Promise} the same promise provided in {defer}, but dont need to use it, directly
+*/
+export const cancelPromise = function ({ defer, checkEvery = 500, maxWait = 9500, cbErr, message = 'taken too long to respond', logging = false, id }) {
+
+
+    let isFN = (el) => typeof el === 'function'
+    let validPromise = isPromise(defer) || isQPromise(defer)
+
+
+    if (!validPromise || !isFN(cbErr) || !maxWait) {
+        onerror('[cancelPromise]', '{defer,maxWait,cbErr} must be provided')
+        return undefined
+    }
+
+    let exit_interval
+    let every = checkEvery || 500
+    maxWait = maxWait || 1
+
+    let inx = 0
+    const t = setInterval(() => {
+        if (exit_interval) {
+            //  if (logging) log('[cancelPromise]', 'cleared')
+            return clearInterval(t)
+        }
+
+        if (inx > maxWait) {
+            let args = { error: `${message}, time: ${inx}`, defer, id }
+
+            try {
+                cbErr.apply(args, [args])
+            } catch (err) {
+
+            }
+
+            return clearInterval(t)
+        } else {
+            if (logging) {
+                if (id) log('-- processing: ', id)
+                else alert('-- processing ')
+            }
+        }
+        inx = every + inx
+    }, every)
+
+    if (defer.promise) {
+        return defer.promise.then(n => {
+            // will exit the interval
+            exit_interval = true
+            return n
+        }).catch(err => {
+            return err
+        })
+    }
+
+    if (defer.then) {
+        return defer.then(n => {
+            // will exit the interval
+            exit_interval = true
+            return n
+        }).catch(err => {
+            return err
+        })
+    }
+}
+
+
 
 const isObject = (obj) => {
     if (typeof obj === 'function') return false
@@ -549,6 +685,24 @@ const isObject = (obj) => {
 }
 
 const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
+
+/** 
+ * provide an array to shuffle
+ * @param {Array} arr array required
+ * @returns {Array} always returns an array
+*/
+export const shuffle = (arr = []) => {
+    if (!isArray(arr)) return []
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * i)
+        const k = arr[i]
+        arr[i] = arr[j]
+        arr[j] = k
+    }
+    return arr
+}
+
+
 
 /** 
  * @selectiveArray
@@ -588,7 +742,7 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
         } catch (err) {
             console.log(err.toString())
         }
-        
+
         return found
     }
 
@@ -610,7 +764,7 @@ export const selectiveArray = (selectBy = [], data = [{}]) => {
                 collective.push(found)
             } catch (err) {
                 //
-            }                     
+            }
         }
 
         // if all items are undef and selectBy/size matches collective/size
@@ -866,7 +1020,7 @@ export const resolver = (fn, timeout = 5000, testEvery = 50) => {
         let inx = 0
         // in case fn throws we return as {error}
         let called = null
-        
+
         /** 
          * - call only once if its a promise
         */
@@ -893,12 +1047,12 @@ export const resolver = (fn, timeout = 5000, testEvery = 50) => {
             let anon = test() // internaly execute only once if a promise
             if (isPromise(anon)) {
                 try {
-                  
+
                     let d = await anon
                     resolve(d)
                     return clearInterval(t)
                 } catch (error) {
-                 
+
                     if (isError(error)) resolve({ error })
                     if (isObject(error)) {
                         if (error.error) resolve(error)
@@ -968,6 +1122,7 @@ const dupes = (item, index) => {
 export { copy }
 export { uniq }
 export { isPromise }
+export { isQPromise }
 export { debug }
 export { log }
 export { warn }

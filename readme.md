@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes, loop } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -80,6 +80,17 @@ stringSize([123]) // 0
 head([[{ value: 1 }, { value: 2 }]]) // { value: 1 }
 head([[ [1], {value:1} ]]) // [1]
 head([1,2]) // 1
+
+
+
+/** 
+ * provide an array to shuffle
+ * @param {Array} arr array required
+ * @returns {Array} always returns an array
+*/
+
+shuffle(['1',2,3,'4']) // returns random order
+shuffle() // [] 
 
 
 
@@ -188,14 +199,88 @@ isNumber(true) // false
 isNumber([]) // false
 
 
+/** 
+ * @sq / simple Que / new Promsie / defer 
+ * simplified `new Promise()`
+ * access to {resolve,reject, promise}
+ * @returns {Object} `{resolve,reject, promise}`
+**/
+
+let defer = sq()
+defer.promise.then(n=>{
+    log('[sq][resolve]',n)
+}).catch(err=>{
+    onerror('[sq][reject]',err)
+})
+
+defer.resolve('hello world')
+// defer.reject('kill it')
 
 /**
  * - Check if provided item is a Promise
+ * - checks if its a resolvable promise
+ * - checks for node.js/q.defer() / as well as `sq()`
  * @param any
  * @returns boolean
  * **/
 isPromise(function () { }) // false
-isPromise(Promise.resolve()) }) // true
+isPromise(Promise.resolve()) ) // true
+isPromise( sq() ) // true
+
+
+/**
+ * checks for q.defer/node.js promise, along with sq() promise 
+ * - checks if its a resolvable promise
+ * @param any
+ * @returns boolean
+ * **/
+
+isQPromise(Promise.resolve()) }) // false 
+isQPromise( sq() ) // true
+isQPromise( q.defer() ) // true (refering to node.js q )
+
+
+
+
+
+/** 
+ * - how long to wait before we exit process
+ * - why use this ? If the promise never resolves or takes too long, so we can cancel it when `{maxWait}` time expires
+ * @param {Promise} `{defer}` (required)  resolved when process complete or called from callback on timeout
+ * @param {Number} `{maxWait}` (required)  long to wait before execiting with cbErr
+ * @param {Number} `{checkEvery}` (required) how frequently to check if promise is resolved
+ * @param {Function} `{cbErr}` (required) called on timeout `cbErr(({error,defer,id}))` > here you can either resolve or reject the pending promise
+ * @param {boolean} `{logging}`(optional)  when true will pront waiting process
+ * @param {String} `{message}` (optional)  defaults: `taken too long to respond` of provide your own
+ * @param {String} `{id}` (optional) added to error callback, and to logging when enabled
+ * @returns {Promise} the same promise provided in {defer}, but dont need to use it, directly
+ **/
+
+let def = sq()
+cancelPromise({ defer:def, // can use standard Promise, sq(), or node.js q.defer
+                checkEvery:200,  // log process on every 
+                maxWait:3000,  // expire promise 
+                message:'waited too long',  // use this error message
+                logging:true, // display process
+                id:new Date().getTime(), // custom id to display or on error
+                cbErr:function({error,defer,id}){
+
+                    // update our reject message
+                    def.reject(error) 
+                    // defer.reject(error)  // same
+                    // this.defer.reject(error)  // same
+                }
+             })//.promise // returns promise
+
+             // def.resolve()
+             // or this
+             def.promise.then(n=>{
+                 log('not called')
+             },err=>{
+                onerror('[cancelPromise]',err)
+             })   
+
+
 
 
 

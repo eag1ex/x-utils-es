@@ -55,7 +55,12 @@ import {
     isUndefined,
     isNull,
     isBoolean,
-    copyDeep
+    copyDeep,
+    sq,
+    cancelPromise,
+    shuffle,
+    isQPromise
+
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -78,6 +83,50 @@ import {
        error('ups i did it again')
        attention('attention!')
        alert('alert!')
+
+
+/** simple Q */ 
+    let defer = sq()
+    defer.promise.then(n=>{
+        log('[sq][resolve]',n)
+    }).catch(err=>{
+        onerror('[sq][reject]',err)
+    })
+
+    defer.resolve('it works')
+// defer.reject('bummer') << will not fire after resolution
+/** */
+
+
+/** cancelPromise */
+let df2 = sq()
+cancelPromise({ defer:df2, // can use standard Promise, sq(), or node.js q.defer
+                checkEvery:200,  //<< log process on every 
+                maxWait:3000,  // expire promise 
+                message:'waited too long',  //<< use this error message
+                logging:true, // display process
+                id:new Date().getTime(), // custom id to display or on error
+                cbErr:function({error,defer,id}){
+                    // we use this.defer / defer / or df2.
+                    // update our reject message
+                    df2.reject(error)
+                }
+             }) // returns promise
+             // can also do this
+             //.promise 
+
+             // or this
+             df2.promise.then(n=>{
+                 log('not called')
+             },err=>{
+                onerror('[cancelPromise]',err)
+             })          
+/** */
+
+
+
+
+/** */ log({shuffle:shuffle(['1','2',3,4,5])}) // random order
 
 /** */ log({copyDeep:copyDeep({el:{abc:{test:{abcd:null}}}}), copyDeep2:copyDeep( [{ a: (new function(){this.b=1}()) } ])})
 
@@ -119,7 +168,10 @@ import {
 
 /** */ log({ isNumberA: isNumber(-1), isNumberB: isNumber({}), isNumberC: isNumber(NaN),isNumberD: isNumber(null) })
 
-/** */ log({ isPromiseA: isPromise(function () { }), isPromiseB: isPromise(Promise), isPromiseC: isPromise(Promise.resolve()) })
+/** */ log({ isPromiseA: isPromise(function () { }), isPromiseB: isPromise(Promise), isPromiseC: isPromise(Promise.resolve()), isPromiseD:isPromise( sq() ) }) // false,false,true,true
+
+/** */ log({ isQPromise: isQPromise(function () { }), isQPromiseB: isQPromise(Promise), isQPromiseC: isQPromise(Promise.resolve()), isQPromiseD:isQPromise( sq() ) }) // false,false,true,true
+
 
 /** */ log({ uniq: uniq([1, 1, 3, 'a', 'b', 'a', true, true, false, false, null, null, undefined, undefined]) })
 
