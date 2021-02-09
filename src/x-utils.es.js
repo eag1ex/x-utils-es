@@ -519,10 +519,8 @@ export const interval = (cb, every = 0, endTime = 0) => {
     }, every)
 }
 
-
-
 /** 
- * @sq / simple Que / new Promsie / defer 
+ * @sq / simpleQ / new Promsie / defer 
  * simplified `new Promise()`
  * access to {resolve,reject, promise}
  * @returns {Object} `{resolve,reject, promise}`
@@ -542,8 +540,6 @@ export const sq = () => {
         promise
     }
 }
-
-
 
 export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
 // @ts-ignore
@@ -584,8 +580,6 @@ const isPromise = (defer) => {
     else return Promise.prototype === (defer || {}).__proto__
 }
 
-
-
 /** 
  * - how long to wait before we exit process
  * - why use this ? If the promise never resolves or takes too long, so we can cancel it when `{maxWait}` time expires
@@ -600,10 +594,8 @@ const isPromise = (defer) => {
 */
 export const cancelPromise = function ({ defer, checkEvery = 500, maxWait = 9500, cbErr, message = 'taken too long to respond', logging = false, id }) {
 
-
     let isFN = (el) => typeof el === 'function'
     let validPromise = isPromise(defer) || isQPromise(defer)
-
 
     if (!validPromise || !isFN(cbErr) || !maxWait) {
         onerror('[cancelPromise]', '{defer,maxWait,cbErr} must be provided')
@@ -627,7 +619,8 @@ export const cancelPromise = function ({ defer, checkEvery = 500, maxWait = 9500
             try {
                 cbErr.apply(args, [args])
             } catch (err) {
-
+                // ups
+                onerror('[cancelPromise]', err)
             }
 
             return clearInterval(t)
@@ -660,8 +653,6 @@ export const cancelPromise = function ({ defer, checkEvery = 500, maxWait = 9500
         })
     }
 }
-
-
 
 const isObject = (obj) => {
     if (typeof obj === 'function') return false
@@ -701,8 +692,6 @@ export const shuffle = (arr = []) => {
     }
     return arr
 }
-
-
 
 /** 
  * @selectiveArray

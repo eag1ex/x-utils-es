@@ -85,7 +85,7 @@ import {
        alert('alert!')
 
 
-/** simple Q */ 
+/** simpleQ */ 
     let defer = sq()
     defer.promise.then(n=>{
         log('[sq][resolve]',n)

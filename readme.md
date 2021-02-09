@@ -199,8 +199,9 @@ isNumber(true) // false
 isNumber([]) // false
 
 
+
 /** 
- * @sq / simple Que / new Promsie / defer 
+ * @sq() / simpleQ / new Promsie / defer 
  * simplified `new Promise()`
  * access to {resolve,reject, promise}
  * @returns {Object} `{resolve,reject, promise}`
@@ -215,6 +216,8 @@ defer.promise.then(n=>{
 
 defer.resolve('hello world')
 // defer.reject('kill it')
+
+
 
 /**
  * - Check if provided item is a Promise
@@ -241,9 +244,8 @@ isQPromise( q.defer() ) // true (refering to node.js q )
 
 
 
-
-
-/** 
+/**
+ * @cancelPromise 
  * - how long to wait before we exit process
  * - why use this ? If the promise never resolves or takes too long, so we can cancel it when `{maxWait}` time expires
  * @param {Promise} `{defer}` (required)  resolved when process complete or called from callback on timeout
@@ -279,7 +281,6 @@ cancelPromise({ defer:def, // can use standard Promise, sq(), or node.js q.defer
              },err=>{
                 onerror('[cancelPromise]',err)
              })   
-
 
 
 
