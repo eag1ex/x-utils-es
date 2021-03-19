@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -344,6 +344,7 @@ chunks( [1,2,3,4,5,6] , 2) // [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ]
 
 
 
+
 /**
  * - Check if provided data is a string 
  * @param any
@@ -630,6 +631,38 @@ selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'wo
 //  [ [ 'hello', 'world'] ] << one pair from data array
 // example : 
 let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) ) ).values()
+
+
+
+/**
+ * Provide mix array of objects and values
+ * grab array items that include specific propName 
+ * @param {*} arr[] mixed array: [{a:true},...]
+ * @param {*} withProp example: withProp:"a"
+ * @returns [] only array items that include specific prop 
+* **/
+
+arrayWith([ [], { a: undefined }, { b: 3 }, { a: 1 } ], 'a') //  [ { a: undefined }, { a: 1 }] 
+arrayWith([ { a: 1 } , 1,[], undefined, { b: 3 } ], 'b') //  [ { b: 3 }] 
+
+
+
+/**
+ * Provide mixed array including any objects and values
+ * Exclude all prop/values from object that matches 
+ * @param {*} arr[] mixed array with objects to exclude by propName
+ * @param {*} excludes[] property names to match each object by
+ * @returns {}  mixed array with any other types as per input, in same order
+ * 
+* **/
+
+exFromArray([{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 }], ['a', 'b']) 
+ // [ { c: 5 }, undefined, undefined, { c: 1 }] // for consistency the index/positions are kept :)
+
+exFromArray([ null,1,{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 },'2'], ['a', 'c']) 
+// [null,1, undefined,undefined,{ b: 2 },undefined,'2']
+
+
 /** 
  * - will test `fn()` until timeout or data becomes available, or finaly return undefined
  * @param fn:function, method with something to return, returns value to access when ready

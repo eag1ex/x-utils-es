@@ -60,7 +60,9 @@ import {
     cancelPromise,
     shuffle,
     isQPromise,
-    uniqBy
+    uniqBy,
+    arrayWith,
+    exFromArray
 
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
@@ -120,6 +122,9 @@ df2.promise.then(n => {
     onerror('[cancelPromise]', err)
 })          
 /** */
+
+/** */ log({ exFromArray: exFromArray([{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 }], ['a', 'b']) }) // [ { c: 5 }, undefined, undefined, { c: 1 }]
+/** */ log({ arrayWith: arrayWith([[], { a: undefined }, { b: 3 }, { a: 1 }], 'a') }) //  [ { a: undefined }, { a: 1 }] 
 
 /** */ log({ uniqBy: uniqBy([{ a: 1, b: 2 }, 1, { b: 1 }, 5, { a: 1 }, null, { a: 1, b: 2 } ], 'a') }) //  [ { a: 1, b: 2 }, 1, { b: 1 }, 5, null]
 

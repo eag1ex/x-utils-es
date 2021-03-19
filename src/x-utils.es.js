@@ -1149,6 +1149,49 @@ export const uniqBy = (arr = [], propName = '') => {
     return n
 }
 
+/**
+ * Provide mix array of objects and values
+ * grab array items that include specific propName 
+ * @param {*} arr[] mixed array: [{a:true},...]
+ * @param {*} withProp example: withProp:"a"
+ * @returns [] only array items that include specific prop 
+* **/
+export const arrayWith = (arr = [], withProp = '') => {
+    let objWith = (o) => {
+        if (isObject(o)) {
+            if (Object.keys(o).indexOf(withProp) !== -1) return o
+            else return undefined
+        } else return undefined
+    }
+    return arr.map(n => objWith(n)).filter(n => !!n)
+}
+
+/**
+ * Provide mixed array including any objects and values
+ * Exclude all prop/values from object that matches 
+ * @param {*} arr[] mixed array with objects to exclude by propName
+ * @param {*} excludes[] property names to match each object by
+ * @returns {}  mixed array with any other types as per input, in same order
+ * 
+* **/
+export const exFromArray = (arr = [], excludes = []) => {
+    excludes = [].concat(excludes)
+    if (!excludes.length) return arr
+    
+    const excludeFrom = (obj = {}, excludes = []) => {
+        if (!isObject(obj)) return obj
+
+        const d = Object.entries(obj).reduce((n, [k, val]) => {
+            if (excludes.indexOf(k) === -1) n[k] = val
+            return n
+        }, {})
+        if (isFalsy(d)) return undefined
+        else return d
+    }
+
+    return arr.map(n => excludeFrom(n, excludes)) // .filter(n => n !== undefined)
+}
+
 export { copy }
 export { uniq }
 export { isPromise }

@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "helper tools for javascript validation",
   "main": "esm/index.js",
   "module": "src/x-utils.es.js",
@@ -65,7 +65,8 @@
     "warn",
     "alert",
     "attention",
-    "uniqBy"
+    "uniqBy",
+    "arrayWith"
   ],
   "esm": {
     "mode": "auto"
