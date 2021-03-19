@@ -1125,8 +1125,10 @@ export const uniqBy = (arr = [], propName = '') => {
     
     for (let inx = 0; inx < arr.length; inx++) {
         let item = arr[inx]
+
         if (!isObject(item)) {
             n.push(item)
+            
             continue
         }
 
@@ -1135,10 +1137,14 @@ export const uniqBy = (arr = [], propName = '') => {
             continue
         }
 
-        if (item[propName] !== stored[propName]) {
-            stored[propName] = item[propName]
+        let exists = Object.entries(stored).filter(([k], i) => item[propName] === stored[k]).length
+        if (exists) continue
+
+        if (item[propName] !== stored[propName + `:${inx}`]) {
+            stored[propName + `:${inx}`] = item[propName]
             n.push(item)
-        }
+        } 
+
     }
     return n
 }
