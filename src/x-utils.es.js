@@ -1099,7 +1099,7 @@ export const chunks = (arr, size) =>
  * @param {number} index how many times to duplicate, when 0 then empty array is returned
  * @returns {array} [...]
 */
-const dupes = (item, index) => {
+export const dupes = (item, index) => {
     const dups = []
     let n = parseInt(index)
     while (n > 0) {
@@ -1108,6 +1108,41 @@ const dupes = (item, index) => {
     }
     return dups
 }
+
+/**
+ * Return array with uniq objects prop[val]!=prop[val] in the order provided
+ * Returns all other objects, and items not by propName
+ * Returns all other items that are not an object 
+ * @param {*} arr 
+ * @param {*} propName 
+ * @returns {*} [{},...]
+ */
+export const uniqBy = (arr = [], propName = '') => {
+    const stored = {}
+    const n = []
+    if (!propName) return arr
+    if (!(arr || []).length) return []
+    
+    for (let inx = 0; inx < arr.length; inx++) {
+        let item = arr[inx]
+        if (!isObject(item)) {
+            n.push(item)
+            continue
+        }
+
+        if (!item[propName]) {
+            n.push(item)
+            continue
+        }
+
+        if (item[propName] !== stored[propName]) {
+            stored[propName] = item[propName]
+            n.push(item)
+        }
+    }
+    return n
+}
+
 export { copy }
 export { uniq }
 export { isPromise }
@@ -1127,7 +1162,6 @@ export { validDate }
 export { isInstance }
 export { isClass }
 export { isArray }
-export { dupes }
 
 /**
  * @prop {*} l any data to print

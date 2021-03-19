@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -291,6 +291,20 @@ cancelPromise({ defer:def, // can use standard Promise, sq(), or node.js q.defer
  * @returns array with uniq values
  * **/
 uniq([1, 1, 3, 'a', 'b', 'a', null, null, true, true]) // [1,3,'a','b',null,true]
+
+
+
+/**
+ * - Provide mixed array 
+ * - simple and lightweight
+ * @param array[] array of mixed items including objects to target property for exclusion
+ * @param prop:string
+ * @returns mixed array with non repeated object (prop[val]!=prop[val]) pairs in the same order
+ * **/
+uniqBy([{ a: 1, b: 2 }, 1, { b: 1 }, 5, { a: 1 }, null, { a: 1, b: 2 } ], 'a') // [ { a: 1, b: 2 }, 1, { b: 1 }, 5, null ]
+uniqBy([1,2,3,{a:1,c:null},{a:1,b:1}],'a') // [1,2,3,{a:1,c:null}]
+uniqBy([1,{1:1},{1:1,2:1}],1) 
+uniqBy([1, { 1: 1 }, { 1: 1, 2: 1 }, { 2: 2 }, { 2: 2 }],1) //  [ 1, { '1': 1 }, { '2': 2 }, { '2': 2 } ]
 
 
 
