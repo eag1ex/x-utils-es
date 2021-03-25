@@ -3,3 +3,4 @@ umd/readme.md
 esm/.babelrc
 esm/readme.md
 .vscode
+examples.js

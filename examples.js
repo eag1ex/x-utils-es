@@ -63,12 +63,11 @@ import {
     uniqBy,
     arrayWith,
     exFromArray
-
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
     */
-} from './src/x-utils.es'
+} from './src'
     // or {} = require('./umd') 
 
 loggerSetting('log', 'off') // disable all log()

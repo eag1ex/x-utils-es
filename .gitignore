@@ -12,7 +12,10 @@ todo
 # Docker
 Dockerfile
 docker-compose.yml
-# mongo db
+prototyping.js
+
+
+
 ###################
 #Don't commit Mongo Database files
 *.lock

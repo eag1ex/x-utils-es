@@ -1,1 +1,1 @@
-export * from "./dist/esnext/x-utils.esnext.min"
+export * from "./src/x-utils.es"

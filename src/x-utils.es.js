@@ -15,7 +15,7 @@
  * @effects `log, warn,error, onerror, errorTrace, stack`
  * @returns boolean
 */
-export const disableLogging = () => {
+const disableLogging = () => {
     try {
         if (window) {
             //  on browser
@@ -56,7 +56,7 @@ export const disableLogging = () => {
  * @effects `log, warn,error, onerror, errorTrace, stack`
  * @returns boolean
 */
-export const resetLogging = () => {
+const resetLogging = () => {
     try {
         if (window) {
             if (window.xUtilsConfig) {
@@ -98,7 +98,7 @@ export const resetLogging = () => {
  * @param {String} logMode off/on
  * @returns boolean true/false if it was sucessfull
 */
-export const loggerSetting = (logType = 'log', logMode = 'off') => {
+const loggerSetting = (logType = 'log', logMode = 'off') => {
 
     let availTypes = ['log', 'warn', 'onerror', 'error', 'alert', 'attention', 'debug']
     let availModes = ['on', 'off']
@@ -285,7 +285,7 @@ const error = function (...args) {
  * @param {boolean} asArray if set true, will output stack trace as array, otherwise a string
  * @returns console.log `[STACK TRACE]`: xxx
 */
-export const stack = (data, asArray = false) => {
+const stack = (data, asArray = false) => {
     if (!loggingON()) return
     let stackList = new Error(JSON.stringify(data)).stack.split('(')
     stackList.splice(1, 1)
@@ -303,7 +303,7 @@ export const stack = (data, asArray = false) => {
  * @param {boolean} asArray if set true, will output stack trace as array, otherwise a string
  * @returns console.error `[ERROR]`: xxx
  */
-export const errorTrace = (data, asArray = false) => {
+const errorTrace = (data, asArray = false) => {
     if (!loggingON()) return
     let stackList = new Error(JSON.stringify(data)).stack.split('(')
     stackList.splice(1, 1)
@@ -325,7 +325,7 @@ const onerror = error
  * @param cb((inx)=>) callback issed at end of each loop que
  * @returns always an array[], per length specified
 */
-export const loop = function (size = 0, cb) {
+const loop = function (size = 0, cb) {
     let isFN = typeof cb === 'function'
     let isNum = typeof size === 'number'
     if (!isFN || !isNum) return []
@@ -429,7 +429,7 @@ const isError = (el) => {
  * all else return isFalse()===true
  * @param {*} el number/boolean
 */
-export const isFalse = (el) => {
+const isFalse = (el) => {
     if (el === null) return true
     if (typeof el === 'undefined') return true
     if (typeof el === 'number' && el < 1) return true
@@ -443,7 +443,7 @@ export const isFalse = (el) => {
  * all else return isTrue()===false
  * @param {*} el number/boolean
 */
-export const isTrue = (el) => {
+const isTrue = (el) => {
     if (el === null) return false
     if (typeof el === 'undefined') return false
     if (typeof el === 'number' && el > 0) return true
@@ -454,18 +454,17 @@ export const isTrue = (el) => {
 /** 
  * check if an item is a boolean
 */
-export const isBoolean = (el) => {
+const isBoolean = (el) => {
     if (el === undefined) return false
     if (el === null) return false
     return typeof el === 'boolean' ? true : Boolean.prototype === (el).__proto__
 }
-
-export const isNull = (el) => {
+const isNull = (el) => {
     if (el === null) return true
     else return false
 }
 
-export const isUndefined = (el) => {
+const isUndefined = (el) => {
     if (typeof el === 'undefined') return true
     else return false
 }
@@ -475,7 +474,7 @@ export const isUndefined = (el) => {
  * @param value any
  * @extends typeCheck
 */
-export const isEmpty = (value) => {
+const isEmpty = (value) => {
     if (isError(value)) return false
     return !typeCheck(value).value
 }
@@ -484,7 +483,7 @@ export const isEmpty = (value) => {
  * - allow 1 level [[1,2]]
  * @returns first array[] item[0] 
 */
-export const head = (arr = []) => {
+const head = (arr = []) => {
     // @ts-ignore
     if (Array.prototype !== (arr || null).__proto__) return []
     // @ts-ignore
@@ -492,9 +491,9 @@ export const head = (arr = []) => {
 }
 
 // @ts-ignore
-export const last = (arr = []) => (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : null
+const last = (arr = []) => (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : null
 
-export const timer = (cb, time = 0) => {
+const timer = (cb, time = 0) => {
     const isFN = typeof cb === 'function'
     if (!isFN) return null
     time = (typeof time === 'number' && time >= 0) ? time : 0 // must provide number
@@ -504,7 +503,7 @@ export const timer = (cb, time = 0) => {
     }, time)
 }
 
-export const interval = (cb, every = 0, endTime = 0) => {
+const interval = (cb, every = 0, endTime = 0) => {
     const isFN = typeof cb === 'function'
     if (!isFN) return null
     every = (typeof every === 'number' && every >= 0) ? every : 0 // must provide number
@@ -525,7 +524,7 @@ export const interval = (cb, every = 0, endTime = 0) => {
  * access to {resolve,reject, promise}
  * @returns {Object} `{resolve,reject, promise}`
 */
-export const sq = () => {
+const sq = () => {
     let res
     let rej
 
@@ -541,11 +540,12 @@ export const sq = () => {
     }
 }
 
-export const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
-// @ts-ignore
-export const isNumber = (n) => n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
+const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
 
-export const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
+// @ts-ignore
+const isNumber = (n) => n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
+
+const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
 
 /** 
  * there are 2 types of promises available javascript standard Promise
@@ -592,7 +592,7 @@ const isPromise = (defer) => {
  * @param {String} `{id}` (optional) added to error callback, and to logging when enabled
  * @returns {Promise} the same promise provided in {defer}, but dont need to use it, directly
 */
-export const cancelPromise = function ({ defer, checkEvery = 500, maxWait = 9500, cbErr, message = 'taken too long to respond', logging = false, id }) {
+const cancelPromise = function ({ defer, checkEvery = 500, maxWait = 9500, cbErr, message = 'taken too long to respond', logging = false, id }) {
 
     let isFN = (el) => typeof el === 'function'
     let validPromise = isPromise(defer) || isQPromise(defer)
@@ -682,7 +682,7 @@ const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
  * @param {Array} arr array required
  * @returns {Array} always returns an array
 */
-export const shuffle = (arr = []) => {
+const shuffle = (arr = []) => {
     if (!isArray(arr)) return []
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * i)
@@ -700,7 +700,7 @@ export const shuffle = (arr = []) => {
  * @param {array} selectBy:required, list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
  * @param {array} data:required list of objects, to target by select ref
 */
-export const selectiveArray = (selectBy = [], data = [{}]) => {
+const selectiveArray = (selectBy = [], data = [{}]) => {
     if (!isArray(data)) return []
     if (!data.length) return []
     // NOTE if selectBy is empty or invalid will return same data
@@ -783,9 +783,9 @@ const isClass = (obj) => {
 /** 
  * @alias isClass
 */
-export const hasPrototype = isClass
+const hasPrototype = isClass
 
-export const hasProto = (el) => {
+const hasProto = (el) => {
     try {
         return el.__proto__ !== undefined
     } catch (err) {
@@ -805,7 +805,7 @@ const isInstance = (obj) => {
     return false
 }
 
-export const objectSize = (obj = {}) => {
+const objectSize = (obj = {}) => {
     if (!obj || !isNaN(+(obj))) return 0
     if (isInstance(obj)) return Object.keys(obj).length
     return ((Object.prototype === (obj).__proto__) || Error.prototype === (obj).__proto__) ? Object.keys(obj).length : 0
@@ -832,15 +832,15 @@ const isFalsy = (el = null) => {
 }
 
 // @ts-ignore
-export const isString = (str) => {
+const isString = (str) => {
     if (str === undefined) return false
     if (str === null) return false
     if (typeof str === 'boolean') return false
     return str === '' ? true : String.prototype === (str).__proto__
 }
-export const isFunction = (el) => typeof el === 'function'
+const isFunction = (el) => typeof el === 'function'
 
-export const copyBy = (obj = {}, refs = []) => {
+const copyBy = (obj = {}, refs = []) => {
     if (!isObject(obj)) return {}
     // @ts-ignore
     const d = [].concat(refs).reduce((n, el, i) => {
@@ -869,7 +869,7 @@ const copy = (data) => {
  * - will check for Object>object and make copy
  * @return same type copy  
 */
-export const copyDeep = (data) => {
+const copyDeep = (data) => {
 
     if (isArray(data)) {
         return data.map(n => copy(n))
@@ -890,7 +890,7 @@ export const copyDeep = (data) => {
     }
 }
 
-export const delay = (time = 100) => {
+const delay = (time = 100) => {
     // @ts-ignore
     const isNum = typeof time === 'number' && time >= 0 // must provide number
     if (!isNum) return Promise.resolve(true) // or resolve 
@@ -906,7 +906,7 @@ export const delay = (time = 100) => {
  * - match keys object{} > with source{}, order doesnt matter!
  * @returns true/false when at least 1 length matched
 */
-export const someKeyMatch = (object = {}, source = {}) => {
+const someKeyMatch = (object = {}, source = {}) => {
     // test if its an object
     if (!(!object ? false : Object.prototype === (object).__proto__)) return false
     if (!(!source ? false : Object.prototype === (source).__proto__)) return false
@@ -921,7 +921,7 @@ export const someKeyMatch = (object = {}, source = {}) => {
  * - match keys object{} > with source{}, order doesnt matter!
  * @returns true/false when all lengths matched
 */
-export const exactKeyMatch = (object = {}, source = {}) => {
+const exactKeyMatch = (object = {}, source = {}) => {
     // test if its an object
     if (!(!object ? false : Object.prototype === (object).__proto__)) return false
     if (!(!source ? false : Object.prototype === (source).__proto__)) return false
@@ -938,7 +938,7 @@ export const exactKeyMatch = (object = {}, source = {}) => {
  * @param {*} arr array required
  * @returns returns new array with only [<true?>] values
  */
-export const trueVal = (arr = []) => {
+const trueVal = (arr = []) => {
     // provided must be array
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
     return [].concat(arr).filter((itm, inx) => isFalsy(itm) !== true)
@@ -951,7 +951,7 @@ export const trueVal = (arr = []) => {
  * @param {*} arr array required
  * @returns returns new array with only [<true?>] values
  */
-export const trueValDeep = (arr = []) => {
+const trueValDeep = (arr = []) => {
     // provided must be array
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
 
@@ -981,7 +981,7 @@ export const trueValDeep = (arr = []) => {
  * @param {*} obj required
  * @returns object with props {} 
  */
-export const trueProp = (obj = {}) => {
+const trueProp = (obj = {}) => {
     if (!(!obj ? false : Object.prototype === (obj).__proto__)) return 0
 
     return Object.assign({}, Object.entries(obj).reduce((n, [key, val], inx) => {
@@ -998,7 +998,7 @@ export const trueProp = (obj = {}) => {
  * @param testEvery:Number, how ofter to check for data availability
  * @returns Promise/always resolves, and error, it will wrap it in {error} , if no data returns Promise.resolve(undefined), 
 */
-export const resolver = (fn, timeout = 5000, testEvery = 50) => {
+const resolver = (fn, timeout = 5000, testEvery = 50) => {
     let isFunction = typeof fn === 'function'
     if (!isFunction) {
         return Promise.reject('fn() must be callable')
@@ -1064,7 +1064,7 @@ export const resolver = (fn, timeout = 5000, testEvery = 50) => {
  * @flatten
  * - flattens 2 level array to 1 level, [[]] > [], [[[]]] > [[]]
 */
-export const flatten = (arr = []) => {
+const flatten = (arr = []) => {
     if (!isArray(arr)) return []
     return [].concat(...arr)
 }
@@ -1072,7 +1072,7 @@ export const flatten = (arr = []) => {
 /** 
  * flatten all array levels, example :[[['hello']]] > ['hello']
 */
-export const flattenDeep = (arr = []) => {
+const flattenDeep = (arr = []) => {
     if (!isArray(arr)) return []
     function test(arr, d = 1) {
         return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? test(val, d - 1) : val), [])
@@ -1088,7 +1088,7 @@ export const flattenDeep = (arr = []) => {
   * @param {number} size required larger then 0
   * @returns arr[]
  */
-export const chunks = (arr, size) =>
+const chunks = (arr, size) =>
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
         arr.slice(i * size, i * size + size)
     )
@@ -1099,7 +1099,7 @@ export const chunks = (arr, size) =>
  * @param {number} index how many times to duplicate, when 0 then empty array is returned
  * @returns {array} [...]
 */
-export const dupes = (item, index) => {
+const dupes = (item, index) => {
     const dups = []
     let n = parseInt(index)
     while (n > 0) {
@@ -1117,18 +1117,18 @@ export const dupes = (item, index) => {
  * @param {*} propName 
  * @returns {*} [{},...]
  */
-export const uniqBy = (arr = [], propName = '') => {
+const uniqBy = (arr = [], propName = '') => {
     const stored = {}
     const n = []
     if (!propName) return arr
     if (!(arr || []).length) return []
-    
+
     for (let inx = 0; inx < arr.length; inx++) {
         let item = arr[inx]
 
         if (!isObject(item)) {
             n.push(item)
-            
+
             continue
         }
 
@@ -1143,7 +1143,7 @@ export const uniqBy = (arr = [], propName = '') => {
         if (item[propName] !== stored[propName + `:${inx}`]) {
             stored[propName + `:${inx}`] = item[propName]
             n.push(item)
-        } 
+        }
 
     }
     return n
@@ -1156,7 +1156,7 @@ export const uniqBy = (arr = [], propName = '') => {
  * @param {*} withProp example: withProp:"a"
  * @returns [] only array items that include specific prop 
 * **/
-export const arrayWith = (arr = [], withProp = '') => {
+const arrayWith = (arr = [], withProp = '') => {
     let objWith = (o) => {
         if (isObject(o)) {
             if (Object.keys(o).indexOf(withProp) !== -1) return o
@@ -1174,10 +1174,10 @@ export const arrayWith = (arr = [], withProp = '') => {
  * @returns {}  mixed array with any other types as per input, in same order
  * 
 * **/
-export const exFromArray = (arr = [], excludes = []) => {
+const exFromArray = (arr = [], excludes = []) => {
     excludes = [].concat(excludes)
     if (!excludes.length) return arr
-    
+
     const excludeFrom = (obj = {}, excludes = []) => {
         if (!isObject(obj)) return obj
 
@@ -1192,6 +1192,100 @@ export const exFromArray = (arr = [], excludes = []) => {
     return arr.map(n => excludeFrom(n, excludes)) // .filter(n => n !== undefined)
 }
 
+// annotate all methods with with input and args for Bond declaration
+// appends {defaults} to each method 
+(function annotateAll() {
+    // annotation type, array [{input:true},{args:true}] // or [{args:true},{input:true}]
+    // this helps us to understand the setting and support order of each method before its even called!
+    /**
+     * @input your data to mod (if any)
+     * @args functional arguments supported on each method (if any)
+    **/
+
+    isFalse.defaults = [{ input: true }] 
+    arrayWith.defaults = [{ input: true }, { args: true }] 
+    exFromArray.defaults = [{ input: true }, { args: true }] 
+    shuffle.defaults = [{ input: true }] 
+    head.defaults = [{ input: true }] 
+    flatten.defaults = [{ input: true }] 
+    uniqBy.defaults = [{ input: true }, { args: true }] 
+    chunks.defaults = [{ input: true }, { args: true }] 
+    isTrue.defaults = [{ input: true }] 
+    last.defaults = [{ input: true }] 
+    // sq.defaults = [{}]  // REVIEW
+    validID.defaults = [{ input: true }] 
+    isNumber.defaults = [{ input: true }] 
+    stringSize.defaults = [{ input: true }]
+    selectiveArray.defaults = [ { args: true }, { input: true }] 
+    hasPrototype.defaults = [{ input: true }]
+    hasProto.defaults = [{ input: true }]
+    objectSize.defaults = [{ input: true }]
+    isString.defaults = [{ input: true }]
+    isFunction.defaults = [{ input: true }]
+    someKeyMatch.defaults = [{ input: true }, { input: true }]
+    exactKeyMatch.defaults = [{ input: true }, { input: true }]
+    trueVal.defaults = [{ input: true }]
+    trueValDeep.defaults = [{ input: true }]
+    trueProp.defaults = [{ input: true }]
+    flattenDeep.defaults = [{ input: true }]
+    dupes.defaults = [{ input: true }, { args: true }]
+    uniq.defaults = [{ input: true }]
+    isPromise.defaults = [{ input: true }]
+    isQPromise.defaults = [{ input: true }]
+    isObject.defaults = [{ input: true }]
+    isFalsy.defaults = [{ input: true }]
+    isError.defaults = [{ input: true }]
+    typeCheck.defaults = [{ input: true }, { args: true }]
+    validDate.defaults = [{ input: true }]
+    isInstance.defaults = [{ input: true }]
+    isClass.defaults = [{ input: true }]
+    isArray.defaults = [{ input: true }]
+})()
+
+export { disableLogging }
+export { resetLogging }
+export { loggerSetting }
+export { stack }
+export { errorTrace }
+export { loop }
+export { isFalse }
+export { isTrue }
+export { isBoolean }
+export { isNull }
+export { isUndefined }
+export { isEmpty }
+export { head }
+export { last }
+export { timer }
+export { interval }
+export { sq }
+export { validID }
+export { isNumber }
+export { stringSize }
+export { cancelPromise }
+export { shuffle }
+export { selectiveArray }
+export { hasPrototype }
+export { hasProto }
+export { objectSize }
+export { isString }
+export { isFunction }
+export { copyBy }
+export { copyDeep }
+export { delay }
+export { someKeyMatch }
+export { exactKeyMatch }
+export { trueVal }
+export { trueValDeep }
+export { trueProp }
+export { resolver }
+export { flatten }
+export { flattenDeep }
+export { chunks }
+export { dupes }
+export { uniqBy }
+export { arrayWith }
+export { exFromArray }
 export { copy }
 export { uniq }
 export { isPromise }
