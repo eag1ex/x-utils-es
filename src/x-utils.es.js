@@ -317,6 +317,14 @@ const errorTrace = (data, asArray = false) => {
 
 const onerror = error
 
+const isBigInt = (n) => {
+    try {
+        return typeof (n) === 'bigint'
+    } catch (err) {
+        return false
+    }
+} 
+
 /** 
  * - for loop initiating callback on each iteration
  * - when `cb` is returned this data is pushed to array
@@ -363,7 +371,10 @@ const validDate = (dt) => {
 }
 
 // @ts-ignore
-const isArray = (arr) => !arr ? false : Array.prototype === (arr).__proto__
+const isArray = (arr) => {
+    if (isBigInt(arr)) return false
+    else return !arr ? false : Array.prototype === (arr).__proto__
+}
 
 /**
  * - evaluate type of an element and check if its falsy
@@ -543,7 +554,10 @@ const sq = () => {
 const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
 
 // @ts-ignore
-const isNumber = (n) => n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
+const isNumber = (n) => {
+    if (isBigInt(n)) return false
+    else return n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
+}
 
 const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
 
@@ -656,6 +670,7 @@ const cancelPromise = function ({ defer, checkEvery = 500, maxWait = 9500, cbErr
 
 const isObject = (obj) => {
     if (typeof obj === 'function') return false
+    if (isBigInt(obj)) return false
     if (!isNaN((+obj)) || obj === undefined) return false
     if ((obj).__proto__ === ([]).__proto__) return false // is array 
     // testing standard Object and Error
@@ -1192,6 +1207,129 @@ const exFromArray = (arr = [], excludes = []) => {
     return arr.map(n => excludeFrom(n, excludes)) // .filter(n => n !== undefined)
 }
 
+/**
+ * Filter/pick items from array by picks[] conditions 
+ * @param {*} arr array of any 
+ * @param {*} picks each item in picks tests every item in array for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that met, in same order as the array! Empty types, and falsy values are excluded, example : `[{},[],'',-1,0,false,null,undefined]` (from picks only)
+ * @returns [...] only items that passed each pick condition in same order
+ */
+const pickFromArray = (arr = [], picks = []) => {
+
+    if (!isArray(arr)) return []
+    if (!isArray(picks)) picks = [].concat(picks)
+    if (!picks.length) return arr
+    picks = picks.filter(n => !isFalsy(n))
+   
+    /**
+     * when checking primitives we test by name and to lowercase
+     * @param {*} item 
+     * @param {*} pick 
+     */
+    let isInstanceByName = (item, pick) => {
+        
+        // do exect array and Object checks
+        if (isArray(item)) {
+            if (isFunction(pick)) {
+                if (pick.name.toLowerCase() === 'object') return false
+            }
+        }
+
+        if (isObject(item)) {   
+            
+            if (isFunction(pick)) {
+                if (pick.name.toLowerCase() === 'array') return false
+            }             
+        }
+      
+        try {
+            // eslint-disable-next-line valid-typeof
+            return (pick.name || '').toLowerCase() === typeof item 
+            
+        } catch (err) {
+            return undefined
+        }
+    }
+
+    /**
+     * evaluate each item on all picks 
+     * 
+     * @param {*} item 
+     */
+    let evalItem = (item) => {
+
+        let selected
+        // do not test items that are falsy and not object or array
+        //  if (isFalsy(item) && (!isArray(item) && !isObject(item))) return false
+
+        for (let inx = 0; inx < picks.length; inx++) {
+            let pick = picks[inx]
+
+            // test all available
+            if (isObject(pick) && isObject(item)) {
+                // all entries on pick must match that on each item
+                let entries = Object.entries(pick)
+                let pass = entries.filter(([k, val]) => item[k] === val).length === entries.length && entries.length > 0
+                if (pass) {
+                    selected = true
+                    break
+                }
+            }
+
+            // array === array (also matching contents of each pick)
+            // each pick contents that can be matched =[number, boolean,string, primitiveValue]
+            if (isArray(pick) && isArray(item)) {
+                
+                let pass = pick.fiter(n => item.filter(nn => nn === n || isInstanceByName(nn, n)).length).length === pick.length || pick.length > 0
+                if (pass) {
+                    selected = true
+                    break
+                }
+
+            } else if (pick === item) {
+                selected = true
+                break
+            } else if (isNumber(item)) {
+   
+                if (isInstanceByName(item, pick)) {
+                    selected = true
+                    break
+                }
+            } else if (isBoolean(item)) {
+  
+                if (isInstanceByName(item, pick)) {
+                    selected = true
+                    break
+                }
+                
+            } else if (isString(item)) {
+  
+                if (isInstanceByName(item, pick)) {
+                    selected = true
+                    break
+                }             
+            } else if (isArray(item) || isObject(item) || isFunction(item)) {
+
+                if (isInstanceByName(item, pick)) {
+                    selected = true
+                    break
+                }             
+
+            } else if (isInstanceByName(item, pick)) {
+                selected = true          
+                break
+            } 
+        }
+
+        return selected
+    }
+
+    return arr.reduce((n, el) => {
+        if (evalItem(el)) n.push(el)
+        return n
+    }, [])
+
+}
+
 // annotate all methods with with input and args for Bond declaration
 // appends {defaults} to each method 
 (function annotateAll() {
@@ -1214,6 +1352,7 @@ const exFromArray = (arr = [], excludes = []) => {
     last.defaults = [{ input: true }] 
     // sq.defaults = [{}]  // REVIEW
     validID.defaults = [{ input: true }] 
+    isBigInt.defaults = [{ input: true }] 
     isNumber.defaults = [{ input: true }] 
     stringSize.defaults = [{ input: true }]
     selectiveArray.defaults = [ { args: true }, { input: true }] 
@@ -1240,6 +1379,7 @@ const exFromArray = (arr = [], excludes = []) => {
     isInstance.defaults = [{ input: true }]
     isClass.defaults = [{ input: true }]
     isArray.defaults = [{ input: true }]
+    pickFromArray.defaults = [{ input: true }, { args: true }]
 })()
 
 export { disableLogging }
@@ -1260,6 +1400,7 @@ export { timer }
 export { interval }
 export { sq }
 export { validID }
+export { isBigInt }
 export { isNumber }
 export { stringSize }
 export { cancelPromise }
@@ -1305,6 +1446,7 @@ export { validDate }
 export { isInstance }
 export { isClass }
 export { isArray }
+export { pickFromArray }
 
 /**
  * @prop {*} l any data to print

@@ -2,5 +2,11 @@ umd/.babelrc
 umd/readme.md
 esm/.babelrc
 esm/readme.md
+developer.md
 .vscode
 examples.js
+developer.code.js
+todo
+example.test.js
+examples.js
+desktop.ini

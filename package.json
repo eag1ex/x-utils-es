@@ -67,7 +67,8 @@
     "alert",
     "attention",
     "uniqBy",
-    "arrayWith"
+    "arrayWith",
+    "isBigInt"
   ],
   "esm": {
     "mode": "auto"

@@ -62,7 +62,8 @@ import {
     isQPromise,
     uniqBy,
     arrayWith,
-    exFromArray
+    exFromArray,
+    pickFromArray
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -121,6 +122,8 @@ df2.promise.then(n => {
     onerror('[cancelPromise]', err)
 })          
 /** */
+
+/** */ log({ pickFromArray: pickFromArray([false, { a: 1, b: 2 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], [Boolean, 'hello', Object, [], BigInt]) })
 
 /** */ log({ exFromArray: exFromArray([{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 }], ['a', 'b']) }) // [ { c: 5 }, undefined, undefined, { c: 1 }]
 /** */ log({ arrayWith: arrayWith([[], { a: undefined }, { b: 3 }, { a: 1 }], 'a') }) //  [ { a: undefined }, { a: 1 }] 
