@@ -123,7 +123,7 @@ df2.promise.then(n => {
 })          
 /** */
 
-/** */ log({ pickFromArray: pickFromArray([false, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], [Boolean, 'hello', Object, { a: 1 }, BigInt]) }) // [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
+/** */ // log({ pickFromArray: pickFromArray([false, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], [Boolean, 'hello', Object, { a: 1 }, BigInt]) }) // [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
 
 // log({ pickFromArray: pickFromArray([0, () => {}, { a: 1, b: 2 }, true, {}, 'not selected', false], [Function, { a: 1, b: 2 }, Boolean, Number]) }) // [ 0,()=>{}, { [length]: 0, { a: 1, b: 2 },true,false ]
 
@@ -133,7 +133,7 @@ df2.promise.then(n => {
 
 // log({ pickFromArray: pickFromArray([{ data: ['hello'] }, { data: {} }, { data: 1 }, { data: { d: 2 } }, { data: ['world'] }], [{ data: Array }]) }) //   [{ data: [ 'hello'] },{ data: [ 'world' ] } ]
 
-// log({ pickFromArray: pickFromArray([{ data: { a: 1 } }, { data: 1 }, { data: { d: 2 } }, { data: { b: 2 } }, false, 1, 2, [], {}], [{ data: Object }]) }) // [{ data: { a: 1 } },{ data: { d: 2 } },{ data: { b: 2 } } ]
+log({ pickFromArray: pickFromArray([{ data: { a: 1 }, a: 1 }, { data: 1 }, { data: { d: 2 } }, { data: { b: 2 } }, false, 1, 2, [], {}], [{ data: Object, a: 1 }]) }) // [{ data: { a: 1 } },{ data: { d: 2 } },{ data: { b: 2 } } ]
 
 /** */ log({ exFromArray: exFromArray([{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 }], ['a', 'b']) }) // [ { c: 5 }, undefined, undefined, { c: 1 }]
 /** */ log({ arrayWith: arrayWith([[], { a: undefined }, { b: 3 }, { a: 1 }], 'a') }) //  [ { a: undefined }, { a: 1 }] 

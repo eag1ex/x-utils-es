@@ -1212,6 +1212,7 @@ const exFromArray = (arr = [], excludes = []) => {
  * Filter items from array by picks[] conditions 
  * @param {*} arr array of any 
  * @param {*} picks[] each item in picks tests item in the array for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that match by type, or eaqul value! Empty types, and falsy values are excluded, example : `[{},[],'',-1,0,false,null,undefined]` (in picks[] only)
+ * - does not support deep selections from picks, only 1 level deep, but you can use object types, example: picks:[{data:Array},{data:Object}]
  * @returns [...] only items that passed each pick condition in same order
  */
 const pickFromArray = (arr = [], picks = []) => {

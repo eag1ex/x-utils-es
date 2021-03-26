@@ -666,6 +666,7 @@ exFromArray([ null,1,{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 },'2'], [
 
 
 /**
+ * Very powerfull array selection tool. 
  * Filter items from array by picks[] conditions 
  * @param {*} array[] of any 
  * @param {*} picks[] each pick tests item in the array[] for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that match by type, or eaqul value! Empty types, and falsy values are excluded, example : `[{},[],'',-1,0,false,null,undefined]` (in picks[] only)
@@ -701,6 +702,9 @@ let picks = [{ data: Object }] // we only want to pick items that are {data} obj
 pickFromArray([{ data: { a: 1 } }, { data: 1 },false, ['hello'], { data: { d: 2 } }, { data: { b: 2 } }, 1, 2, [], {}], picks)
  // [{ data: { a: 1 } },{ data: { d: 2 } },{ data: { b: 2 } } ]
 
+
+let picks = [{ data: Object, a: 1 }]  // narrowing down the results
+log({ pickFromArray: pickFromArray([{ data: { a: 1 }, a: 1 }, { data: 1 }, { data: { d: 2 } }, { data: { b: 2 } }, false, 1, 2, [], {}], [{ data: Object, a: 1 }]) }) // [{ data: { a: 1 }, a:1 }]
 
 
 /** 
