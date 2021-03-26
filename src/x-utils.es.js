@@ -1208,9 +1208,9 @@ const exFromArray = (arr = [], excludes = []) => {
 }
 
 /**
- * Filter/pick items from array by picks[] conditions 
+ * Filter items from array by picks[] conditions 
  * @param {*} arr array of any 
- * @param {*} picks each item in picks tests every item in array for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that met, in same order as the array! Empty types, and falsy values are excluded, example : `[{},[],'',-1,0,false,null,undefined]` (from picks only)
+ * @param {*} picks[] each item in picks tests item in the array for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that match by type, or eaqul value! Empty types, and falsy values are excluded, example : `[{},[],'',-1,0,false,null,undefined]` (in picks[] only)
  * @returns [...] only items that passed each pick condition in same order
  */
 const pickFromArray = (arr = [], picks = []) => {
@@ -1228,9 +1228,11 @@ const pickFromArray = (arr = [], picks = []) => {
     let isInstanceByName = (item, pick) => {
         
         // do exect array and Object checks
+       
         if (isArray(item)) {
             if (isFunction(pick)) {
                 if (pick.name.toLowerCase() === 'object') return false
+                if (pick.name.toLowerCase() === 'array') return true
             }
         }
 
@@ -1238,6 +1240,7 @@ const pickFromArray = (arr = [], picks = []) => {
             
             if (isFunction(pick)) {
                 if (pick.name.toLowerCase() === 'array') return false
+                if (pick.name.toLowerCase() === 'object') return true
             }             
         }
       
@@ -1258,17 +1261,14 @@ const pickFromArray = (arr = [], picks = []) => {
     let evalItem = (item) => {
 
         let selected
-        // do not test items that are falsy and not object or array
-        //  if (isFalsy(item) && (!isArray(item) && !isObject(item))) return false
 
         for (let inx = 0; inx < picks.length; inx++) {
             let pick = picks[inx]
 
-            // test all available
             if (isObject(pick) && isObject(item)) {
                 // all entries on pick must match that on each item
-                let entries = Object.entries(pick)
-                let pass = entries.filter(([k, val]) => item[k] === val).length === entries.length && entries.length > 0
+                let pEntries = Object.entries(pick)
+                let pass = pEntries.filter(([k, val]) => item[k] === val).length === Object.entries(item).length && pEntries.length > 0
                 if (pass) {
                     selected = true
                     break
@@ -1278,8 +1278,7 @@ const pickFromArray = (arr = [], picks = []) => {
             // array === array (also matching contents of each pick)
             // each pick contents that can be matched =[number, boolean,string, primitiveValue]
             if (isArray(pick) && isArray(item)) {
-                
-                let pass = pick.fiter(n => item.filter(nn => nn === n || isInstanceByName(nn, n)).length).length === pick.length || pick.length > 0
+                let pass = pick.filter(n => item.filter(nn => nn === n || isInstanceByName(nn, n)).length).length === item.length && pick.length > 0
                 if (pass) {
                     selected = true
                     break
@@ -1288,32 +1287,20 @@ const pickFromArray = (arr = [], picks = []) => {
             } else if (pick === item) {
                 selected = true
                 break
-            } else if (isNumber(item)) {
+            } else if (
+                isNumber(item) ||
+                isBoolean(item) ||
+                isString(item) ||
+                isArray(item) || 
+                isObject(item) || 
+                isFunction(item)
+            ) {
    
                 if (isInstanceByName(item, pick)) {
                     selected = true
                     break
                 }
-            } else if (isBoolean(item)) {
-  
-                if (isInstanceByName(item, pick)) {
-                    selected = true
-                    break
-                }
-                
-            } else if (isString(item)) {
-  
-                if (isInstanceByName(item, pick)) {
-                    selected = true
-                    break
-                }             
-            } else if (isArray(item) || isObject(item) || isFunction(item)) {
-
-                if (isInstanceByName(item, pick)) {
-                    selected = true
-                    break
-                }             
-
+            
             } else if (isInstanceByName(item, pick)) {
                 selected = true          
                 break

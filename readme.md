@@ -46,7 +46,7 @@ const {} require('x-utils-es/umd') // with node support
 - examples available in `./examples.js`
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,Bond } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -635,9 +635,8 @@ let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }
 
 
 /**
- * Provide mix array of objects and values
- * grab array items that include specific propName 
- * @param {*} arr[] mixed array: [{a:true},...]
+ * Grab array items that include specific propName, non object items are not evaluated and pass thru 
+ * @param {*} array[] mixed: [{a:true},...]
  * @param {*} withProp example: withProp:"a"
  * @returns [] only array items that include specific prop 
 * **/
@@ -648,11 +647,11 @@ arrayWith([ { a: 1 } , 1,[], undefined, { b: 3 } ], 'b') //  [ { b: 3 }]
 
 
 /**
- * Provide mixed array including any objects and values
- * Exclude all prop/values from object that matches 
- * @param {*} arr[] mixed array with objects to exclude by propName
+ * @exFromArray
+ * Only exclude items from the array that match
+ * @param {*} array[] mixed with objects to exclude by propName
  * @param {*} excludes[] property names to match each object by
- * @returns {}  mixed array with any other types as per input, in same order
+ * @returns {} mixed array with any other types as per input, in same order
  * 
 * **/
 
@@ -661,6 +660,37 @@ exFromArray([{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 }], ['a', 'b'])
 
 exFromArray([ null,1,{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 },'2'], ['a', 'c']) 
 // [null,1, undefined,undefined,{ b: 2 },undefined,'2']
+
+
+
+
+/**
+ * Filter items from array by picks[] conditions 
+ * @param {*} array[] of any 
+ * @param {*} picks[] each pick tests item in the array[] for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that match by type, or eaqul value! Empty types, and falsy values are excluded, example : `[{},[],'',-1,0,false,null,undefined]` (in picks[] only)
+ * @returns [...] only items passed by pick condition in same order
+ * **/
+
+let picks = [Boolean, 'hello', Object, { a: 1 }, BigInt] // only these types or/and values will be tested
+pickFromArray([false, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], picks )
+//>  [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
+
+
+let picks = [Function, { a: 1, b: 2 }, Boolean, Number] // we can also use primitive types
+pickFromArray( [0, () => { }, { a: 1, b: 2 }, true, {}, 'not selected', false], picks ) 
+//> [ 0,()=>{}, { [length]: 0, { a: 1, b: 2 },true,false ]
+
+
+let picks =  [[1, 2, 3], { a: 3 }] // we can match by array[...] values (picks testing order is disregarded), excluding deep nested arrays and objects 
+// NOTE [2,3,1] would also match as all values are available
+pickFromArray( [ [1, 2, 3] , [4, 5, 6], { b: 3 }, { a: 3 }, [2, 1, 3] ], picks ) 
+//> [ [ 1, 2, 3], { a: 3 }, [ 2, 1, 3 ] ]
+
+
+let picks =  [[1], [2], [5], Boolean]
+pickFromArray( [ [2] ,[1], [5], true], picks ) // [ [ 2 ],[ 1 ], [ 5 ],true]
+
+
 
 
 /** 
