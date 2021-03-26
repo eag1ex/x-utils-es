@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.6.6",  
+  "version": "1.6.7",  
   "description": "helper tools for javascript validation",
   "main": "esm/index.js",
   "module": "src/x-utils.es.js",
