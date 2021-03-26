@@ -692,6 +692,15 @@ let picks =  [[1], [2], [5], Boolean]
 pickFromArray( [ [2] ,[1], [5], true], picks ) // [ [ 2 ],[ 1 ], [ 5 ],true]
 
 
+let picks = [{ data: Array }] // we only want to pick items that are {data} objects containing array
+pickFromArray([{ data: ['hello'] }, { data: {} }, { data: 1 }, { data: { d: 2 } }, { data: ['world'] }], picks)
+//>   [{ data: [ 'hello'] },{ data: [ 'world' ] } ]
+
+
+let picks = [{ data: Object }] // we only want to pick items that are {data} objects containing inner objects
+pickFromArray([{ data: { a: 1 } }, { data: 1 },false, ['hello'], { data: { d: 2 } }, { data: { b: 2 } }, 1, 2, [], {}], picks)
+ // [{ data: { a: 1 } },{ data: { d: 2 } },{ data: { b: 2 } } ]
+
 
 
 /** 

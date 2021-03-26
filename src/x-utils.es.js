@@ -1269,8 +1269,16 @@ const pickFromArray = (arr = [], picks = []) => {
             if (isObject(pick) && isObject(item)) {
                 // all entries on pick must match that on each item
                 let pEntries = Object.entries(pick)
-                let pass = pEntries.filter(([k, val]) => item[k] === val).length === Object.entries(item).length && pEntries.length > 0
-                if (pass) {
+                let pass = pEntries.filter(([k, val]) => {
+                   
+                    let ok = item[k] === val
+                    if (ok) return true
+                    else if (item[k] !== undefined) {   
+                        return isInstanceByName(item[k], val)
+                    }
+                }).length === Object.entries(item).length && pEntries.length > 0
+              
+                if (pass && objectSize(item) === objectSize(pick)) {
                     selected = true
                     break
                 }

@@ -131,6 +131,10 @@ df2.promise.then(n => {
 
 // log({ pickFromArray: pickFromArray([[1], [2], [5], true], [[1], [2], [5], Boolean]) }) // [ [ 1 ],[ 2 ], [ 5 ],true]
 
+// log({ pickFromArray: pickFromArray([{ data: ['hello'] }, { data: {} }, { data: 1 }, { data: { d: 2 } }, { data: ['world'] }], [{ data: Array }]) }) //   [{ data: [ 'hello'] },{ data: [ 'world' ] } ]
+
+// log({ pickFromArray: pickFromArray([{ data: { a: 1 } }, { data: 1 }, { data: { d: 2 } }, { data: { b: 2 } }, false, 1, 2, [], {}], [{ data: Object }]) }) // [{ data: { a: 1 } },{ data: { d: 2 } },{ data: { b: 2 } } ]
+
 /** */ log({ exFromArray: exFromArray([{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 }], ['a', 'b']) }) // [ { c: 5 }, undefined, undefined, { c: 1 }]
 /** */ log({ arrayWith: arrayWith([[], { a: undefined }, { b: 3 }, { a: 1 }], 'a') }) //  [ { a: undefined }, { a: 1 }] 
 
