@@ -43,7 +43,7 @@ const {} require('x-utils-es/umd') // with node support
 
 
 ### Example
-- Check out git repo for implemented examples in `./examples` dir
+- In the repo dir at: `./examples`
 
 ```js
 
