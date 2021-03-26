@@ -6,7 +6,8 @@
  * @xtils
  * * Simple javascript, lodash alternative library
  * * Developed by Anon
- * * license: CC-BY-SA-4.0
+ * * License: CC-BY-SA-4.0
+ * * For projects contact me at: eaglex.net
  */
 
 /** 
