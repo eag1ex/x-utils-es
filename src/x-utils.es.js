@@ -1277,9 +1277,11 @@ const pickFromArray = (arr = [], picks = []) => {
                     else if (item[k] !== undefined) {   
                         return isInstanceByName(item[k], val)
                     }
-                }).length === Object.entries(item).length && pEntries.length > 0
-              
-                if (pass && objectSize(item) === objectSize(pick)) {
+                })
+                // all picks must match the requirement and object can have more props then pic has
+                pass = pass.length === pEntries.length && Object.entries(item).length >= pass.length 
+
+                if (pass && objectSize(item) >= objectSize(pick)) {
                     selected = true
                     break
                 }
@@ -1288,7 +1290,11 @@ const pickFromArray = (arr = [], picks = []) => {
             // array === array (also matching contents of each pick)
             // each pick contents that can be matched =[number, boolean,string, primitiveValue]
             if (isArray(pick) && isArray(item)) {
-                let pass = pick.filter(n => item.filter(nn => nn === n || isInstanceByName(nn, n)).length).length === item.length && pick.length > 0
+                let pass = pick.filter(n => item.filter(nn => nn === n || isInstanceByName(nn, n)).length)
+
+                // all picks must match the requirement and array can have more items then pick has
+                pass = pass.length === pick.length && item.length >= pass.length
+
                 if (pass) {
                     selected = true
                     break

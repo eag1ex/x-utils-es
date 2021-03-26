@@ -704,7 +704,13 @@ pickFromArray([{ data: { a: 1 } }, { data: 1 },false, ['hello'], { data: { d: 2 
 
 
 let picks = [{ data: Object, a: 1 }]  // narrowing down the results
-log({ pickFromArray: pickFromArray([{ data: { a: 1 }, a: 1 }, { data: 1 }, { data: { d: 2 } }, { data: { b: 2 } }, false, 1, 2, [], {}], [{ data: Object, a: 1 }]) }) // [{ data: { a: 1 }, a:1 }]
+pickFromArray([{ data: { a: 1 }, a: 1 }, { data: 1 }, { data: { d: 2 } }, { data: { b: 2 } }, false, 1, 2, [], {}], [{ data: Object, a: 1 }]) // [{ data: { a: 1 }, a:1 }]
+
+
+let picks = [{ a: Object, b: 1 }]  // narrowing down the results, should select all array objects that at least contain all the above
+pickFromArray([{ a: { a: 1 }, b: 1, c:1  }, { data: 1 }, { a: { a: 1 }, b: 1 }, { data: null }, false, 1, 2, [], {}], [{ a: Object, b: 1 }] )
+// >  [ { a: { a: 1 }, b: 1, c: 1 }, { a: { a: 1 }, b: 1 }]
+
 
 
 /** 
