@@ -58,7 +58,7 @@ import {
     copyDeep,
     sq,
     cancelPromise,
-    shuffle,
+    shuffle, 
     isQPromise,
     uniqBy,
     arrayWith,
