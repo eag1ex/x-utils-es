@@ -47,7 +47,7 @@ In `./examples` _check repo_
 
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt,dispatcher } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -692,7 +692,7 @@ pickFromArray([undefined, 1, {}, 2, null, [], 'hello world', 3, true, 4, null, 5
 
 let picks = [undefined, [undefined] ] // select all undefined from array
 pickFromArray([undefined, false, 1, true, {}, [1], [undefined, 'this one'], null], picks)
-// [undefined, [undefined]]
+// [undefined, [undefined,'this one']]
 
 
 let picks = [Function, { a: 1, b: 2 }, Boolean, Number] // we can also use primitive types
@@ -728,6 +728,36 @@ let picks = [{ a: Object, b: 1 }]  // narrowing down the results, should select 
 pickFromArray([{ a: { a: 1 }, b: 1, c:1  }, { data: 1 }, { a: { a: 1 }, b: 1 }, { data: null }, false, 1, 2, [], {}], [{ a: Object, b: 1 }] )
 // >  [ { a: { a: 1 }, b: 1, c: 1 }, { a: { a: 1 }, b: 1 }]
 
+
+
+
+
+
+/**
+ * @dispatcher
+ * Lightweight Event Dispatcher allowing you dispatch anywhere in code, very handy in callback hell situations, deep promises, or any other complicated computations. Integrated with callback memory so you dont have to subscribe first to get your data.
+ *
+ * @Why 
+ * - Call next before subscribe
+ * - Avoid ugly callback > callback > callback hell!
+ * - Avoid messy Promises
+ * - Prefer clean, readable code hierarchy
+ * - Easy to implement
+ * @param {*} uid (optional) will be generated if not supplied
+ * @param {*} debug (optional) for extra debug messages
+ */
+
+const ds = dispatcher(/** uid, debug */)
+    .next({ data: 'hello world' }) // will wait and call first once subscribed
+    .subscribe((data, uid, index) => {
+         log('on subscribe', data, uid, index)
+    }).onComplete(uid => {
+        log('completed', uid)
+    })
+
+ds.next({ data: 'hello again' })
+ds.delete() // delete self, onComplete will also be called
+ds.next({ data: 'never called' })
 
 
 

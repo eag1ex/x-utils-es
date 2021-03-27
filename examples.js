@@ -63,7 +63,8 @@ import {
     uniqBy,
     arrayWith,
     exFromArray,
-    pickFromArray
+    pickFromArray,
+    dispatcher
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -121,6 +122,17 @@ df2.promise.then(n => {
 }, err => {
     onerror('[cancelPromise]', err)
 })          
+
+const ds = dispatcher(/** uid, debug */)
+    .next({ data: 'hello world' })
+    .subscribe((data, uid, index) => {
+        log('on subscribe', data, uid, index)
+    }).onComplete(uid => {
+        log('completed', uid)
+    })
+ds.next({ data: 'hello again' })
+ds.delete() 
+ds.next({ data: 'never called' })
 
 /** */ log({ pickFromArray: pickFromArray([NaN, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], [Boolean, 'hello', Object, { a: 1 }, BigInt]) }) // [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
 

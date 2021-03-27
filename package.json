@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.7.0",  
+  "version": "1.7.1",  
   "description": "helper tools for javascript validation",
   "main": "esm/index.js",
   "module": "src/x-utils.es.js",
@@ -69,7 +69,8 @@
     "uniqBy",
     "arrayWith",
     "isBigInt",
-    "pickFromArray"
+    "pickFromArray",
+    "dispatcher"
   ],
   "esm": {
     "mode": "auto"
