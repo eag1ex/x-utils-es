@@ -121,9 +121,8 @@ df2.promise.then(n => {
 }, err => {
     onerror('[cancelPromise]', err)
 })          
-/** */
 
-/** */ log({ pickFromArray: pickFromArray([false, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], [Boolean, 'hello', Object, { a: 1 }, BigInt]) }) // [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
+/** */ log({ pickFromArray: pickFromArray([NaN, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], [Boolean, 'hello', Object, { a: 1 }, BigInt]) }) // [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
 
 log({ pickFromArray: pickFromArray([0, () => {}, { a: 1, b: 2 }, true, {}, 'not selected', false], [Function, { a: 1, b: 2 }, Boolean, Number]) }) // [ 0,()=>{}, { [length]: 0, { a: 1, b: 2 },true,false ]
 

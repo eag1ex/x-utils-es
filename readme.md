@@ -344,8 +344,6 @@ chunks( [1,2,3,4,5,6] , 2) // [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ]
 
 
 
-
-
 /**
  * - Check if provided data is a string 
  * @param any
@@ -613,7 +611,10 @@ validDate(new Date(1)) // true
 validDate(Date()) // false because its a string haha
 
 
+
+
 /**
+ * @selectiveArray
  * - recursive selection of array objects by reference
  * @param selectBy:Array required, uniq properties to target selectively from left/up to right/down, (repeated props will be ignored)
  * @param data:Array[{},{}] required, array of Objects with properties to target 
@@ -635,7 +636,10 @@ let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }
 
 
 
+
+
 /**
+ * @arrayWith 
  * Grab array items that include specific propName, non object items are not evaluated and pass thru 
  * @param {*} array[] mixed: [{a:true},...]
  * @param {*} withProp example: withProp:"a"
@@ -644,6 +648,7 @@ let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }
 
 arrayWith([ [], { a: undefined }, { b: 3 }, { a: 1 } ], 'a') //  [ { a: undefined }, { a: 1 }] 
 arrayWith([ { a: 1 } , 1,[], undefined, { b: 3 } ], 'b') //  [ { b: 3 }] 
+
 
 
 
@@ -665,17 +670,29 @@ exFromArray([ null,1,{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 },'2'], [
 
 
 
+
 /**
+ * @pickFromArray
  * Very powerfull array selection tool. 
  * Filter items from array by picks[] conditions 
  * @param {*} array[] of any 
- * @param {*} picks[] each pick tests item in the array[] for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that match by type, or eaqul value! Empty types, and falsy values are excluded, example : `[{},[],'',-1,0,false,null,undefined]` (in picks[] only)
+ * @param {*} picks[] each pick tests item in the array[] for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that match by type, or eaqul value! Empty types and strings, are excluded, example : `[{},[],'',NaN]` (in picks[] only)
  * @returns [...] only items passed by pick condition in same order
  * **/
 
 let picks = [Boolean, 'hello', Object, { a: 1 }, BigInt] // only these types or/and values will be tested
 pickFromArray([false, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], picks )
 //>  [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
+
+
+let picks = [Number, Boolean] // select only numbers and booleans from array
+pickFromArray([undefined, 1, {}, 2, null, [], 'hello world', 3, true, 4, null, 5], picks) 
+//> [ 1, 2, 3, true, 4, 5 ]
+
+
+let picks = [undefined, [undefined] ] // select all undefined from array
+pickFromArray([undefined, false, 1, true, {}, [1], [undefined, 'this one'], null], picks)
+// [undefined, [undefined]]
 
 
 let picks = [Function, { a: 1, b: 2 }, Boolean, Number] // we can also use primitive types
@@ -713,7 +730,11 @@ pickFromArray([{ a: { a: 1 }, b: 1, c:1  }, { data: 1 }, { a: { a: 1 }, b: 1 }, 
 
 
 
+
+
+
 /** 
+ * @resolver
  * - will test `fn()` until timeout or data becomes available, or finaly return undefined
  * @param fn:function, method with something to return, returns value to access when ready
  * @param timeout:Number, specify max time to wait for data
@@ -729,9 +750,6 @@ resolver(()=>Promise.reject('some error'),5000,50).then(n=>{
 
 
 
-
-
-
 let d = undefined
 setTimeout(()=>{
     d = 'hello world'
@@ -744,7 +762,9 @@ resolver(fn,5000,50).then(n=>{
 })
 
 
+
 /** 
+ * @dupes
  * - duplicate original item x/times
  * @param {*} item any value
  * @param {number} index how many times to duplicate, when 0 then empty array is returned
@@ -757,6 +777,7 @@ dupes([{a:1},{b:1}], 2) // [ [{a:1},{b:1}], [{a:1},{b:1}] ]
 
 
 /** 
+ * @loop
  * - for loop with a callback, similar to times() from lodash, except you can access returned data,
  * - when no data is return undefined is passed 
  * - added loop iteration break support, when returning {break:true}
@@ -784,7 +805,7 @@ loop(3,inx=>{
 
 /**
  * - disable/enable individual log types
- * @affects `log, warn,error, onerror, errorTrace, stack`
+ * @affects `log, warn,error, onerror, attention, alert,  errorTrace, debug, stack`
  * @param logType:string can specify switch logtype to enable or disable,:log,warm,error,onerror
  * @param logMode:string on/off, what to do for each logType
  * @returns boolean:true/false 
@@ -793,22 +814,25 @@ loop(3,inx=>{
 loggerSetting('log', 'off') // disables all future calls to any log() method
 loggerSetting('warn', 'off')// disables all future calls to any warn() method
 loggerSetting('error', 'off') // disables all future calls to any error/onerror() methods
-
+loggerSetting('debug', 'off')
+loggerSetting('attention', 'off')
 // if disabled before will be enabled again
 loggerSetting('log', 'on')
 loggerSetting('warn', 'on')
 loggerSetting('error', 'on')
+loggerSetting('debug', 'on')
+loggerSetting('attention', 'on')
 
 /**
  * - disable all future logs from showing
  * - loggerSetting(...) need to be handled individually 
- * @affects `log, warn,error, onerror, errorTrace, stack`
+ * @affects `log, warn,error,attention, debug, onerror, errorTrace, stack`
  * **/
 disableLogging()
 
 /**
  * - restore all logs when previously disabled, has no affect if disableLogging was never called
- * @affects `log, warn,error, onerror, errorTrace, stack`
+ * @affects `log,attention, debug warn,error, onerror, errorTrace, stack`
  * **/
 resetLogging()
 
