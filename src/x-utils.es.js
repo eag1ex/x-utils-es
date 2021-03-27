@@ -531,25 +531,24 @@ const interval = (cb, every = 0, endTime = 0) => {
 }
 
 /** 
- * @sq / simpleQ / new Promsie / defer 
+ * @sq / SimpleQ / new Promsie / instanceOf Promise
  * simplified `new Promise()`
  * access to {resolve,reject, promise}
- * @returns {Object} `{resolve,reject, promise}`
+ * @returns {} `{resolve,reject, promise}`
 */
 const sq = () => {
-    let res
-    let rej
+    return (new function SimpleQ() {
+        let res
+        let rej
 
-    const promise = new Promise((resolve, reject) => {
-        res = resolve
-        rej = reject
-    })
-
-    return {
-        resolve: res,
-        reject: rej,
-        promise
-    }
+        this.promise = new Promise((resolve, reject) => {
+            res = resolve
+            rej = reject
+        })
+        
+        this.resolve = res
+        this.reject = rej
+    }())
 }
 
 const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
@@ -575,7 +574,10 @@ const isQPromise = (defer) => {
         if (
             (defer.promise !== undefined &&
                 typeof defer.resolve === 'function' &&
-                typeof defer.reject === 'function') === true
+                typeof defer.reject === 'function' &&
+                typeof defer.fulfill === 'function' &&
+                typeof defer.notify === 'function'
+            ) === true
         ) {
             return true
         }
@@ -585,6 +587,17 @@ const isQPromise = (defer) => {
     return false
 }
 
+/**
+ * test is sq() is our SimpleQ promise
+ * @param {*} defer 
+ */
+const isSQ = (defer) => {
+    try {
+        return defer.__proto__.constructor.name === 'SimpleQ'
+    } catch (err) {
+        return false
+    }
+}
 /** 
  * check for Promise/ q.defer / and xutils promise ( sq() )
  * - checks if its a resolvable promise
@@ -592,7 +605,15 @@ const isQPromise = (defer) => {
 */
 const isPromise = (defer) => {
     if (isQPromise(defer)) return true
-    else return Promise.prototype === (defer || {}).__proto__
+    else {
+        try {
+            if (defer instanceof Promise) return true
+            if (isSQ(defer)) return true     
+        } catch (err) {
+            console.log('err', err)
+        }
+        return false
+    }
 }
 
 /** 
@@ -1363,8 +1384,8 @@ const pickFromArray = (arr = [], picks = []) => {
  * @param {*} uid (optional) will be generated if not supplied
  * @param {*} debug (optional) for extra debug messages
  */
-function dispatcher(uid, debug) {
-    return (new function (uid, debug) {
+const dispatcher = (uid, debug) => {
+    return (new function dispatcher (uid, debug) {
 
         const plugin = `[dispatcher]`
         this.uid = ((uid || '').toString() || new Date().getTime()).toString() // id generated if not provided
@@ -1581,6 +1602,7 @@ function dispatcher(uid, debug) {
     isClass.defaults = [{ input: true }]
     isArray.defaults = [{ input: true }]
     pickFromArray.defaults = [{ input: true }, { args: true }]
+    isSQ.defaults = [{ input: true }]
 })()
 
 export { disableLogging }
@@ -1649,6 +1671,7 @@ export { isClass }
 export { isArray }
 export { pickFromArray }
 export { dispatcher }
+export { isSQ }
 
 /**
  * @prop {*} l any data to print

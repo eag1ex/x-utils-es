@@ -71,14 +71,14 @@ import {
     */
 } from './src'
     // or {} = require('./umd') 
-
+    
 loggerSetting('log', 'off') // disable all log()
 loggerSetting('log', 'on') // enable all log() // no effect if off was not set
 debug('hello debug in green')
 loggerSetting('attention', 'off')
 // disableLogging() // disable all loging below
 // resetLogging() // reset previously disabled logging, has no effect if logging is already set or you called it before disableLogging() method
-     
+
 log(undefined)
 log()
 log('hello world')

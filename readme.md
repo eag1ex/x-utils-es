@@ -209,6 +209,8 @@ isNumber([]) // false
 **/
 
 let defer = sq()
+defer instanceof Promise === true
+
 defer.promise.then(n=>{
     log('[sq][resolve]',n)
 }).catch(err=>{
