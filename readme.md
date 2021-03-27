@@ -1,5 +1,5 @@
 
-Simple javascript, lodash alternative library, to help with type validation, includes no external plugins.
+Simple javascript, lodash alternative library, to help with type validation, with no dependencies.
 * esmodule supports `esnext`, `es2015` and `umd`
 * Lightweight, minified
 &nbsp;
@@ -43,7 +43,7 @@ const {} require('x-utils-es/umd') // with node support
 
 
 ### Example
-- In the repo dir at: `./examples`
+In `./examples` _check repo_
 
 ```js
 
