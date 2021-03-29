@@ -64,7 +64,8 @@ import {
     arrayWith,
     exFromArray,
     pickFromArray,
-    dispatcher
+    dispatcher,
+    withHoc
     /** 
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
@@ -96,8 +97,7 @@ defer.promise.then(n => {
 })
 
 defer.resolve('it works')
-// defer.reject('bummer') << will not fire after resolution
-/** */
+// ----------- defer.reject('bummer') << will not fire after resolution
 
 /** cancelPromise */
 let df2 = sq()
@@ -122,7 +122,9 @@ df2.promise.then(n => {
 }, err => {
     onerror('[cancelPromise]', err)
 })          
+// --------------
 
+/** dispatcher */
 const ds = dispatcher(/** uid, debug */)
     .next({ data: 'hello world' })
     .subscribe((data, uid, index) => {
@@ -133,6 +135,26 @@ const ds = dispatcher(/** uid, debug */)
 ds.next({ data: 'hello again' })
 ds.delete() 
 ds.next({ data: 'never called' })
+// -------------
+
+/** withHoc */
+function fn(a = 1, b = 2, c = 3) {
+    return a + b + c
+}
+
+// example 1
+let fnHocked = withHoc(fn)
+log({ fnHocked: fnHocked() }) // > 6
+
+// example 2
+fnHocked = withHoc(fn, 4, 5, 6) // provided fn() arguments from upper caller
+log({ fnHocked: fnHocked() }) // > 15
+
+// example 3
+fnHocked = withHoc(fn, 4, 5, 6) 
+// above arguments  replaced with in final call 
+log({ fnHocked: fnHocked(7, 8, 9) }) // > 24  
+// -----------------------
 
 /** */ log({ pickFromArray: pickFromArray([NaN, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], [Boolean, 'hello', Object, { a: 1 }, BigInt]) }) // [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
 

@@ -47,7 +47,7 @@ In `./examples` _check repo_
 
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt,dispatcher } 
+import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt,dispatcher, withHoc } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -761,6 +761,47 @@ ds.next({ data: 'hello again' })
 ds.delete() // delete self, onComplete will also be called
 ds.next({ data: 'never called' })
 
+
+
+
+/**
+ * @withHoc
+ * - High order caller, concept taken from react HOC.
+ * - Promise support, we can provide deferred callback, example: `Promise.resolve(()=>{}) OR Promise.reject(()=>{}) `
+ *  * if rejectable error is not callable, message is: `DEFERRED_NOT_CALLABLE`
+ * @param {*} item callable function
+ * @param {*} args (optional) any number of arguments (,,,,) after the callable item()
+ * @returns {*} callable function withHoc(...args) OR deferred if a promise
+ */
+
+
+// example 1
+let fnHocked = withHoc(fn)
+fnHocked() // > 6
+
+// example 2
+fnHocked = withHoc(fn, 4, 5, 6) // provided fn() arguments from upper caller
+fnHocked() // > 15
+
+// example 3
+fnHocked = withHoc(fn, 4, 5, 6) 
+// above arguments  replaced with in final call 
+fnHocked(7, 8, 9) // > 24  
+
+// example 4
+fnHocked = withHoc(Promise.resolve(fn), 4, 5, 6) 
+// above arguments  replaced with in final call 
+fnHocked(7, 8, 9).then(log) // > 24  
+
+// example 5
+fnHocked = withHoc(Promise.reject(fn), 4, 5, 6) 
+// above arguments  replaced with in final call 
+fnHocked(7, 8, 9).catch(onerror) // > 24  
+
+// example 6 not a deferred caller: 
+fnHocked = withHoc(Promise.reject('fn'), 4, 5, 6) 
+// above arguments  replaced with in final call 
+fnHocked(7, 8, 9).catch(onerror) // > DEFERRED_NOT_CALLABLE  
 
 
 

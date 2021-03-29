@@ -1552,9 +1552,70 @@ const dispatcher = (uid, debug) => {
     }(uid, debug))
 }
 
-// annotate all methods with with input and args for Bond declaration
+/**
+ * @withHoc
+ * - High order caller, concept taken from react HOC.
+ * - Promise support, we can provide deferred callback, example: `Promise.resolve(()=>{}) OR Promise.reject(()=>{}) `
+ *  * if rejectable error is not callable, message is: `DEFERRED_NOT_CALLABLE`
+ * @param {*} item callable function
+ * @param {*} args (optional) any number of arguments (,,,,) after the callable item()
+ * @returns {*} callable function withHoc(...args) OR deferred if a promise
+ */
+const withHoc = (item = () => { }, ...args) => {
+    let extraArgs = args
+    const hoc = (...args) => {
+
+        let argsFN = () => {
+            let _args
+            if (extraArgs) _args = [].concat(args, extraArgs)
+            else _args = args
+            return _args
+        }
+
+        if (item instanceof Function) {
+
+            try {
+
+                return item(...argsFN())
+            } catch (err) {
+                onerror('[HOC]', err)
+            }
+
+        } else if (isPromise(item)) {
+
+            // if provided a defered callable item we can wait and then call if
+            // example expecting Promise.resolve(()=>{}) OR  Promise.reject(()=>{})
+            let fn = () => {
+
+                let asPromise = () => {
+                    if (item.promise) return item.promise
+                    else return item
+                }
+
+                return asPromise().then(defItem => {
+                    if (isFunction(defItem)) return defItem(...argsFN())
+                    else return Promise.reject('DEFERRED_NOT_CALLABLE')
+                }, err => {
+                    // should alwasy return a function of constant message
+                    if (isFunction(err)) return Promise.reject(err(...argsFN()))
+                    else return Promise.reject('DEFERRED_NOT_CALLABLE')
+                })
+
+            }
+            // rejectable call
+            return fn()
+
+        } else {
+            onerror('[HOC]', 'item() must be callable function')
+        }
+
+    }
+    return hoc
+}
+
+// annotate all supported methods with with input and args
 // appends {defaults} to each method 
-(function annotateAll() {
+(function annotateSupported() {
     // annotation type, array [{input:true},{args:true}] // or [{args:true},{input:true}]
     // this helps us to understand the setting and support order of each method before its even called!
     /**
@@ -1603,6 +1664,7 @@ const dispatcher = (uid, debug) => {
     isArray.defaults = [{ input: true }]
     pickFromArray.defaults = [{ input: true }, { args: true }]
     isSQ.defaults = [{ input: true }]
+    withHoc.defaults = [{ input: true }, { args: true }]
 })()
 
 export { disableLogging }
@@ -1672,6 +1734,7 @@ export { isArray }
 export { pickFromArray }
 export { dispatcher }
 export { isSQ }
+export { withHoc }
 
 /**
  * @prop {*} l any data to print
