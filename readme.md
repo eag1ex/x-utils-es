@@ -775,6 +775,10 @@ ds.next({ data: 'never called' })
  */
 
 
+function fn(a = 1, b = 2, c = 3) {
+    return a + b + c
+}
+
 // example 1
 let fnHocked = withHoc(fn)
 fnHocked() // > 6
