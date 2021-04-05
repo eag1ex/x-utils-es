@@ -287,7 +287,6 @@ cancelPromise({ defer:def, // can use standard Promise, sq(), or node.js q.defer
 
 
 
-
 /**
  * - Provide array and return no repeats, (doesnt work with NaN)
  * @param array[]
@@ -314,6 +313,7 @@ uniqBy([1, { 1: 1 }, { 1: 1, 2: 1 }, { 2: 2 }, { 2: 2 }],1) //  [ 1, { '1': 1 },
 /**
  * - Check if provided has object properties, and is not an array
  * @param data:any
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean
  * **/
 isObject({}) // true
@@ -324,16 +324,21 @@ isObject((new class { })) // true
 isObject(new Error()) // true
 isObject(null) // false
 
+isObject( {}, ()=>false ) // false, due to callback !!false
+isObject( [], ()=>Object.keys({1:1}).length ) // false, not an object
 
 /**
  * - Check if provided is Array.prototype, not an Object.prototype
  * @param data:any
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean
  * **/
 isArray([]) // true
 isArray({}) // false
 isArray(new Array()) // true
 
+isArray(new Array(), ()=>[1,2].length===1) // false, because callback return !!false
+isArray({}, ()=>true) // false // not array
 
 /** 
   * - return array in batch specified by size
@@ -459,16 +464,19 @@ async function f() {
  * - Provide object/source, check if ANY key names match, object/source order placement doesn't matter :)
  * @param obj:object
  * @param source:object
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean  true=> when at least 1 key name belongs to either obj/source
  * **/
 someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }) //=>  true
 
+someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }, ()=>1-1===1) //=>  false, because callback return !!false
 
 
 /**
  * - Provide object/source, check if ALL key names match, object/source order placement doesn't matter :)
  * @param obj:object
  * @param source:object
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean  true=> when ALL key names match each other
  * **/
 exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 }) //=>  true
@@ -476,6 +484,8 @@ exactKeyMatch({ a: 2, b: 1 }, { c: 1, a: 1, b: 1 }) //=> false
 exactKeyMatch({ a: 2, b: 1 }, { c: 1, d: 1}) //=>  false
 exactKeyMatch({}, { c: 1, d: 1}) //=>  false
 exactKeyMatch(['a','b','c'], { c: 1, d: 1}) //=> false
+
+exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 }, ()=> 1+1===3) // false, because callback return !!false
 
 
 
@@ -578,6 +588,7 @@ isInstance([]) // false
 /**
  * - Check if provided data has .prototype, means it can be called as new. `hasPrototype` is an alias of `isClass`
  * @param data:any
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean
  * **/
 hasPrototype(function(){})/**isClass()**/ // true 
@@ -585,11 +596,14 @@ hasPrototype(new function(){}) // false
 hasPrototype(Date) // true
 hasPrototype(Object) // true
 
+hasPrototype( Object, ()=>false) // false callback !!false
+
 
 /**
  * - Will check if item has __proto__ example: `(new function(){}), {}, [],''` 
  * - return false for: `null, undefined`
  * @param data:any
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean
  * **/
 hasProto({}) // true
@@ -600,19 +614,21 @@ hasProto(undefined) // false
 hasProto(null) // false
 hasProto(NaN) // true
 
+hasProto({}, ()=> Object.keys({}).length ) // false because object has no keys
 
 
 /**
  * - Check data is a valid Date
  * @param data:any 
+ * @param cbEval (optional) callback, continue checking when callback returns !!true
  * @returns boolean
  * **/
 validDate(new Date('')) // false
 validDate(new Date()) // true
 validDate(new Date(1)) // true
 validDate(Date()) // false because its a string haha
-
-
+validDate( new Date(), ()=>false ) // false callback !!false
+validDate( '', ()=>true ) // false // not a date
 
 
 /**

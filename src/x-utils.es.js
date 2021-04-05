@@ -195,6 +195,20 @@ const loggingON = () => {
 }
 
 /** 
+ * Designed for executing callback functions
+ * @returns {Boolean}
+*/
+const callFN = (cb = undefined) => {
+    if (typeof cb !== 'function') return false
+    try {
+        let d = cb()
+        return d === true || d > 0
+    } catch (err) {
+        return false
+    }
+}
+
+/** 
  * @param {string} type log,error,warn,debug
 */
 const logConstract = function (type = '', args) {
@@ -317,6 +331,7 @@ const errorTrace = (data, asArray = false) => {
 }
 
 const onerror = error
+const isFunction = (el) => typeof el === 'function'
 
 const isBigInt = (n) => {
     try {
@@ -324,7 +339,7 @@ const isBigInt = (n) => {
     } catch (err) {
         return false
     }
-} 
+}
 
 /** 
  * - for loop initiating callback on each iteration
@@ -360,9 +375,11 @@ const loop = function (size = 0, cb) {
 /** 
  * - evaluate provided DATA is an actual `date` and its valid
  * @param date 
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns true or false
 */
-const validDate = (dt) => {
+const validDate = (dt, cbEval = undefined) => {
+    if (isFunction(cbEval) && !callFN(cbEval)) return false
     try {
         if (dt.__proto__ === Date.prototype && (dt).toString() !== 'Invalid Date') return true
         else return false
@@ -372,7 +389,13 @@ const validDate = (dt) => {
 }
 
 // @ts-ignore
-const isArray = (arr) => {
+/**
+ * 
+ * @param {*} arr 
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ */
+const isArray = (arr, cbEval = undefined) => {
+    if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (isBigInt(arr)) return false
     else return !arr ? false : Array.prototype === (arr).__proto__
 }
@@ -503,8 +526,12 @@ const head = (arr = []) => {
 }
 
 // @ts-ignore
-const last = (arr = []) => (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : null
-
+/**
+ * @returns `any`
+ */
+const last = (arr = []) => {
+    return (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : null
+}
 const timer = (cb, time = 0) => {
     const isFN = typeof cb === 'function'
     if (!isFN) return null
@@ -545,7 +572,7 @@ const sq = () => {
             res = resolve
             rej = reject
         })
-        
+
         this.resolve = res
         this.reject = rej
     }())
@@ -557,6 +584,18 @@ const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCas
 const isNumber = (n) => {
     if (isBigInt(n)) return false
     else return n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
+}
+
+/**
+ * Test provided value is a date, example: new Date()
+ * @param {*} d 
+ */
+const isDate = (d) => {
+    try {
+        return (d) instanceof Date
+    } catch (err) {
+        return false
+    }
 }
 
 const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
@@ -608,7 +647,7 @@ const isPromise = (defer) => {
     else {
         try {
             if (defer instanceof Promise) return true
-            if (isSQ(defer)) return true     
+            if (isSQ(defer)) return true
         } catch (err) {
             console.log('err', err)
         }
@@ -690,7 +729,13 @@ const cancelPromise = function ({ defer, checkEvery = 500, maxWait = 9500, cbErr
     }
 }
 
-const isObject = (obj) => {
+/**
+ * 
+ * @param {*} obj 
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ */
+const isObject = (obj, cbEval = undefined) => {
+    if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (typeof obj === 'function') return false
     if (isBigInt(obj)) return false
     if (!isNaN((+obj)) || obj === undefined) return false
@@ -811,7 +856,14 @@ const selectiveArray = (selectBy = [], data = [{}]) => {
 }
 
 // testing (class{}).prototype
-const isClass = (obj) => {
+
+/**
+ * 
+ * @param {*} obj 
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ */
+const isClass = (obj, cbEval = undefined) => {
+    if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (!obj) return false
     if ((obj).prototype !== undefined) return true
     return false
@@ -822,7 +874,13 @@ const isClass = (obj) => {
 */
 const hasPrototype = isClass
 
-const hasProto = (el) => {
+/**
+ * 
+ * @param {*} el 
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ */
+const hasProto = (el, cbEval = undefined) => {
+    if (isFunction(cbEval) && !callFN(cbEval)) return false
     try {
         return el.__proto__ !== undefined
     } catch (err) {
@@ -830,8 +888,13 @@ const hasProto = (el) => {
     }
 }
 
-// testing (new class{})
-const isInstance = (obj) => {
+/**
+ *  testing (new class{})
+ * @param {*} obj 
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ */
+const isInstance = (obj, cbEval = undefined) => {
+    if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (!obj) return false
     if (isArray(obj)) return false
     if (obj.__proto__ && !isClass(obj)) {
@@ -869,13 +932,19 @@ const isFalsy = (el = null) => {
 }
 
 // @ts-ignore
-const isString = (str) => {
+
+/**
+ * 
+ * @param {*} str 
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ */
+const isString = (str, cbEval = undefined) => {
+    if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (str === undefined) return false
     if (str === null) return false
     if (typeof str === 'boolean') return false
     return str === '' ? true : String.prototype === (str).__proto__
 }
-const isFunction = (el) => typeof el === 'function'
 
 const copyBy = (obj = {}, refs = []) => {
     if (!isObject(obj)) return {}
@@ -941,9 +1010,11 @@ const delay = (time = 100) => {
 
 /**
  * - match keys object{} > with source{}, order doesnt matter!
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns true/false when at least 1 length matched
 */
-const someKeyMatch = (object = {}, source = {}) => {
+const someKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
+    if (isFunction(cbEval) && !callFN(cbEval)) return false
     // test if its an object
     if (!(!object ? false : Object.prototype === (object).__proto__)) return false
     if (!(!source ? false : Object.prototype === (source).__proto__)) return false
@@ -956,9 +1027,11 @@ const someKeyMatch = (object = {}, source = {}) => {
 
 /** 
  * - match keys object{} > with source{}, order doesnt matter!
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns true/false when all lengths matched
 */
-const exactKeyMatch = (object = {}, source = {}) => {
+const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
+    if (isFunction(cbEval) && !callFN(cbEval)) return false
     // test if its an object
     if (!(!object ? false : Object.prototype === (object).__proto__)) return false
     if (!(!source ? false : Object.prototype === (source).__proto__)) return false
@@ -1245,16 +1318,16 @@ const pickFromArray = (arr = [], picks = []) => {
     picks = picks.filter(n => !isFalsy(n) || allowedPicks.filter(nn => nn === n || (isNumber(n) && !isNaN(n)).length))
 
     if (!picks.length) return arr
-   
+
     /**
      * when checking primitives we test by name and to lowercase
      * @param {*} item 
      * @param {*} pick 
      */
     let isInstanceByName = (item, pick) => {
-        
+
         // do exect array and Object checks
-       
+
         if (isArray(item)) {
             if (isFunction(pick)) {
                 if (pick.name.toLowerCase() === 'object') return false
@@ -1262,18 +1335,18 @@ const pickFromArray = (arr = [], picks = []) => {
             }
         }
 
-        if (isObject(item)) {   
-            
+        if (isObject(item)) {
+
             if (isFunction(pick)) {
                 if (pick.name.toLowerCase() === 'array') return false
                 if (pick.name.toLowerCase() === 'object') return true
-            }             
+            }
         }
-      
+
         try {
             // eslint-disable-next-line valid-typeof
-            return (pick.name || '').toLowerCase() === typeof item 
-            
+            return (pick.name || '').toLowerCase() === typeof item
+
         } catch (err) {
             return undefined
         }
@@ -1295,15 +1368,15 @@ const pickFromArray = (arr = [], picks = []) => {
                 // all entries on pick must match that on each item
                 let pEntries = Object.entries(pick)
                 let pass = pEntries.filter(([k, val]) => {
-                   
+
                     let ok = item[k] === val
                     if (ok) return true
-                    else if (item[k] !== undefined) {   
+                    else if (item[k] !== undefined) {
                         return isInstanceByName(item[k], val)
                     }
                 })
                 // all picks must match the requirement and object can have more props then pic has
-                pass = pass.length === pEntries.length && Object.entries(item).length >= pass.length 
+                pass = pass.length === pEntries.length && Object.entries(item).length >= pass.length
 
                 if (pass && objectSize(item) >= objectSize(pick)) {
                     selected = true
@@ -1331,20 +1404,20 @@ const pickFromArray = (arr = [], picks = []) => {
                 isNumber(item) ||
                 isBoolean(item) ||
                 isString(item) ||
-                isArray(item) || 
-                isObject(item) || 
+                isArray(item) ||
+                isObject(item) ||
                 isFunction(item)
             ) {
-   
+
                 if (isInstanceByName(item, pick)) {
                     selected = true
                     break
                 }
-            
+
             } else if (isInstanceByName(item, pick)) {
-                selected = true          
+                selected = true
                 break
-            } 
+            }
         }
 
         return selected
@@ -1385,7 +1458,7 @@ const pickFromArray = (arr = [], picks = []) => {
  * @param {*} debug (optional) for extra debug messages
  */
 const dispatcher = (uid, debug) => {
-    return (new function dispatcher (uid, debug) {
+    return (new function dispatcher(uid, debug) {
 
         const plugin = `[dispatcher]`
         this.uid = ((uid || '').toString() || new Date().getTime()).toString() // id generated if not provided
@@ -1430,7 +1503,7 @@ const dispatcher = (uid, debug) => {
             }
             return this
         }
-    
+
         /**
          * @Dispatch
          * master listener, sends all event callbacks to `subscribe`
@@ -1521,7 +1594,7 @@ const dispatcher = (uid, debug) => {
             if (this.dispatchInstance[this.uid]) this.dispatchInstance[this.uid].next({ type: 'cb', cb })
             return this
         }
-        
+
         /** 
         * @alias initListener
         */
@@ -1541,7 +1614,7 @@ const dispatcher = (uid, debug) => {
         * @alias del
         */
         this.delete = this.del
-        
+
         /** 
          * @alias del
         */
@@ -1623,22 +1696,22 @@ const withHoc = (item = () => { }, ...args) => {
      * @args functional arguments supported on each method (if any)
     **/
 
-    isFalse.defaults = [{ input: true }] 
-    arrayWith.defaults = [{ input: true }, { args: true }] 
-    exFromArray.defaults = [{ input: true }, { args: true }] 
-    shuffle.defaults = [{ input: true }] 
-    head.defaults = [{ input: true }] 
-    flatten.defaults = [{ input: true }] 
-    uniqBy.defaults = [{ input: true }, { args: true }] 
-    chunks.defaults = [{ input: true }, { args: true }] 
-    isTrue.defaults = [{ input: true }] 
-    last.defaults = [{ input: true }] 
+    isFalse.defaults = [{ input: true }]
+    arrayWith.defaults = [{ input: true }, { args: true }]
+    exFromArray.defaults = [{ input: true }, { args: true }]
+    shuffle.defaults = [{ input: true }]
+    head.defaults = [{ input: true }]
+    flatten.defaults = [{ input: true }]
+    uniqBy.defaults = [{ input: true }, { args: true }]
+    chunks.defaults = [{ input: true }, { args: true }]
+    isTrue.defaults = [{ input: true }]
+    last.defaults = [{ input: true }]
     // sq.defaults = [{}]  // REVIEW
-    validID.defaults = [{ input: true }] 
-    isBigInt.defaults = [{ input: true }] 
-    isNumber.defaults = [{ input: true }] 
+    validID.defaults = [{ input: true }]
+    isBigInt.defaults = [{ input: true }]
+    isNumber.defaults = [{ input: true }]
     stringSize.defaults = [{ input: true }]
-    selectiveArray.defaults = [ { args: true }, { input: true }] 
+    selectiveArray.defaults = [{ args: true }, { input: true }]
     hasPrototype.defaults = [{ input: true }]
     hasProto.defaults = [{ input: true }]
     objectSize.defaults = [{ input: true }]
@@ -1665,6 +1738,7 @@ const withHoc = (item = () => { }, ...args) => {
     pickFromArray.defaults = [{ input: true }, { args: true }]
     isSQ.defaults = [{ input: true }]
     withHoc.defaults = [{ input: true }, { args: true }]
+    isDate.defaults = [{ input: true }]
 })()
 
 export { disableLogging }
@@ -1735,6 +1809,7 @@ export { pickFromArray }
 export { dispatcher }
 export { isSQ }
 export { withHoc }
+export { isDate }
 
 /**
  * @prop {*} l any data to print
