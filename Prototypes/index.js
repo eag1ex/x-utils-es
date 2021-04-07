@@ -1,11 +1,22 @@
+"use strict"
 /* tslint:disable */
 /* eslint-disable */
 /* eslint-disable no-proto */
 
+/**
+ * @x-utils
+ * * Simple javascript, lodash alternative library
+ * * Developed by Anon
+ * * License: CC-BY-SA-4.0
+ * * For projects contact me at: eaglex.net
+ */
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.dispatcher = exports.Dispatcher = undefined;
+exports.ProcessModel = exports.processQue = exports.ProcessQue = exports.dispatcher = exports.Dispatcher = undefined;
+
+var _ProcessQue = require("./ProcessQue");
 
 var _src = require("../src");
 
@@ -215,3 +226,7 @@ var dispatcher = function dispatcher(uid, debug) {
 exports.Dispatcher = Dispatcher; // for Model checking
 
 exports.dispatcher = dispatcher; // already initiated instance
+
+exports.ProcessQue = _ProcessQue.ProcessQue;
+exports.processQue = _ProcessQue.processQue;
+exports.ProcessModel = _ProcessQue.ProcessModel;

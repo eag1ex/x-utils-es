@@ -1,4 +1,5 @@
 
+import { ProcessQue, processQue, ProcessModel } from './ProcessQue'
 import { log, warn } from '../src'
 
 function Dispatcher(uid, debug) {
@@ -179,3 +180,4 @@ const dispatcher = (uid, debug = false) => {
 
 export { Dispatcher } // for Model checking
 export { dispatcher } // already initiated instance
+export { ProcessQue, processQue, ProcessModel }
