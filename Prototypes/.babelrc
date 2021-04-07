@@ -1,0 +1,46 @@
+{
+  
+    "comments": true,
+    "presets": [
+        "@babel/preset-react",
+        [
+            "@babel/preset-env",
+            {  
+                "useBuiltIns": "entry",
+                "corejs": 3,
+                "loose": true,
+                "modules":false,
+                "targets": {
+                   "esmodules": true,
+                    "browsers": [
+                        "last 2 versions",
+                        "safari >= 7"
+                    ]
+                }
+            } 
+        ]
+        // [
+        //     "minify",
+        //     {
+        //         "simplifyComparisons": false, // not a good idea
+        //         "keepFnName": true,
+        //         "mangle": false, // keep original method prop names for clarity
+        //         "deadcode": true
+        //     }
+        // ]
+    ],
+    "plugins": [
+        "@babel/plugin-proposal-class-properties",
+        // "@babel/plugin-external-helpers",
+        // [
+        //     "@babel/plugin-transform-runtime",
+        //     {
+        //         "useESModules": true
+        //     }
+        // ],
+        [
+            "transform-es2015-modules-commonjs"
+        ]
+    ]
+}
+

@@ -11,7 +11,8 @@
     "build:esm": "babel --config-file ./esm/.babelrc ./src/x-utils.es.js --out-file ./esm/index.js",
     "build:test": "babel --config-file ./example-test/.babelrc ./example-test/main.js --out-file ./example-test/index.js",
     "build:umd": "babel --config-file ./umd/.babelrc ./src/x-utils.es.js --out-file ./umd/index.js",
-    "build:all": "npm run lint:fix&& npm run build:esm&& npm run build:umd",
+    "build:proto": "babel --config-file ./Prototypes/.babelrc ./Prototypes/proto-x.js --out-file ./Prototypes/index.js",
+    "build:all": "npm run lint:fix&& npm run build:esm&& npm run build:umd&& npm run build:proto",
     "example": "node -r esm ./examples.js"
   },
   "repository": {
@@ -86,6 +87,7 @@
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.4",
     "@babel/plugin-external-helpers": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/plugin-proposal-decorators": "^7.10.5",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.11.0",

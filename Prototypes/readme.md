@@ -1,7 +1,11 @@
-### esm version
-- with support for react-preset and esnext, so we can use it in node
-- compressed and stripped of comments
+### ex-utils prototypes
+New and upcoming ideas that maybe integrated to future releases
 
+#### About
+Use at own risk, these tools are in beta, some may, or may not be implemented to future release
+
+#### Source
+Source (esmodule) file is `./proto-x.js`, and is transpiled to commonjs. 
 
 ### append to each file after creation
 ```js

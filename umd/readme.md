@@ -12,7 +12,7 @@
 /* eslint-disable no-proto */
 
 /**
- * @xtils
+ * @x-utils
  * * Simple javascript, lodash alternative library
  * * Developed by Anon
  * * License: CC-BY-SA-4.0

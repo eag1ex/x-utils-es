@@ -25,10 +25,13 @@ $/ npm i x-utils-es
 
 
 ### Version support
+For production with gulp/webpack ..etc, use source (1) version, otherwise use any other.
+
 ```js
-import {} from 'x-utils-es' // (defaults to esm)
-import {} from 'x-utils-es/umd' // for browser and commonjs support
-const {} require('x-utils-es/umd') // with node support
+import {} from 'x-utils-es' // src esm module  (1)
+import {} from 'x-utils-es/esm' // (minified) (2)
+import {} from 'x-utils-es/umd' // for browser and commonjs support (minified) (3)
+const {} require('x-utils-es/umd') // with node/commonjs support 
 
 // browser
 <script src="..path/umd"></script>
@@ -40,10 +43,16 @@ const {} require('x-utils-es/umd') // with node support
 &nbsp;
 
 
+### Prototypes
+Ideas and upcoming features, take a look in:
+```js
+import {} from 'x-utils-es/Prototypes' // (umd) module
+// You will find any new and still intesting that maybe added to future releases
+```
 
 
 ### Example
-In `./examples` _check repo_
+`./examples` _check repo_
 
 ```js
 
@@ -72,6 +81,8 @@ stringSize(-1) // 0
 stringSize('-1') // 2
 stringSize(undefined) // 0
 stringSize([123]) // 0
+
+
 
 /**
  * - Return first index from up to 2 level array: [[1,2]]
@@ -354,6 +365,7 @@ chunks( [1,2,3,4,5,6] , 2) // [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ]
 /**
  * - Check if provided data is a string 
  * @param any
+ * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean
  * **/
 isString('') // true
@@ -361,6 +373,8 @@ isString(new String()) // true
 isString(NaN) // false
 isString(new Date()) // false
 
+isString('123', ()=>'123'.length>5) // false, callback return !!false
+isString('123', ()=>'123'.length>2) // true
 
 
 /**
