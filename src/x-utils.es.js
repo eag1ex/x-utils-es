@@ -667,7 +667,7 @@ const isPromise = (defer) => {
  * @param {String} `{id}` (optional) added to error callback, and to logging when enabled
  * @returns {Promise} the same promise provided in {defer}, but dont need to use it, directly
 */
-const cancelPromise = function ({ defer, checkEvery = 500, maxWait = 9500, cbErr, message = 'taken too long to respond', logging = false, id }) {
+const cancelPromise = ({ defer, checkEvery = 500, maxWait = 9500, cbErr, message = 'taken too long to respond', logging = false, id }) => {
 
     let isFN = (el) => typeof el === 'function'
     let validPromise = isPromise(defer) || isQPromise(defer)
