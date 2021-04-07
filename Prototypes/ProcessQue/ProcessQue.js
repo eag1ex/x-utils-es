@@ -2,8 +2,8 @@
 /* eslint-disable no-return-await */
 
 import { onerror, isFunction, isInstance, warn, isClass, log } from '../../src'
-import ProcessModel from './ProcessModel'
-
+import BaseProcessModel from './BaseProcessModel'
+import { asInstanceOf } from './utils'
 /**
  * - Process Que used in combination with other tools
  * - Iterable process tree
@@ -12,12 +12,13 @@ class ProcessQue {
     constructor({ inputList = [], ProcessMod = undefined }, debug = false) {
         this.debug = debug
         this.ProcessMod = undefined
-        // Allow user to pass their version of extended ProcessModel
+        // Allow user to pass their version of extended BaseProcessModel
         if (isClass(ProcessMod)) {
-            if (ProcessMod.name === 'ProcessModel') {
-                this.ProcessMod = ProcessMod
-                if (this.debug) log('custom ProcessMod provided, and will be used instead')
-            }
+            // log('name ?', ProcessMod.name)
+            // if (ProcessMod.name === 'BaseProcessModel') {
+            this.ProcessMod = ProcessMod
+            if (this.debug) log('custom ProcessMod provided, and will be used instead')
+            // }
         }
 
         this.debug = debug
@@ -26,20 +27,22 @@ class ProcessQue {
         this.inputListRaw = inputList instanceof Array ? inputList : []
         this.inputList = inputList instanceof Array ? inputList.map((n, inx) => {        
             if (isInstance(n)) {
-                if (n instanceof ProcessModel) {
+                if (n instanceof BaseProcessModel) {
                     if (n.error) {
-                        if (this.debug) onerror('[ProcessModel]', n.error)
+                        if (this.debug) onerror('[BaseProcessModel]', n.error)
                     }
                     return n
                 } else return null
             } else {
-                return !this.ProcessMod ? new ProcessModel(n, this.debug) : new this.ProcessMod(n, this.debug)  
+                return !this.ProcessMod ? new BaseProcessModel(n, this.debug) : new this.ProcessMod(n, this.debug)  
             }
-        }).filter(n => !!n) : []
+        }).filter(n => !!n).filter(n => {
+            return n.entity === 'BaseProcessModel'
+        }) : []
 
         this.doneList = [] // list of [item,...]
         // add first item 
-        this.item = isInstance(this.inputList[0]) ? this.inputList[0] instanceof ProcessModel ? this.inputList[0] : {} : {}
+        this.item = isInstance(this.inputList[0]) ? asInstanceOf(this.inputList[0], BaseProcessModel, this.ProcessMod) ? this.inputList[0] : {} : {}
 
         if (!this.inputList.length) {
             if (this.debug) warn('[inputList][empty]')
@@ -60,8 +63,9 @@ class ProcessQue {
 
             for (let inx = 0; inx < this.inputList.length; inx++) {
                 this.item = this.inputList[inx]
-                if (!isInstance(this.item)) continue
-                if (!(this.item instanceof ProcessModel)) continue
+
+                if (!asInstanceOf(this.item, BaseProcessModel, this.ProcessMod)) continue
+              
                 this.item.processIndex = inx // add index to each item for tracking
                 
                 try {
@@ -73,16 +77,16 @@ class ProcessQue {
                     // or return it if using arrow fn()=>
                     let d = await itemCB.apply(this, [this.item, inx])
                     if (isInstance(d)) {
-                        if (d instanceof ProcessModel) {
+                        if (asInstanceOf(this.item, BaseProcessModel, this.ProcessMod)) {
                             this.item = d
                         }
                     }
-
+                   
                     // access to latest item
                     if (!isFunction(onEachDoneCB)) continue
 
-                    if (!(this.item instanceof ProcessModel)) {
-                        onerror('[processQue]', 'item is not instance of ProcessModel, in onEachDoneCB')
+                    if (!(asInstanceOf(this.item, BaseProcessModel, this.ProcessMod))) {
+                        onerror('[processQue]', 'item is not instance of BaseProcessModel, in onEachDoneCB')
                         continue
                     }
 
@@ -112,8 +116,8 @@ class ProcessQue {
                         continue
                     }
              
-                    if (!(this.item instanceof ProcessModel)) {
-                        if (this.debug) onerror('[processQue]', 'item is not instance of ProcessModel, in onEachErrorCB')
+                    if (!(asInstanceOf(this.item, BaseProcessModel, this.ProcessMod))) {
+                        if (this.debug) onerror('[processQue]', 'item is not instance of BaseProcessModel, in onEachErrorCB')
                         continue
                     }
 
@@ -129,13 +133,13 @@ class ProcessQue {
                 }
             }
 
-            let validDoneList = this.doneList.filter((item) => (isInstance(item) ? item instanceof ProcessModel : null))
+            let validDoneList = this.doneList.filter((item) => (isInstance(item) ? asInstanceOf(this.item, BaseProcessModel, this.ProcessMod) : null))
             if (!isFunction(onAllFinishedCB)) return validDoneList
 
             if (validDoneList.length === this.doneList.length) {
                 onAllFinishedCB.apply(this, [this.doneList])
             } else {
-                if (this.debug) onerror('[processQue]', 'doneList, not all items were instanceof ProcessModel in onAllFinishedCB')
+                if (this.debug) onerror('[processQue]', 'doneList, not all items were instanceof BaseProcessModel in onAllFinishedCB')
             }
 
             // if on inhandled errors lets reject final output
@@ -153,7 +157,10 @@ class ProcessQue {
      */
     reset() {
         this.d = null
-        this.inputList = this.inputListRaw.map((n) => new ProcessModel(n))
+        this.inputList = this.inputListRaw.map((n) => {
+            if (this.ProcessMod) return new this.ProcessMod(n, this.debug)
+            else return new BaseProcessModel(n, this.debug)
+        })
         this.doneList = [] // list of [item,...]
         this.item = {}
         return this
@@ -166,7 +173,7 @@ class ProcessQue {
 const processQue = function ({ inputList, ProcessMod = undefined }, debug) {
     return new ProcessQue({ inputList, ProcessMod }, debug)
 }
-export { ProcessModel }
+export { BaseProcessModel }
 export { ProcessQue }
 export { processQue }
 

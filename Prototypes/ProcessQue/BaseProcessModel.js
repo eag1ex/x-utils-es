@@ -6,7 +6,7 @@ import { isBoolean, isString, isError, isNumber, isArray, isObject, isDate, isUn
  * To add validation, we could extent the Model
  * @param {*} params `{id,list[],data{},date,error,message,success}
  */
-export default function ProcessModel(params = {}, debug = false) {
+export default function BaseProcessModel(params = {}, debug = false) {
     if (!(params instanceof Object)) throw 'invalid params'
 
     let setter = (propName) => {
@@ -16,11 +16,20 @@ export default function ProcessModel(params = {}, debug = false) {
                 return this[`_${propName}`]
             },
             set: function (v) {
+
+                // read only
+                if (propName === 'entity') {
+                    if (!this[`_${propName}`]) {
+                        this[`_${propName}`] = v
+                    }
+                    return 
+                }
+
                 if (propName === 'processIndex') {
                     if (isNumber(v)) {
                         this[`_${propName}`] = v
                     } else if (!isUndefined(v)) {
-                        if (debug) onerror('[ProcessModel]', `this.${propName} can only be a number`)
+                        if (debug) onerror('[BaseProcessModel]', `this.${propName} can only be a number`)
                     }
                 }
 
@@ -28,7 +37,7 @@ export default function ProcessModel(params = {}, debug = false) {
                     if (isArray(v)) {
                         this[`_${propName}`] = v
                     } else if (!isUndefined(v)) {
-                        if (debug) onerror('[ProcessModel]', `this.${propName} can only be an array`)
+                        if (debug) onerror('[BaseProcessModel]', `this.${propName} can only be an array`)
                     }
                 }
 
@@ -36,7 +45,7 @@ export default function ProcessModel(params = {}, debug = false) {
                     if (isObject(v)) {
                         this[`_${propName}`] = v
                     } else if (!isUndefined(v)) {
-                        if (debug) onerror('[ProcessModel]', `this.${propName} can only be an object`)
+                        if (debug) onerror('[BaseProcessModel]', `this.${propName} can only be an object`)
                     }
                 }
 
@@ -44,7 +53,7 @@ export default function ProcessModel(params = {}, debug = false) {
                     if (isDate(v)) {
                         this[`_${propName}`] = v
                     } else if (!isUndefined(v)) {
-                        if (debug) onerror('[ProcessModel]', `this.${propName} can only be a date`)
+                        if (debug) onerror('[BaseProcessModel]', `this.${propName} can only be a date`)
                     }
                 }
 
@@ -55,7 +64,7 @@ export default function ProcessModel(params = {}, debug = false) {
                             this.error = undefined
                         }
                     } else if (!isUndefined(v)) {
-                        if (debug) onerror('[ProcessModel]', `this.${propName} can only be boolean`)
+                        if (debug) onerror('[BaseProcessModel]', `this.${propName} can only be boolean`)
                     }
                 }
 
@@ -63,7 +72,7 @@ export default function ProcessModel(params = {}, debug = false) {
                     if (isString(v)) {
                         this[`_${propName}`] = v
                     } else if (!isUndefined(v)) {
-                        if (debug) onerror('[ProcessModel]', `this.${propName} can only be a string`)
+                        if (debug) onerror('[BaseProcessModel]', `this.${propName} can only be a string`)
                     }
                 }
                 if (propName === 'error') {
@@ -71,13 +80,13 @@ export default function ProcessModel(params = {}, debug = false) {
                         this[`_${propName}`] = v
                         this.success = false // when we have error we dont have success!
                     } else if (!isUndefined(v)) {
-                        if (debug) onerror('[ProcessModel]', `this.${propName} can only be an error or string`)
+                        if (debug) onerror('[BaseProcessModel]', `this.${propName} can only be an error or string`)
                     }
                 }
                 if (propName === 'message') {
                     if (isString(v)) this[`_${propName}`] = v
                     else if (!isUndefined(v)) {
-                        if (debug) onerror('[ProcessModel]', `this.${propName} can only be a string`)
+                        if (debug) onerror('[BaseProcessModel]', `this.${propName} can only be a string`)
                     }
                 }
             },
@@ -92,6 +101,11 @@ export default function ProcessModel(params = {}, debug = false) {
     for (let inx = 0; inx < props.length; inx++) {
         setter(props[inx])
     }
+
+    // ---------
+    setter('entity')
+    this.entity = 'BaseProcessModel' // do not remove
+    // ------------
 
     /** (Optional) for determining index status of each item  */
     this.processIndex = isNumber(params.processIndex) ? params.processIndex : undefined
