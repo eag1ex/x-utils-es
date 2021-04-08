@@ -72,7 +72,8 @@
     "isBigInt",
     "pickFromArray",
     "dispatcher",
-    "withHoc"
+    "withHoc",
+    "Prototypes"
   ],
   "esm": {
     "mode": "auto"
