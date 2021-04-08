@@ -39,6 +39,7 @@ import {
     selectiveArray,
     resolver,
     onerror,
+    // @ts-ignore
     stack,
     chunks,
     errorTrace,
@@ -46,7 +47,9 @@ import {
     flatten,
     dupes,
     loop,
+    // @ts-ignore
     disableLogging,
+    // @ts-ignore
     resetLogging,
     error,
     loggerSetting,
@@ -70,7 +73,7 @@ import {
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
     */
-} from './umd'
+} from './src'
     // or {} = require('./umd') 
     
 loggerSetting('log', 'off') // disable all log()
@@ -101,12 +104,14 @@ defer.resolve('it works')
 
 /** cancelPromise */
 let df2 = sq()
+
 cancelPromise({ defer: df2, // can use standard Promise, sq(), or node.js q.defer
     checkEvery: 200, // << log process on every 
     maxWait: 3000, // expire promise 
     message: 'waited too long', // << use this error message
     logging: true, // display process
     id: new Date().getTime(), // custom id to display or on error
+    // @ts-ignore
     cbErr: function({ error, defer, id }) {
         // we use this.defer / defer / or df2.
         // update our reject message
@@ -117,6 +122,7 @@ cancelPromise({ defer: df2, // can use standard Promise, sq(), or node.js q.defe
 // .promise 
 
 // or this
+// @ts-ignore
 df2.promise.then(n => {
     log('not called')
 }, err => {
@@ -156,6 +162,7 @@ fnHocked = withHoc(fn, 4, 5, 6)
 log({ fnHocked: fnHocked(7, 8, 9) }) // > 24  
 // -----------------------
 
+// @ts-ignore
 /** */ log({ pickFromArray: pickFromArray([NaN, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], [Boolean, 'hello', Object, { a: 1 }, BigInt]) }) // [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
 
 log({ pickFromArray: pickFromArray([0, () => {}, { a: 1, b: 2 }, true, {}, 'not selected', false], [Function, { a: 1, b: 2 }, Boolean, Number]) }) // [ 0,()=>{}, { [length]: 0, { a: 1, b: 2 },true,false ]
@@ -200,6 +207,7 @@ log({ loop: loop(3, inx => {
 
 /** */ log({ objectSize: objectSize({ a: 1, b: 2 }), objectSize2: objectSize((new function() {}())) }) // 2
 
+// @ts-ignore
 /** */ log({ stringSize1: stringSize(-1), stringSize2: stringSize('abc'), stringSize3: stringSize(new String(' ')) }) // 2
 
 /** */ log({ last: last([{}, { value: 1 }]) })

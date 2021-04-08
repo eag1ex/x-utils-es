@@ -12,7 +12,7 @@
     "build:test": "babel --config-file ./example-test/.babelrc ./example-test/main.js --out-file ./example-test/index.js",
     "build:umd": "babel --config-file ./umd/.babelrc ./src/x-utils.es.js --out-file ./umd/index.js",
     "build:proto": "babel --config-file ./Prototypes/.babelrc ./Prototypes/proto-x.js --out-file ./Prototypes/index.js",
-    "build:all": "npm run lint:fix&& npm run build:esm&& npm run build:umd&& npm run build:proto",
+    "build:all": "npm run lint:fix&& npm run build:esm&& npm run build:umd",
     "example": "node -r esm ./examples.js"
   },
   "repository": {

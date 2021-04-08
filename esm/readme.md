@@ -5,6 +5,7 @@
 
 ### append to each file after creation
 ```js
+// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /* eslint-disable no-proto */

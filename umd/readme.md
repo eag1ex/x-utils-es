@@ -7,6 +7,7 @@
 
 
 ```js
+// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /* eslint-disable no-proto */

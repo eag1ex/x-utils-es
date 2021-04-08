@@ -1,4 +1,4 @@
-"use strict"
+// @ts-nocheck
 /* tslint:disable */
 /* eslint-disable */
 /* eslint-disable no-proto */
@@ -69,6 +69,7 @@ function Dispatcher(uid, debug) {
     if (_this._isActive !== false) _this.initListener(); // in case next is called above subscribe, we need to make sure it is initiated
 
     if (_this.dispatchInstance[_this.uid]) _this.dispatchInstance[_this.uid].next(data);else {
+      // @ts-ignore
       if (_this.debug) (0, _src.log)({
         message: plugin + " for uid not available",
         uid: _this.uid
@@ -120,6 +121,7 @@ function Dispatcher(uid, debug) {
             self.cbQueue[self.uid].call(self, this.data, self.uid, self.index);
           }
         } else {
+        
           if (self.debug) (0, _src.warn)(plugin + " no callback data");
         }
       };
@@ -162,6 +164,7 @@ function Dispatcher(uid, debug) {
     var isFN = typeof cb === 'function';
 
     if (!isFN) {
+      // @ts-ignore
       if (this.debug) (0, _src.warn)(plugin + "[subscribe] cb must be set");
       return this;
     }

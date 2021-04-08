@@ -658,15 +658,16 @@ const isPromise = (defer) => {
 /** 
  * - how long to wait before we exit process
  * - why use this ? If the promise never resolves or takes too long, so we can cancel it when `{maxWait}` time expires
- * @param {Promise} `{defer}` (required)  resolved when process complete or called from callback on timeout
- * @param {Number} `{maxWait}` (required)  long to wait before execiting with cbErr
- * @param {Number} `{checkEvery}` (required) how frequently to check if promise is resolved
- * @param {Function} `{cbErr}` (required) called on timeout `cbErr(({error,defer,id}))` > here you can either resolve or reject the pending promise
- * @param {boolean} `{logging}`(optional)  when true will pront waiting process
- * @param {String} `{message}` (optional)  defaults: `taken too long to respond` of provide your own
- * @param {String} `{id}` (optional) added to error callback, and to logging when enabled
- * @returns {Promise} the same promise provided in {defer}, but dont need to use it, directly
+ * @param {*} param0{defer} (required)  resolved when process complete or called from callback on timeout
+ * @param {*} param1{checkEvery} (required) how frequently to check if promise is resolved
+ * @param {*} param2{maxWait} (required)  long to wait before execiting with cbErr
+ * @param {*} param3{cbErr}` (required) called on timeout `cbErr(({error,defer,id}))` > here you can either resolve or reject the pending promise
+ * @param {*} param4{message} (optional)  defaults: `taken too long to respond` of provide your own
+ * @param {*} param5{logging} (optional)  when true will pront waiting process
+ * @param {*} param6{id} (optional) added to error callback, and to logging when enabled
+ * @returns {*} same promise provided in `{defer}`,  dont need to use it, directly
 */
+
 const cancelPromise = ({ defer, checkEvery = 500, maxWait = 9500, cbErr, message = 'taken too long to respond', logging = false, id }) => {
 
     let isFN = (el) => typeof el === 'function'
@@ -1688,6 +1689,7 @@ const withHoc = (item = () => { }, ...args) => {
 
 // annotate all supported methods with with input and args
 // appends {defaults} to each method 
+// eslint-disable-next-line no-unused-expressions
 (function annotateSupported() {
     // annotation type, array [{input:true},{args:true}] // or [{args:true},{input:true}]
     // this helps us to understand the setting and support order of each method before its even called!
@@ -1739,7 +1741,7 @@ const withHoc = (item = () => { }, ...args) => {
     isSQ.defaults = [{ input: true }]
     withHoc.defaults = [{ input: true }, { args: true }]
     isDate.defaults = [{ input: true }]
-})()
+})// ()
 
 export { disableLogging }
 export { resetLogging }
