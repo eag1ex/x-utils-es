@@ -17,7 +17,9 @@
     "eslint": "^7.7.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-standard": "^4.0.1",
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+
   }
 
 ```

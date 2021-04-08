@@ -18,6 +18,6 @@
     "es2018",
     "dom"
   ],
-  "include": ["src", "methods","todo","prototyping.js","examples.js"],
+  "include": ["src", "methods","todo","prototyping.js","examples.js","Prototypes"],
   "exclude": ["node_modules", "dist","umd","esm"]
 }

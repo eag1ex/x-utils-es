@@ -46,8 +46,9 @@ const {} require('x-utils-es/umd') // with node/commonjs support
 ### Prototypes
 Ideas and upcoming features, take a look in:
 ```js
-import {} from 'x-utils-es/Prototypes' // (umd) module
+import {} from 'x-utils-es/Prototypes' // 
 // You will find any new and still intesting that maybe added to future releases
+// ps: no umd support 
 ```
 
 

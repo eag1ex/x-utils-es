@@ -1,7 +1,7 @@
 import { isClass, hasProto } from '../../src'
 
 /**
- * Check if either Model is compatible with our ProcessTree
+ * Check if either Model is compatible with our ProcessQue
  * @param {*} ins 
  * @param {*} ClassA 
  * @param {*} ClassB 

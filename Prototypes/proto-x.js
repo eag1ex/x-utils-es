@@ -178,6 +178,4 @@ const dispatcher = (uid, debug = false) => {
     return new Dispatcher(uid, debug)
 }
 
-export { Dispatcher } // for Model checking
-export { dispatcher } // already initiated instance
-export { ProcessQue, processQue, ProcessModel }
+export { Dispatcher, dispatcher, ProcessQue, processQue, ProcessModel } 

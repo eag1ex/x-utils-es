@@ -10,11 +10,9 @@
  * * License: CC-BY-SA-4.0
  * * For projects contact me at: eaglex.net
  */
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ProcessModel = exports.processQue = exports.ProcessQue = exports.dispatcher = exports.Dispatcher = undefined;
 
 var _ProcessQue = require("./ProcessQue");
 
@@ -223,10 +221,8 @@ var dispatcher = function dispatcher(uid, debug) {
   return new Dispatcher(uid, debug);
 };
 
-exports.Dispatcher = Dispatcher; // for Model checking
-
-exports.dispatcher = dispatcher; // already initiated instance
-
+exports.Dispatcher = Dispatcher;
+exports.dispatcher = dispatcher;
 exports.ProcessQue = _ProcessQue.ProcessQue;
 exports.processQue = _ProcessQue.processQue;
 exports.ProcessModel = _ProcessQue.ProcessModel;
