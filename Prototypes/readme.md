@@ -4,6 +4,13 @@ New and upcoming ideas that maybe integrated to future releases
 #### About
 Use at own risk, these tools are in beta, some may, or may not be implemented to future release
 
+#### Requirements
+You need to install ems package and place it before executing Prototype scripts, when using require:
+```js
+require = require("esm")(module/*, options */)
+
+```
+
 #### Source
 Source (esmodule) file is `./proto-x.js`, and is transpiled to commonjs. 
 

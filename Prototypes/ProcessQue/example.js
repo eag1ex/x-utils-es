@@ -1,3 +1,4 @@
+// require = require("esm")(module/*, options */)
 
 import { log, delay, onerror } from '../../src'
 import { processQue, ProcessModel } from '.'
