@@ -398,6 +398,8 @@ isRegExp('abc') // false
 isRegExp(/abc/) // true
 
 
+
+
 /**
  * - Check if provided identities match: `['',0 x<1, false, null, undefined,NaN, [],{}]`
  * @param {*} el any
