@@ -49,7 +49,7 @@ const {} require('x-utils-es/umd') // with node/commonjs support
 
 ```js
 
-import { objectSize,stringSize,last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt,dispatcher, withHoc,xrequire,asJson,truthFull } 
+import { objectSize,stringSize,last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt,dispatcher, withHoc,xrequire,asJson,truthFul,inIndex,matched } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -505,6 +505,17 @@ truthful({ a: undefined, b: 1, c: {} }) // { b: 1, c: {} }
 
 inIndex('ab cd eFG', [/fg/i, /\sCD\s/i, /ab/]) // 3 < found in three pattern arrays
 inIndex('abcdeFG', [/%fg/i, /1CD/i, /ab/]) // 1 (last)
+
+
+
+/**
+ * Match string value by expression
+ * @param {*} str string to match
+ * @param {*} expression valid expression /xyz/
+ */
+
+matched('aabc', /^abc/)) // false
+matched('aaBC', /abc/i) // true
 
 
 

@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "helper tools for javascript validation",
   "main": "src/x-utils.es.js",
   "module": "src/x-utils.es.js",
@@ -76,8 +76,10 @@
     "xrequire",
     "asJson",
     "truthFul",
-    "inIndex"
+    "inIndex",
+    "matched"
   ],
+
   "esm": {
     "mode": "auto"
   },

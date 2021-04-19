@@ -1845,7 +1845,7 @@ const inIndex = (str = '', patterns = []) => {
 }
 
 /**
- * Match string value to expression
+ * Match string value by expression
  * @param {*} str string to match
  * @param {*} expression valid expression /xyz/
  */
