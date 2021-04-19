@@ -5,19 +5,3 @@
 
 ### after each transpite add:
 
-
-```js
-// @ts-nocheck
-/* tslint:disable */
-/* eslint-disable */
-/* eslint-disable no-proto */
-
-/**
- * @x-utils
- * * Simple javascript, lodash alternative library
- * * Developed by Anon
- * * License: CC-BY-SA-4.0
- * * For projects contact me at: eaglex.net
- */
-
-```

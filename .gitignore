@@ -16,8 +16,8 @@ prototyping.js
 methods
 prototyping
 Prototypes
-
-
+umd/developer.md
+esm/developer.md
 ###################
 #Don't commit Mongo Database files
 *.lock
