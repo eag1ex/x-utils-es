@@ -28,7 +28,7 @@ $/ npm i x-utils-es
 For production with gulp/webpack ..etc, use source (1) version, otherwise use any other.
 
 ```js
-import {} from 'x-utils-es' // src esm module  (1)
+import {} from 'x-utils-es' // src e-module  (1)
 import {} from 'x-utils-es/esm' // (minified) (2)
 import {} from 'x-utils-es/umd' // for browser and commonjs support (minified) (3)
 const {} require('x-utils-es/umd') // with node/commonjs support 
