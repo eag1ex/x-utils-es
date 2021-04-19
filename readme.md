@@ -49,7 +49,7 @@ const {} require('x-utils-es/umd') // with node/commonjs support
 
 ```js
 
-import { objectSize,stringSize,last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt,dispatcher, withHoc,xrequire,asJson,truthFul,inIndex,matched } 
+import { objectSize,stringSize,last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt,dispatcher, withHoc,xrequire,asJson,truthFul,inIndex,matched,isRegExp } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -386,6 +386,16 @@ isString(new Date()) // false
 
 isString('123', ()=>'123'.length>5) // false, callback return !!false
 isString('123', ()=>'123'.length>2) // true
+
+
+/**
+ * Check is pattern is an expression of RegExp
+ * @param {*} expression 
+ * @returns boolean
+ */
+
+isRegExp('abc') // false
+isRegExp(/abc/) // true
 
 
 /**

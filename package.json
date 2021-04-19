@@ -77,7 +77,8 @@
     "asJson",
     "truthFul",
     "inIndex",
-    "matched"
+    "matched",
+    "isRegExp"
   ],
 
   "esm": {
