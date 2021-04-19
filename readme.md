@@ -19,7 +19,7 @@ $/ npm i x-utils-es
 * Good naming conventions
 * Similar to lodash
 * No dependencies
-* UMD/esm support so you can use in most environments: *(AMD, Node, or browser)*
+* UMD support so you can use in most environments: *(AMD, common.js/Node, or browser)*
 &nbsp;
 &nbsp;
 
@@ -42,20 +42,6 @@ const {} require('x-utils-es/umd') // with node/commonjs support
 &nbsp;
 &nbsp;
 
-
-### Prototypes
-Ideas and upcoming features, take a look in:
-```js
-// esm
-import {} from 'x-utils-es/Prototypes' // 
-// You will find any new and still intesting that maybe added to future releases
-
-// commonjs
-require = require("esm")(module/*, options */)
-const {} = require('x-utils-es/Prototypes)
-
-
-```
 
 
 ### Example
