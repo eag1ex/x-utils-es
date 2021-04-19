@@ -1687,61 +1687,6 @@ const withHoc = (item = () => { }, ...args) => {
     return hoc
 }
 
-// annotate all supported methods with with input and args
-// appends {defaults} to each method 
-// eslint-disable-next-line no-unused-expressions
-(function annotateSupported() {
-    // annotation type, array [{input:true},{args:true}] // or [{args:true},{input:true}]
-    // this helps us to understand the setting and support order of each method before its even called!
-    /**
-     * @input your data to mod (if any)
-     * @args functional arguments supported on each method (if any)
-    **/
-
-    isFalse.defaults = [{ input: true }]
-    arrayWith.defaults = [{ input: true }, { args: true }]
-    exFromArray.defaults = [{ input: true }, { args: true }]
-    shuffle.defaults = [{ input: true }]
-    head.defaults = [{ input: true }]
-    flatten.defaults = [{ input: true }]
-    uniqBy.defaults = [{ input: true }, { args: true }]
-    chunks.defaults = [{ input: true }, { args: true }]
-    isTrue.defaults = [{ input: true }]
-    last.defaults = [{ input: true }]
-    // sq.defaults = [{}]  // REVIEW
-    validID.defaults = [{ input: true }]
-    isBigInt.defaults = [{ input: true }]
-    isNumber.defaults = [{ input: true }]
-    stringSize.defaults = [{ input: true }]
-    selectiveArray.defaults = [{ args: true }, { input: true }]
-    hasPrototype.defaults = [{ input: true }]
-    hasProto.defaults = [{ input: true }]
-    objectSize.defaults = [{ input: true }]
-    isString.defaults = [{ input: true }]
-    isFunction.defaults = [{ input: true }]
-    someKeyMatch.defaults = [{ input: true }, { input: true }]
-    exactKeyMatch.defaults = [{ input: true }, { input: true }]
-    trueVal.defaults = [{ input: true }]
-    trueValDeep.defaults = [{ input: true }]
-    trueProp.defaults = [{ input: true }]
-    flattenDeep.defaults = [{ input: true }]
-    dupes.defaults = [{ input: true }, { args: true }]
-    uniq.defaults = [{ input: true }]
-    isPromise.defaults = [{ input: true }]
-    isQPromise.defaults = [{ input: true }]
-    isObject.defaults = [{ input: true }]
-    isFalsy.defaults = [{ input: true }]
-    isError.defaults = [{ input: true }]
-    typeCheck.defaults = [{ input: true }, { args: true }]
-    validDate.defaults = [{ input: true }]
-    isInstance.defaults = [{ input: true }]
-    isClass.defaults = [{ input: true }]
-    isArray.defaults = [{ input: true }]
-    pickFromArray.defaults = [{ input: true }, { args: true }]
-    isSQ.defaults = [{ input: true }]
-    withHoc.defaults = [{ input: true }, { args: true }]
-    isDate.defaults = [{ input: true }]
-})// ()
 
 export { disableLogging }
 export { resetLogging }
