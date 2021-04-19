@@ -63,7 +63,7 @@ const {} = require('x-utils-es/Prototypes)
 
 ```js
 
-import { objectSize,stringSize(-1),last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt,dispatcher, withHoc } 
+import { objectSize,stringSize,last,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise, uniq,isFunction,isObject,isArray,isString,isFalsy,isTrue,isFalse,isNull,isBoolean,isUndefined,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,shuffle,uniqBy,arrayWith,exFromArray,pickFromArray,isBigInt,dispatcher, withHoc,xrequire,asJson,truthFull } 
 from 'x-utils-es' // require(x-utils-es/umd) 
 
 
@@ -171,6 +171,24 @@ copy(true) //=>  true
 copyDeep({ a: {b:{c:{}}} }) //=>  { a: {b:{c:{}}} })
 copyDeep([{ a: (new function(){this.b=1}()) }]) //=>  [ { a: {b:1} } ]
 copyDeep({ a: (new function(){this.b=1}()) }) //=>  { a: { b:1 } }
+
+
+/**
+ * @param any
+ * @returns Returns data in pretty json format 
+ * **/
+
+asJson( { a:{ b: { c:'hello world' } } } )
+/**
+ {
+  "a": {
+    "b": {
+      "c": "hello world"
+    }
+  }
+}
+ * */
+
 
 
 /**
@@ -478,6 +496,18 @@ async function f() {
     await delay(2000)
     log('delay end')
 }; f()
+
+
+
+/**
+ * - Supports only 1 level nesting, for value testing
+ * @param obj 
+ * @returns Object with truethFul values
+ */
+
+truthful({ a: undefined, b: 1, c: {} }) // { b: 1, c: {} }
+
+
 
 
 
@@ -913,6 +943,24 @@ loop(3,inx=>{
 }) //  [ { '0': 1 }, { '1': 2 }, { '2': 3 } ] // dont be fooled, 0 is also an index ;))
 
 
+
+
+
+/**
+ * - LIMITED FUNCTIONALITY
+ * - THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
+ * 
+ * - Modified require does not throw when second arg ref >ERR_NO_THROW is provided
+ * - It does not modify the global require 
+ * - Doesnt provide Intellisense :((
+ * @memberof module.require
+ * @param {*} path require(>path<)
+ * @param {*} ref // ERR_NO_THROW and it wond throw an error
+ * - `returns desirec output or `
+ */
+
+xrequire('./path/to/mod') // as usual
+xrequire('sdf56yfd','ERR_NO_THROW') // returns undefined
 
 
 /**SECTION: LOGGING **/

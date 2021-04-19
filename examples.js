@@ -123,11 +123,14 @@ cancelPromise({ defer: df2, // can use standard Promise, sq(), or node.js q.defe
 
 // or this
 // @ts-ignore
+
 df2.promise.then(n => {
-    log('not called')
+    log('called', n)
 }, err => {
     onerror('[cancelPromise]', err)
-})          
+})      
+
+df2.resolve('hello')
 // --------------
 
 /** dispatcher */

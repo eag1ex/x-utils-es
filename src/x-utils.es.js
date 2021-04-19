@@ -51,6 +51,14 @@ const disableLogging = () => {
     return false
 }
 
+const isWindow = () => {
+    try {
+        if (window) return true
+    } catch (err) {
+        return false
+    }   
+}
+
 /** 
  * if you used logging in your application from the moment this method was called all loging will be enabled
  * - on node `globa.xUtilsConfig` is rest, in `window.xUtilsConfig` is rest
@@ -145,18 +153,18 @@ const loggerSetting = (logType = 'log', logMode = 'off') => {
  * @checkLoggerSetting
  * - internal method
  * check if any log,warn,error,onerror are currently disabled
- * @param {String} logType
- * @return {String} on/off
 */
-const checkLoggerSetting = (logType) => {
+const checkLoggerSetting = (logType = '') => {
+
     try {
         if (window) {
             //  on browser
             if (window.xUtilsConfig) {
-                return window.xUtilsConfig[logType] ? window.xUtilsConfig[logType] : 'on'
+                return (window.xUtilsConfig[logType] ? window.xUtilsConfig[logType] : 'on').toString()
             } else {
                 return 'on'
             }
+          
         }
     } catch (err) {
         //
@@ -165,7 +173,7 @@ const checkLoggerSetting = (logType) => {
     try {
         // in node
         if (global.xUtilsConfig) {
-            return global.xUtilsConfig[logType] ? global.xUtilsConfig[logType] : 'on'
+            return (global.xUtilsConfig[logType] ? global.xUtilsConfig[logType] : 'on').toString()
         } else {
             return 'on'
         }
@@ -196,7 +204,6 @@ const loggingON = () => {
 
 /** 
  * Designed for executing callback functions
- * @returns {Boolean}
 */
 const callFN = (cb = undefined) => {
     if (typeof cb !== 'function') return false
@@ -331,7 +338,8 @@ const errorTrace = (data, asArray = false) => {
 }
 
 const onerror = error
-const isFunction = (el) => typeof el === 'function'
+
+const isFunction = (el = undefined) => typeof el === 'function'
 
 const isBigInt = (n) => {
     try {
@@ -345,11 +353,11 @@ const isBigInt = (n) => {
  * - for loop initiating callback on each iteration
  * - when `cb` is returned this data is pushed to array
  * - break support when returning {break:true} inside callback method
- * @param size:number
- * @param cb((inx)=>) callback issed at end of each loop que
+ * - `param size:number`
+ * - `param cb((inx)=>)` callback issed at end of each loop que
  * @returns always an array[], per length specified
 */
-const loop = function (size = 0, cb) {
+const loop = function (size = 0, cb = (index = 0) => {}) {
     let isFN = typeof cb === 'function'
     let isNum = typeof size === 'number'
     if (!isFN || !isNum) return []
@@ -376,7 +384,6 @@ const loop = function (size = 0, cb) {
  * - evaluate provided DATA is an actual `date` and its valid
  * @param date 
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
- * @returns true or false
 */
 const validDate = (dt, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -391,10 +398,10 @@ const validDate = (dt, cbEval = undefined) => {
 // @ts-ignore
 /**
  * 
- * @param {*} arr 
+ * - `param {*} arr`
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  */
-const isArray = (arr, cbEval = undefined) => {
+const isArray = (arr = [], cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (isBigInt(arr)) return false
     else return !arr ? false : Array.prototype === (arr).__proto__
@@ -526,13 +533,15 @@ const head = (arr = []) => {
 }
 
 // @ts-ignore
-/**
- * @returns `any`
- */
+
 const last = (arr = []) => {
     return (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : null
 }
-const timer = (cb, time = 0) => {
+
+/**
+ * Timer callback is executed in timeout
+ */
+const timer = (cb = () => {}, time = 0) => {
     const isFN = typeof cb === 'function'
     if (!isFN) return null
     time = (typeof time === 'number' && time >= 0) ? time : 0 // must provide number
@@ -542,7 +551,10 @@ const timer = (cb, time = 0) => {
     }, time)
 }
 
-const interval = (cb, every = 0, endTime = 0) => {
+/**
+ * Execute callback on `every` interval, and exit `endTime` 
+ */
+const interval = (cb = () => {}, every = 0, endTime = 0) => {
     const isFN = typeof cb === 'function'
     if (!isFN) return null
     every = (typeof every === 'number' && every >= 0) ? every : 0 // must provide number
@@ -560,8 +572,7 @@ const interval = (cb, every = 0, endTime = 0) => {
 /** 
  * @sq / SimpleQ / new Promsie / instanceOf Promise
  * simplified `new Promise()`
- * access to {resolve,reject, promise}
- * @returns {} `{resolve,reject, promise}`
+ * - `returns{resolve,reject,promise}`
 */
 const sq = () => {
     return (new function SimpleQ() {
@@ -605,7 +616,6 @@ const stringSize = (str = '') => str !== undefined && str !== null ? (str).__pro
  * and the node.js `q.defer()` promise
  * - this method tests for the q.defer node.js promise version, along with sq() promise
  * - checks if its a resolvable promise
- * @returns {boolean} `true/false`
 */
 const isQPromise = (defer) => {
 
@@ -640,7 +650,6 @@ const isSQ = (defer) => {
 /** 
  * check for Promise/ q.defer / and xutils promise ( sq() )
  * - checks if its a resolvable promise
- * @returns {Boolean} `true/false`
 */
 const isPromise = (defer) => {
     if (isQPromise(defer)) return true
@@ -658,24 +667,24 @@ const isPromise = (defer) => {
 /** 
  * - how long to wait before we exit process
  * - why use this ? If the promise never resolves or takes too long, so we can cancel it when `{maxWait}` time expires
- * @param {*} param0{defer} (required)  resolved when process complete or called from callback on timeout
- * @param {*} param1{checkEvery} (required) how frequently to check if promise is resolved
- * @param {*} param2{maxWait} (required)  long to wait before execiting with cbErr
- * @param {*} param3{cbErr}` (required) called on timeout `cbErr(({error,defer,id}))` > here you can either resolve or reject the pending promise
- * @param {*} param4{message} (optional)  defaults: `taken too long to respond` of provide your own
- * @param {*} param5{logging} (optional)  when true will pront waiting process
- * @param {*} param6{id} (optional) added to error callback, and to logging when enabled
- * @returns {*} same promise provided in `{defer}`,  dont need to use it, directly
+ * - `param {*} param0{defer} (required)`  resolved when process complete or called from callback on timeout
+ * - `param {*} param1{checkEvery}` (required) how frequently to check if promise is resolved
+ * - `param {*} param2{maxWait}` (required)  long to wait before execiting with cbErr
+ * - `param {*} param3{cbErr}` (required) called on timeout `cbErr(({error,defer,id}))` > here you can either resolve or reject the pending promise
+ * - `param {*} param4{message}` (optional)  defaults: `taken too long to respond` of provide your own
+ * - `param {*} param5{logging}` (optional)  when true will pront waiting process
+ * - `param {*} param6{id}` (optional) added to error callback, and to logging when enabled
+ * - `returns {*} same promise provided in {defer}`,  dont need to use it, directly
 */
 
-const cancelPromise = ({ defer, checkEvery = 500, maxWait = 9500, cbErr, message = 'taken too long to respond', logging = false, id }) => {
+const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = ({ error, defer, id }) => {}, message = 'taken too long to respond', logging = false, id }) => {
 
     let isFN = (el) => typeof el === 'function'
     let validPromise = isPromise(defer) || isQPromise(defer)
 
     if (!validPromise || !isFN(cbErr) || !maxWait) {
         onerror('[cancelPromise]', '{defer,maxWait,cbErr} must be provided')
-        return undefined
+        return Promise.reject('{defer,maxWait,cbErr} must be provided')
     }
 
     let exit_interval
@@ -709,25 +718,32 @@ const cancelPromise = ({ defer, checkEvery = 500, maxWait = 9500, cbErr, message
         inx = every + inx
     }, every)
 
-    if (defer.promise) {
-        return defer.promise.then(n => {
-            // will exit the interval
-            exit_interval = true
-            return n
-        }).catch(err => {
-            return err
-        })
+    let def
+    try {
+        if (defer instanceof Promise) def = defer
+    } catch (err) {
+        // ups
     }
 
-    if (defer.then) {
-        return defer.then(n => {
+    try {
+        let _def = (defer || {}).promise
+        if (_def instanceof Promise) def = _def
+    } catch (err) {
+        // ups
+    }
+
+    if (def) {
+        return def.then(n => {
             // will exit the interval
             exit_interval = true
             return n
         }).catch(err => {
             return err
         })
+    } else {
+        return Promise.reject('Supplied {defer} is not a promise')
     }
+    
 }
 
 /**
@@ -763,7 +779,7 @@ const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
 /** 
  * provide an array to shuffle
  * @param {Array} arr array required
- * @returns {Array} always returns an array
+ * - `returns {Array} always returns an array`
 */
 const shuffle = (arr = []) => {
     if (!isArray(arr)) return []
@@ -780,10 +796,10 @@ const shuffle = (arr = []) => {
  * @selectiveArray
  * - select data from array of objects by reference
  * - go down recursively, in order of selectBy references
- * @param {array} selectBy:required, list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
- * @param {array} data:required list of objects, to target by select ref
+ * - `param {array} selectBy:required`, list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
+ * - `param {array} data:required` list of objects, to target by select ref
 */
-const selectiveArray = (selectBy = [], data = [{}]) => {
+const selectiveArray = (selectBy = [], data = []) => {
     if (!isArray(data)) return []
     if (!data.length) return []
     // NOTE if selectBy is empty or invalid will return same data
@@ -863,7 +879,7 @@ const selectiveArray = (selectBy = [], data = [{}]) => {
  * @param {*} obj 
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  */
-const isClass = (obj, cbEval = undefined) => {
+const isClass = (obj = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (!obj) return false
     if ((obj).prototype !== undefined) return true
@@ -894,7 +910,7 @@ const hasProto = (el, cbEval = undefined) => {
  * @param {*} obj 
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  */
-const isInstance = (obj, cbEval = undefined) => {
+const isInstance = (obj = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (!obj) return false
     if (isArray(obj)) return false
@@ -939,7 +955,7 @@ const isFalsy = (el = null) => {
  * @param {*} str 
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  */
-const isString = (str, cbEval = undefined) => {
+const isString = (str = '', cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (str === undefined) return false
     if (str === null) return false
@@ -967,6 +983,17 @@ const copy = (data) => {
         return JSON.parse(JSON.stringify(data))
     } catch (err) {
         return typeCheck(data).primitiveValue
+    }
+}
+/**
+ * Return data in pretty json format 
+ * - `returns JSON.stringify(o , null, 2)`
+ */
+const asJson = (o) => {
+    try {
+        return JSON.stringify(o, null, 2)
+    } catch (err) {
+        return `[asJson], ` + err.toString()
     }
 }
 
@@ -1012,7 +1039,7 @@ const delay = (time = 100) => {
 /**
  * - match keys object{} > with source{}, order doesnt matter!
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
- * @returns true/false when at least 1 length matched
+ * - `returns true/false` when at least 1 length matched
 */
 const someKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1029,7 +1056,7 @@ const someKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
 /** 
  * - match keys object{} > with source{}, order doesnt matter!
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
- * @returns true/false when all lengths matched
+ * - `returns true/false` when all lengths matched
 */
 const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1047,7 +1074,7 @@ const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
  * @withTrueVal
  * - you have an array with false values: [0,null,false,{},undefined, -1,'',true,1, 'hello',[]], will only return any that are true, keeping same order: [true,1,'hello'], empty entities are also omitted
  * @param {*} arr array required
- * @returns returns new array with only [<true?>] values
+ * - `returns new array with only [<true?>] values`
  */
 const trueVal = (arr = []) => {
     // provided must be array
@@ -1060,7 +1087,7 @@ const trueVal = (arr = []) => {
  * - you have an array with false values: [0,null,false,[{}],undefined, -1,'',true,1, 'hello',[[]]], will only return any that are true entities, keeping same order: [true,1,'hello'], empty entities are omitted.
  * - similar to `withVal`, except it checks 1 depth> if entities them self are empty: [[]],[{}]
  * @param {*} arr array required
- * @returns returns new array with only [<true?>] values
+ * - `returns new array with only [<true?>] values`
  */
 const trueValDeep = (arr = []) => {
     // provided must be array
@@ -1090,7 +1117,7 @@ const trueValDeep = (arr = []) => {
  * @trueProp
  * - pass an object and only return object with true entities: `{a:1,b:2,c:null,d:-1}`, => `{a:1,b:2}`
  * @param {*} obj required
- * @returns object with props {} 
+ * - `returns object with props {}` 
  */
 const trueProp = (obj = {}) => {
     if (!(!obj ? false : Object.prototype === (obj).__proto__)) return 0
@@ -1107,9 +1134,9 @@ const trueProp = (obj = {}) => {
  * @param fn:function, callable method with data to return
  * @param timeout:Number, specify max time to wait for data
  * @param testEvery:Number, how ofter to check for data availability
- * @returns Promise/always resolves, and error, it will wrap it in {error} , if no data returns Promise.resolve(undefined), 
+ * - `returns Promise/always` resolves, and error, it will wrap it in {error} , if no data returns Promise.resolve(undefined), 
 */
-const resolver = (fn, timeout = 5000, testEvery = 50) => {
+const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
     let isFunction = typeof fn === 'function'
     if (!isFunction) {
         return Promise.reject('fn() must be callable')
@@ -1184,12 +1211,21 @@ const flatten = (arr = []) => {
  * flatten all array levels, example :[[['hello']]] > ['hello']
 */
 const flattenDeep = (arr = []) => {
-    if (!isArray(arr)) return []
+    let o = []
+    if (!isArray(arr)) return o
     function test(arr, d = 1) {
         return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? test(val, d - 1) : val), [])
             : arr.slice()
     }
-    return test(arr, Infinity)
+    try {
+        o = test(arr, Infinity) || []
+        if (o instanceof Array) return o
+        else return []
+    } catch (err) {
+        return []
+    }
+    
+    return o
 }
 
 /** 
@@ -1197,9 +1233,9 @@ const flattenDeep = (arr = []) => {
   * - return array in batch specified by size
   * @param {array} arr required
   * @param {number} size required larger then 0
-  * @returns arr[]
+  * - `returns arr[]`
  */
-const chunks = (arr, size) =>
+const chunks = (arr = [], size = 0) =>
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
         arr.slice(i * size, i * size + size)
     )
@@ -1208,9 +1244,9 @@ const chunks = (arr, size) =>
  * - duplicate original item x/times
  * @param {*} item any value
  * @param {number} index how many times to duplicate, when 0 then empty array is returned
- * @returns {array} [...]
+ * - `returns {array} [...]`
 */
-const dupes = (item, index) => {
+const dupes = (item, index = 0) => {
     const dups = []
     let n = parseInt(index)
     while (n > 0) {
@@ -1226,12 +1262,12 @@ const dupes = (item, index) => {
  * Returns all other items that are not an object 
  * @param {*} arr 
  * @param {*} propName 
- * @returns {*} [{},...]
+ * - `returns {*} [{},...]`
  */
 const uniqBy = (arr = [], propName = '') => {
     const stored = {}
     const n = []
-    if (!propName) return arr
+    if (!propName) return []
     if (!(arr || []).length) return []
 
     for (let inx = 0; inx < arr.length; inx++) {
@@ -1257,6 +1293,7 @@ const uniqBy = (arr = [], propName = '') => {
         }
 
     }
+
     return n
 }
 
@@ -1265,16 +1302,24 @@ const uniqBy = (arr = [], propName = '') => {
  * grab array items that include specific propName 
  * @param {*} arr[] mixed array: [{a:true},...]
  * @param {*} withProp example: withProp:"a"
- * @returns [] only array items that include specific prop 
+ * - `returns []` only array items that include specific prop 
 * **/
 const arrayWith = (arr = [], withProp = '') => {
+    if (isArray(arr)) return []
     let objWith = (o) => {
         if (isObject(o)) {
             if (Object.keys(o).indexOf(withProp) !== -1) return o
             else return undefined
         } else return undefined
     }
-    return arr.map(n => objWith(n)).filter(n => !!n)
+
+    try {
+        let o = arr.map(n => objWith(n)).filter(n => !!n)
+        return o instanceof Array ? o : []
+    } catch (err) {
+        return []
+    }
+
 }
 
 /**
@@ -1282,11 +1327,17 @@ const arrayWith = (arr = [], withProp = '') => {
  * Exclude all prop/values from object that matches 
  * @param {*} arr[] mixed array with objects to exclude by propName
  * @param {*} excludes[] property names to match each object by
- * @returns {}  mixed array with any other types as per input, in same order
- * 
-* **/
+ * - `returns {}`  mixed array with any other types as per input, in same order
+ **/
 const exFromArray = (arr = [], excludes = []) => {
+    let o = []
+    try {
+        if (!(arr instanceof Array)) return o
+    } catch (err) {
+        return []
+    }
     excludes = [].concat(excludes)
+
     if (!excludes.length) return arr
 
     const excludeFrom = (obj = {}, excludes = []) => {
@@ -1300,19 +1351,31 @@ const exFromArray = (arr = [], excludes = []) => {
         else return d
     }
 
-    return arr.map(n => excludeFrom(n, excludes)) // .filter(n => n !== undefined)
+    try {
+        let o = arr.map(n => excludeFrom(n, excludes)) // .filter(n => n !== undefined)
+        return o instanceof Array ? o : []
+    } catch (err) {
+        return []
+    }
+
 }
 
 /**
- * Filter items from array by picks[] conditions 
+ * - Filter items from array by picks[] conditions 
  * @param {*} arr array of any 
  * @param {*} picks[] each item in picks tests item in the array for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that match by type, or eaqul value! Empty types and strings, are excluded, example : `[{},[],'',NaN]` (in picks[] only)
+ * 
  * - does not support deep selections from picks, only 1 level deep, but you can use object types, example: picks:[{data:Array},{data:Object}]
- * @returns [...] only items that passed each pick condition in same order
+ * - `returns [...]` only items that passed each pick condition in same order
  */
 const pickFromArray = (arr = [], picks = []) => {
+    let o = []
+    try {
+        if (!(arr instanceof Array)) return o
+    } catch (err) {
+        return []
+    }
 
-    if (!isArray(arr)) return []
     if (!isArray(picks)) picks = [].concat(picks)
     if (!picks.length) return arr
     let allowedPicks = [undefined, null, false]
@@ -1423,11 +1486,17 @@ const pickFromArray = (arr = [], picks = []) => {
 
         return selected
     }
-
-    return arr.reduce((n, el) => {
-        if (evalItem(el)) n.push(el)
-        return n
-    }, [])
+    try {
+        o = arr.reduce((n, el) => {
+            if (evalItem(el)) n.push(el)
+            return n
+        }, [])
+        if (o instanceof Array) return o
+        else return []
+    } catch (err) {
+        return []
+    }
+  
 }
 
 /**
@@ -1458,7 +1527,7 @@ const pickFromArray = (arr = [], picks = []) => {
  * @param {*} uid (optional) will be generated if not supplied
  * @param {*} debug (optional) for extra debug messages
  */
-const dispatcher = (uid, debug) => {
+const dispatcher = (uid, debug = false) => {
     return (new function dispatcher(uid, debug) {
 
         const plugin = `[dispatcher]`
@@ -1633,7 +1702,7 @@ const dispatcher = (uid, debug) => {
  *  * if rejectable error is not callable, message is: `DEFERRED_NOT_CALLABLE`
  * @param {*} item callable function
  * @param {*} args (optional) any number of arguments (,,,,) after the callable item()
- * @returns {*} callable function withHoc(...args) OR deferred if a promise
+ * - `returns callable function withHoc(...args)` OR deferred if a promise
  */
 const withHoc = (item = () => { }, ...args) => {
     let extraArgs = args
@@ -1685,6 +1754,54 @@ const withHoc = (item = () => { }, ...args) => {
 
     }
     return hoc
+}
+
+/**
+ *  NOTE: THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
+ * - Modified require does not throw when second arg ref >ERR_NO_THROW is provided
+ * - It does not modify the global require 
+ * - Doesnt provide Intellisense :((
+ * @memberof module.require
+ * @param {*} path require(>path<)
+ * @param {*} ref // ERR_NO_THROW and it wond throw an error
+ * - `returns desirec output or `
+ */
+function xrequire(path = '', ref = 'ERR_NO_THROW') {
+    if (isWindow()) return undefined
+    const Mod = function () {}
+
+    Mod.prototype = Object.create(module.constructor.prototype)
+    Mod.prototype.constructor = module.constructor
+
+    Mod.prototype.require = function (path, ref) {
+        const self = this
+        try {
+            return self.constructor._load(path, self)
+        } catch (err) {
+            // NOTE magic if the ref has match instead of throw we return undefined
+            if (ref === 'ERR_NO_THROW') return undefined
+            // if module not found, we have nothing to do, simply throw it back.
+            if (err.code === 'MODULE_NOT_FOUND') {
+                throw err
+            }
+        }
+    }
+
+    if (!(Mod.prototype.require instanceof require.constructor)) return undefined
+    else return Mod.prototype.require(path, ref)
+}
+
+/**
+ * - Returns Object with truethFull values
+ * - Supports only 1 level nesting
+ * @param obj 
+ */
+const truthFul = (obj = {}) => {
+    if (!isObject(obj)) return {}
+    return Object.entries(obj).reduce((n, [k, v]) => {
+        if (v !== undefined) n[k] = v
+        return n
+    }, {})
 }
 
 export { disableLogging }
@@ -1756,6 +1873,9 @@ export { dispatcher }
 export { isSQ }
 export { withHoc }
 export { isDate }
+export { xrequire }
+export { asJson }
+export { truthFul }
 
 /**
  * @prop {*} l any data to print
