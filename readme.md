@@ -496,6 +496,18 @@ truthful({ a: undefined, b: 1, c: {} }) // { b: 1, c: {} }
 
 
 
+/**
+ * Test accurance of match[] items in a string
+ * @param {*} str string to match against
+ * @param {*} patterns[] can provide array of RegExp patterns to test against
+ * - `returns total by index of patterns[] array`
+ */
+
+inIndex('ab cd eFG', [/fg/i, /\sCD\s/i, /ab/]) // 3 < found in three pattern arrays
+inIndex('abcdeFG', [/%fg/i, /1CD/i, /ab/]) // 1 (last)
+
+
+
 
 /**
  * - Provide object/source, check if ANY key names match, object/source order placement doesn't matter :)

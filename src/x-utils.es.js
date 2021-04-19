@@ -906,6 +906,18 @@ const hasProto = (el, cbEval = undefined) => {
 }
 
 /**
+ * Check is pattern is an expression of RegExp
+ * @param {*} expression 
+ */
+const isRegExp = (expression = (/\\/)) => {
+    try {
+        return expression instanceof RegExp
+    } catch (err) {
+        return false
+    }
+}
+
+/**
  *  testing (new class{})
  * @param {*} obj 
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
@@ -915,8 +927,10 @@ const isInstance = (obj = {}, cbEval = undefined) => {
     if (!obj) return false
     if (isArray(obj)) return false
     if (obj.__proto__ && !isClass(obj)) {
-        if (obj.__proto__.__proto__) {
-            if (obj.__proto__.__proto__ === Object.prototype && obj instanceof Object) return true
+        try {
+            return obj.__proto__ instanceof Object
+        } catch (err) {
+            return false
         }
     }
     return false
@@ -1804,6 +1818,58 @@ const truthFul = (obj = {}) => {
     }, {})
 }
 
+/**
+ * Test accurance of match[] items in a string
+ * @param {*} str string to match against
+ * @param {*} patterns[] can provide array of RegExp patterns to test against
+ * - `returns total by index of patterns[] array`
+ */
+const inIndex = (str = '', patterns = []) => {
+
+    let o = 0
+    if (!isArray(patterns)) return o
+    if (!patterns.length) return o
+    if (typeof str !== 'string') return o
+    if (!str) return o
+
+    let regx = (patt, s, inx) => {
+        try {
+            return new RegExp(patt).test(s)
+        } catch (err) {
+            onerror('[inIndex]', `wrong pattern/expression at index:${inx}`)
+            return false
+        }
+    }
+    o = patterns.filter((n, inx) => regx(n, str, inx)).length 
+    return o
+}
+
+/**
+ * Match string value to expression
+ * @param {*} str string to match
+ * @param {*} expression valid expression /xyz/
+ */
+const matched = (str = '', expression = /\\/) => {
+
+    let o = false
+    if (!isString(str)) return o
+
+    if (!isRegExp(expression)) return o
+    if (typeof str !== 'string') return o
+    if (!str) return o
+
+    let regx = (patt, s) => {
+        try {
+            return new RegExp(patt).test(s)
+        } catch (err) {
+            onerror('[matched]', err.toString())
+            return false
+        }
+    }
+    o = regx(expression, str)
+    return o
+}
+
 export { disableLogging }
 export { resetLogging }
 export { loggerSetting }
@@ -1876,7 +1942,9 @@ export { isDate }
 export { xrequire }
 export { asJson }
 export { truthFul }
-
+export { inIndex }
+export { isRegExp }
+export { matched }
 /**
  * @prop {*} l any data to print
  * @prop {*} err display as error if set to true
