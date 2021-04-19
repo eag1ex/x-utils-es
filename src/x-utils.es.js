@@ -1446,7 +1446,7 @@ const pickFromArray = (arr = [], picks = []) => {
     const ds = dispatcher()
 
     ds.next({data:'hello world'})
-
+ 
     ds.subscribe((data, uid, index) => {
         console.log('on subscribe', data, uid, index)
         ds.delete() // delete self
@@ -1686,7 +1686,6 @@ const withHoc = (item = () => { }, ...args) => {
     }
     return hoc
 }
-
 
 export { disableLogging }
 export { resetLogging }

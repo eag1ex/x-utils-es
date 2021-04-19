@@ -1,6 +1,6 @@
 node_modules
 npm-debug.log
-info.md
+info.md 
 # Local development
 
 *.dev
@@ -15,7 +15,7 @@ docker-compose.yml
 prototyping.js
 methods
 prototyping
-./Prototypes
+Prototypes
 
 
 ###################
