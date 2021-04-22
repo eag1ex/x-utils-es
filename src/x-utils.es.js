@@ -303,8 +303,8 @@ const error = function (...args) {
 
 /** 
  * - good for stack tracing
- * @param {*} data optional any
- * @param {boolean} asArray if set true, will output stack trace as array, otherwise a string
+ * @property {*} data optional any
+ * @property {*} asArray if set true, will output stack trace as array, otherwise a string
  * @returns console.log `[STACK TRACE]`: xxx
 */
 const stack = (data, asArray = false) => {
@@ -321,8 +321,8 @@ const stack = (data, asArray = false) => {
 
 /**
  * - console.error stack trace
- * @param {*} data optional any
- * @param {boolean} asArray if set true, will output stack trace as array, otherwise a string
+ * @property {*} data optional any
+ * @property {*} asArray if set true, will output stack trace as array, otherwise a string
  * @returns console.error `[ERROR]`: xxx
  */
 const errorTrace = (data, asArray = false) => {
@@ -353,8 +353,8 @@ const isBigInt = (n) => {
  * - for loop initiating callback on each iteration
  * - when `cb` is returned this data is pushed to array
  * - break support when returning {break:true} inside callback method
- * - `param size:number`
- * - `param cb((inx)=>)` callback issed at end of each loop que
+ * @property {*} size:number`
+ * @property {*} cb((inx)=>)` callback issed at end of each loop que
  * @returns always an array[], per length specified
 */
 const loop = function (size = 0, cb = (index = 0) => {}) {
@@ -398,8 +398,8 @@ const validDate = (dt, cbEval = undefined) => {
 // @ts-ignore
 /**
  * 
- * - `param {*} arr`
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ * @property {*} arr
+ * @property {*} cbEval (optional) callback operator, continue checking when callback returns !!true
  */
 const isArray = (arr = [], cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -638,7 +638,7 @@ const isQPromise = (defer) => {
 
 /**
  * test is sq() is our SimpleQ promise
- * @param {*} defer 
+ * @property {*} defer 
  */
 const isSQ = (defer) => {
     try {
@@ -667,13 +667,13 @@ const isPromise = (defer) => {
 /** 
  * - how long to wait before we exit process
  * - why use this ? If the promise never resolves or takes too long, so we can cancel it when `{maxWait}` time expires
- * - `param {*} param0{defer} (required)`  resolved when process complete or called from callback on timeout
- * - `param {*} param1{checkEvery}` (required) how frequently to check if promise is resolved
- * - `param {*} param2{maxWait}` (required)  long to wait before execiting with cbErr
- * - `param {*} param3{cbErr}` (required) called on timeout `cbErr(({error,defer,id}))` > here you can either resolve or reject the pending promise
- * - `param {*} param4{message}` (optional)  defaults: `taken too long to respond` of provide your own
- * - `param {*} param5{logging}` (optional)  when true will pront waiting process
- * - `param {*} param6{id}` (optional) added to error callback, and to logging when enabled
+ * @property {*} param0{defer} (required)`  resolved when process complete or called from callback on timeout
+ * @property {*} param1{checkEvery}` (required) how frequently to check if promise is resolved
+ * @property {*} param2{maxWait}` (required)  long to wait before execiting with cbErr
+ * @property {*} param3{cbErr}` (required) called on timeout `cbErr(({error,defer,id}))` > here you can either resolve or reject the pending promise
+ * @property {*} param4{message}` (optional)  defaults: `taken too long to respond` of provide your own
+ * @property {*} param5{logging}` (optional)  when true will pront waiting process
+ * @property {*} param6{id}` (optional) added to error callback, and to logging when enabled
  * - `returns {*} same promise provided in {defer}`,  dont need to use it, directly
 */
 
@@ -748,8 +748,7 @@ const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = (
 
 /**
  * 
- * @param {*} obj 
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ * @property {*} cbEval (optional) callback operator, continue checking when callback returns !!true
  */
 const isObject = (obj, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -774,11 +773,14 @@ const isObject = (obj, cbEval = undefined) => {
     return false
 }
 
-const uniq = (arr = []) => arr.filter((el, i, all) => all.indexOf(el) === i)
+const uniq = (arr = []) => {
+    let o = []
+    o = arr.filter((el, i, all) => all.indexOf(el) === i)
+    return o
+}
 
 /** 
  * provide an array to shuffle
- * @param {Array} arr array required
  * - `returns {Array} always returns an array`
 */
 const shuffle = (arr = []) => {
@@ -796,8 +798,8 @@ const shuffle = (arr = []) => {
  * @selectiveArray
  * - select data from array of objects by reference
  * - go down recursively, in order of selectBy references
- * - `param {array} selectBy:required`, list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
- * - `param {array} data:required` list of objects, to target by select ref
+ * @property {*} selectBy:required`, list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
+ * @property {*} data:required` list of objects, to target by select ref
 */
 const selectiveArray = (selectBy = [], data = []) => {
     if (!isArray(data)) return []
@@ -876,8 +878,7 @@ const selectiveArray = (selectBy = [], data = []) => {
 
 /**
  * 
- * @param {*} obj 
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ * @property {*} cbEval (optional) callback operator, continue checking when callback returns !!true
  */
 const isClass = (obj = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -893,8 +894,8 @@ const hasPrototype = isClass
 
 /**
  * 
- * @param {*} el 
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ * @property {*} el 
+ * @property {*} cbEval (optional) callback operator, continue checking when callback returns !!true
  */
 const hasProto = (el, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -907,7 +908,6 @@ const hasProto = (el, cbEval = undefined) => {
 
 /**
  * Check is pattern is an expression of RegExp
- * @param {*} expression 
  */
 const isRegExp = (expression = (/\\/)) => {
     try {
@@ -919,8 +919,7 @@ const isRegExp = (expression = (/\\/)) => {
 
 /**
  *  testing (new class{})
- * @param {*} obj 
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ * @property {*} cbEval (optional) callback operator, continue checking when callback returns !!true
  */
 const isInstance = (obj = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -966,8 +965,8 @@ const isFalsy = (el = null) => {
 
 /**
  * 
- * @param {*} str 
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ * @property {*} str 
+ * @property cbEval (optional) callback operator, continue checking when callback returns !!true
  */
 const isString = (str = '', cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1052,7 +1051,7 @@ const delay = (time = 100) => {
 
 /**
  * - match keys object{} > with source{}, order doesnt matter!
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ * @property cbEval (optional) callback operator, continue checking when callback returns !!true
  * - `returns true/false` when at least 1 length matched
 */
 const someKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
@@ -1069,7 +1068,7 @@ const someKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
 
 /** 
  * - match keys object{} > with source{}, order doesnt matter!
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ * @property cbEval (optional) callback operator, continue checking when callback returns !!true
  * - `returns true/false` when all lengths matched
 */
 const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
@@ -1087,7 +1086,7 @@ const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
 /**
  * @withTrueVal
  * - you have an array with false values: [0,null,false,{},undefined, -1,'',true,1, 'hello',[]], will only return any that are true, keeping same order: [true,1,'hello'], empty entities are also omitted
- * @param {*} arr array required
+ * @property {*} arr array required
  * - `returns new array with only [<true?>] values`
  */
 const trueVal = (arr = []) => {
@@ -1100,7 +1099,7 @@ const trueVal = (arr = []) => {
  * @trueValDeep
  * - you have an array with false values: [0,null,false,[{}],undefined, -1,'',true,1, 'hello',[[]]], will only return any that are true entities, keeping same order: [true,1,'hello'], empty entities are omitted.
  * - similar to `withVal`, except it checks 1 depth> if entities them self are empty: [[]],[{}]
- * @param {*} arr array required
+ * @property {*} arr array required
  * - `returns new array with only [<true?>] values`
  */
 const trueValDeep = (arr = []) => {
@@ -1130,7 +1129,7 @@ const trueValDeep = (arr = []) => {
 /**
  * @trueProp
  * - pass an object and only return object with true entities: `{a:1,b:2,c:null,d:-1}`, => `{a:1,b:2}`
- * @param {*} obj required
+ * @property {*} obj required
  * - `returns object with props {}` 
  */
 const trueProp = (obj = {}) => {
@@ -1145,9 +1144,9 @@ const trueProp = (obj = {}) => {
 /** 
  * @resolver 
  * - this method will test `fn()` until timeout or when data/ not  undefined becomes available
- * @param fn:function, callable method with data to return
- * @param timeout:Number, specify max time to wait for data
- * @param testEvery:Number, how ofter to check for data availability
+ * @property {*} fn:function, callable method with data to return
+ * @property {*} timeout:Number, specify max time to wait for data
+ * @property {*} testEvery:Number, how ofter to check for data availability
  * - `returns Promise/always` resolves, and error, it will wrap it in {error} , if no data returns Promise.resolve(undefined), 
 */
 const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
@@ -1239,14 +1238,13 @@ const flattenDeep = (arr = []) => {
         return []
     }
     
-    return o
 }
 
 /** 
   * @chunks
   * - return array in batch specified by size
-  * @param {array} arr required
-  * @param {number} size required larger then 0
+  * @property {*} arr required
+  * @property {*} size required larger then 0
   * - `returns arr[]`
  */
 const chunks = (arr = [], size = 0) =>
@@ -1256,8 +1254,8 @@ const chunks = (arr = [], size = 0) =>
 
 /** 
  * - duplicate original item x/times
- * @param {*} item any value
- * @param {number} index how many times to duplicate, when 0 then empty array is returned
+ * @property {*} item any value
+ * @property {number} index how many times to duplicate, when 0 then empty array is returned
  * - `returns {array} [...]`
 */
 const dupes = (item, index = 0) => {
@@ -1274,8 +1272,8 @@ const dupes = (item, index = 0) => {
  * Return array with uniq objects prop[val]!=prop[val] in the order provided
  * Returns all other objects, and items not by propName
  * Returns all other items that are not an object 
- * @param {*} arr 
- * @param {*} propName 
+ * @property {*} arr 
+ * @property {*} propName 
  * - `returns {*} [{},...]`
  */
 const uniqBy = (arr = [], propName = '') => {
@@ -1314,8 +1312,8 @@ const uniqBy = (arr = [], propName = '') => {
 /**
  * Provide mix array of objects and values
  * grab array items that include specific propName 
- * @param {*} arr[] mixed array: [{a:true},...]
- * @param {*} withProp example: withProp:"a"
+ * @property {*} arr[] mixed array: [{a:true},...]
+ * @property {*} withProp example: withProp:"a"
  * - `returns []` only array items that include specific prop 
 * **/
 const arrayWith = (arr = [], withProp = '') => {
@@ -1339,8 +1337,8 @@ const arrayWith = (arr = [], withProp = '') => {
 /**
  * Provide mixed array including any objects and values
  * Exclude all prop/values from object that matches 
- * @param {*} arr[] mixed array with objects to exclude by propName
- * @param {*} excludes[] property names to match each object by
+ * @property {*} arr[] mixed array with objects to exclude by propName
+ * @property {*} excludes[] property names to match each object by
  * - `returns {}`  mixed array with any other types as per input, in same order
  **/
 const exFromArray = (arr = [], excludes = []) => {
@@ -1376,8 +1374,8 @@ const exFromArray = (arr = [], excludes = []) => {
 
 /**
  * - Filter items from array by picks[] conditions 
- * @param {*} arr array of any 
- * @param {*} picks[] each item in picks tests item in the array for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that match by type, or eaqul value! Empty types and strings, are excluded, example : `[{},[],'',NaN]` (in picks[] only)
+ * @property {*} arr array of any 
+ * @property {*} picks[] each item in picks tests item in the array for all passing conditions, example `[{a:1,b:2},{g:5,o:0},Number,Boolean, true,1, Array, [1,2,3],Object, Function, Error],'hello world']` and returns those that match by type, or eaqul value! Empty types and strings, are excluded, example : `[{},[],'',NaN]` (in picks[] only)
  * 
  * - does not support deep selections from picks, only 1 level deep, but you can use object types, example: picks:[{data:Array},{data:Object}]
  * - `returns [...]` only items that passed each pick condition in same order
@@ -1538,8 +1536,8 @@ const pickFromArray = (arr = [], picks = []) => {
     })
      ds.next({data:'hello again'})
  `
- * @param {*} uid (optional) will be generated if not supplied
- * @param {*} debug (optional) for extra debug messages
+ * @property {*} uid (optional) will be generated if not supplied
+ * @property {*} debug (optional) for extra debug messages
  */
 const dispatcher = (uid, debug = false) => {
     return (new function dispatcher(uid, debug) {
@@ -1714,8 +1712,8 @@ const dispatcher = (uid, debug = false) => {
  * - High order caller, concept taken from react HOC.
  * - Promise support, we can provide deferred callback, example: `Promise.resolve(()=>{}) OR Promise.reject(()=>{}) `
  *  * if rejectable error is not callable, message is: `DEFERRED_NOT_CALLABLE`
- * @param {*} item callable function
- * @param {*} args (optional) any number of arguments (,,,,) after the callable item()
+ * @property {*} item callable function
+ * @property {*} args (optional) any number of arguments (,,,,) after the callable item()
  * - `returns callable function withHoc(...args)` OR deferred if a promise
  */
 const withHoc = (item = () => { }, ...args) => {
@@ -1778,7 +1776,7 @@ const withHoc = (item = () => { }, ...args) => {
  * @memberof module.require
  * @param {*} path require(>path<)
  * @param {*} ref // ERR_NO_THROW and it wond throw an error
- * - `returns desirec output or `
+ * - `returns desirec output`
  */
 function xrequire(path = '', ref = 'ERR_NO_THROW') {
     if (isWindow()) return undefined
@@ -1808,7 +1806,6 @@ function xrequire(path = '', ref = 'ERR_NO_THROW') {
 /**
  * - Returns Object with truethFull values
  * - Supports only 1 level nesting
- * @param obj 
  */
 const truthFul = (obj = {}) => {
     if (!isObject(obj)) return {}
@@ -1820,8 +1817,8 @@ const truthFul = (obj = {}) => {
 
 /**
  * Test accurance of match[] items in a string
- * @param {*} str string to match against
- * @param {*} patterns[] can provide array of RegExp patterns to test against
+ * @property {*} str string to match against
+ * @property {*} patterns[] can provide array of RegExp patterns to test against
  * - `returns total by index of patterns[] array`
  */
 const inIndex = (str = '', patterns = []) => {
@@ -1846,8 +1843,8 @@ const inIndex = (str = '', patterns = []) => {
 
 /**
  * Match string value by expression
- * @param {*} str string to match
- * @param {*} expression valid expression /xyz/
+ * @property {*} str string to match
+ * @property {*} expression valid expression /xyz/
  */
 const matched = (str = '', expression = /\\/) => {
 

@@ -503,7 +503,7 @@ async function f() {
  * @returns Object with truethFul values
  */
 
-truthful({ a: undefined, b: 1, c: {} }) // { b: 1, c: {} }
+truthFul({ a: undefined, b: 1, c: {} }) // { b: 1, c: {} }
 
 
 

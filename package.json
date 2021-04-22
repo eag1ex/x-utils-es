@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "helper tools for javascript validation",
   "main": "src/x-utils.es.js",
   "module": "src/x-utils.es.js",
