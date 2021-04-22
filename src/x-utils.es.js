@@ -776,7 +776,7 @@ const isObject = (obj, cbEval = undefined) => {
 const uniq = (arr = []) => {
     let o = []
     o = arr.filter((el, i, all) => all.indexOf(el) === i)
-    return o
+    return o instanceof Array ? o : []
 }
 
 /** 
