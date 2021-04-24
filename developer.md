@@ -19,7 +19,8 @@
     "eslint-plugin-standard": "^4.0.1",
     "esm": "^3.2.25",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
-
   }
+
+npm i @babel/cli @babel/core @babel/plugin-external-helpers @babel/plugin-proposal-decorators @babel/plugin-transform-modules-commonjs @babel/plugin-transform-runtime @babel/plugin-transform-runtime @babel/preset-env @babel/preset-react babel-eslint babel-plugin-transform-es2015-modules-commonjs babel-plugin-transform-es2015-modules-umd babel-preset-minify eslint eslint-plugin-node eslint-plugin-standard esm @babel/plugin-proposal-class-properties --save-dev
 
 ```

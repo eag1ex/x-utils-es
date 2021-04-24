@@ -2,7 +2,7 @@
   "compileOnSave": true,
   "compilerOptions": {
     "sourceMap": false,
-    "checkJs":false,
+    "checkJs":true,
     "moduleResolution": "node",
     "module": "esnext",
     "target": "es2018", 
