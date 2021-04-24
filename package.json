@@ -5,7 +5,7 @@
   "main": "src/x-utils.es.js",
   "module": "src/x-utils.es.js",
   "scripts": {
-    "jsdocs": "jsdoc -c ./jsdoc.json",
+    "jsdocs": "node_modules/.bin/jsdoc -c .jsdoc.json --verbose",
     "lint:install": "npm i babel-eslint eslint eslint-plugin-node eslint-plugin-standard",
     "lint": "./node_modules/.bin/eslint  --ext .js src",
     "lint:fix": "./node_modules/.bin/eslint --fix --ext .js src",
@@ -91,6 +91,7 @@
   },
   "contributors": [],
   "devDependencies": {
+    "minami": "^1.2.3"
   },
   "dependencies": {}
 }

@@ -920,8 +920,13 @@ const isObject = (obj, cbEval = undefined) => {
     return false
 }
 
-// REVIEW to continue from this point
-
+/**
+ * Provided item returns uniq values
+ * @param {array} arr 
+ * @returns {array}
+ *
+ * @example uniq(['a','a','b','b',true,true]) => ['a','b',true]
+ */
 const uniq = (arr = []) => {
     let o = []
     o = arr.filter((el, i, all) => all.indexOf(el) === i)
@@ -929,8 +934,10 @@ const uniq = (arr = []) => {
 }
 
 /** 
- * provide an array to shuffle
- * - `returns {Array} always returns an array`
+ * Provided item returns values in random order
+ * @param {array} arr
+ * @returns {array} 
+ *
 */
 const shuffle = (arr = []) => {
     if (!isArray(arr)) return []
@@ -944,11 +951,24 @@ const shuffle = (arr = []) => {
 }
 
 /** 
- * @selectiveArray
- * - select data from array of objects by reference
- * - go down recursively, in order of selectBy references
- * @param {*} selectBy:required`, list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
- * @param {*} data:required` list of objects, to target by select ref
+ * Select data from array of objects by reference, 
+ * and go down recursively in order of selectBy references
+ * @param {array} selectBy list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
+ * @param {array} data list of objects to target by select ref
+ * @returns {array} by selected order in same pair index
+ *
+ * @example 
+ * // select b from both arrays, return same index order
+ * selectiveArray(['a.b'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
+ * //=>  [ [ 'hello'], [ 'world'] ] 
+ *
+ * //select b, and select c from both arrays, return same index order
+ * selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
+ * //=> [ ['hello','hello'], ['world','world'] ]
+ * 
+ * // destructuring example : 
+ * let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) ) ).values()
+ * //=>  [ [ 'hello', 'world'] ] << one pair from data array
 */
 const selectiveArray = (selectBy = [], data = []) => {
     if (!isArray(data)) return []
@@ -1023,11 +1043,12 @@ const selectiveArray = (selectBy = [], data = []) => {
     return nData
 }
 
-// testing (class{}).prototype
 
 /**
- * 
+ * Test if item is a class{} that can be initiated
+ * @param {any} obj
  * @param {*} cbEval (optional) callback operator, continue checking when callback returns !!true
+ * @returns {true|false}
  */
 const isClass = (obj = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1037,14 +1058,29 @@ const isClass = (obj = {}, cbEval = undefined) => {
 }
 
 /** 
- * @alias isClass
+ * Same as isClass
+ * @method hasPrototype(obj)
+ * @alias isClass 
+ *
 */
 const hasPrototype = isClass
 
+
 /**
- * 
- * @param {*} el 
- * @param {*} cbEval (optional) callback operator, continue checking when callback returns !!true
+ * Check if item has access to __proto__
+ * @param {any} el 
+ * @param {function|undefined} cbEval  optional callback, continue checking when callback returns !!true
+ * @returns {boolean}
+ *
+ * @example
+ * hasProto({}) // true
+ * hasProto('') // true
+ * hasProto(-1) // true
+ * hasProto(false) // true
+ * hasProto(undefined) // false
+ * hasProto(null) // false
+ * hasProto(NaN) // true
+ * hasProto({}, ()=> Object.keys({}).length ) // false because object has no keys
  */
 const hasProto = (el, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1057,6 +1093,12 @@ const hasProto = (el, cbEval = undefined) => {
 
 /**
  * Check is pattern is an expression of RegExp
+ * @param {RegExp} expression
+ * @returns {boolean}
+ *
+ * @example
+ * isRegExp('abc') // false
+ * isRegExp(/abc/) // true
  */
 const isRegExp = (expression = (/\\/)) => {
     try {
@@ -1067,8 +1109,17 @@ const isRegExp = (expression = (/\\/)) => {
 }
 
 /**
- *  testing (new class{})
- * @param {*} cbEval (optional) callback operator, continue checking when callback returns !!true
+ * Testing if item is (new class{})
+ * @param {any} obj
+ * @param {function|undefined} cbEval (optional) continue checking when callback returns !!true
+ * @returns {boolean}
+ *
+ * @example 
+ * isInstance({}) // false
+ * isInstance(new function(){}) // true 
+ * isInstance(new class(){} ) // true 
+ * isInstance(function () { }) // false
+ * isInstance([]) // false
  */
 const isInstance = (obj = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1084,16 +1135,43 @@ const isInstance = (obj = {}, cbEval = undefined) => {
     return false
 }
 
+/** 
+ * Check size object, we want to know how many keys are set
+ * @param {object} obj
+ * @returns {number} number of keys on the object
+ *  
+ * @example 
+ * objectSize({ a: 1, b: 2 }) }) // 2
+ * objectSize([1,2]) // 0
+ * objectSize( (new function(){this.a=1}()) ) // 1
+ * objectSize( (new function(){}()) ) // 0
+ */
 const objectSize = (obj = {}) => {
     if (!obj || !isNaN(+(obj))) return 0
     if (isInstance(obj)) return Object.keys(obj).length
     return ((Object.prototype === (obj).__proto__) || Error.prototype === (obj).__proto__) ? Object.keys(obj).length : 0
 }
 
+/**
+ * Check if any item type is falsy, an object, array, class/instance having no props set
+ * @param {any} el 
+ * @returns {boolean}
+ *
+ * @example
+ * isFalsy({}) // true
+ * isFalsy({a:1}) // false
+ * isFalsy([]) // true
+ * isFalsy([1]) // false
+ * isFalsy(true) // false
+ * isFalsy(false) // true
+ * isFalsy(0) // true
+ * isFalsy( (new function(){}()) ) // true
+ * isFalsy( (new function(){this.a=false}()) ) // false
+ */
 const isFalsy = (el = null) => {
-    if (el === undefined) return true
+    if (el === undefined || 
+        el === null) return true     
     if (el === false && typeof el === 'boolean') return true
-    if (el === null) return true
     if (String.prototype === (el).__proto__) return el.length < 1
     if (Array.prototype === (el).__proto__) return (el || []).length === 0
     if (Promise.prototype === (el || {}).__proto__) return false
@@ -1104,18 +1182,25 @@ const isFalsy = (el = null) => {
         if (isNaN(el)) return true
         else return el <= 0
     }
-
     if ((+(el) > 0) === false) return true
     if (el) return false
     else return false
 }
 
-// @ts-ignore
 
 /**
- * 
- * @param {*} str 
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
+ * Test if an item is a string, or new String()
+ * @param {any} str 
+ * @param {function|undefined} cbEval (optional) operator, continue checking when callback returns !!true
+ * @returns {boolean}
+ *
+ * @example 
+ * isString('') // true
+ * isString(new String()) // true
+ * isString(NaN) // false
+ * isString(new Date()) // false
+ * isString('123', ()=>'123'.length>5) // false, callback return !!false
+ * isString('123', ()=>'123'.length>2) // true
  */
 const isString = (str = '', cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1125,9 +1210,20 @@ const isString = (str = '', cbEval = undefined) => {
     return str === '' ? true : String.prototype === (str).__proto__
 }
 
+/**
+ * Copy object by property name
+ * @param {object} obj 
+ * @param {array} refs supply list of keys  
+ * @returns {object} new object of copied values
+ * 
+ * @example
+ * copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) } // {a: 1, c: 3}
+ * copyBy({ a: 1, b: 2, c: 3 }) } // {}
+ * copyBy({}) } // {}
+ */
 const copyBy = (obj = {}, refs = []) => {
     if (!isObject(obj)) return {}
-    // @ts-ignore
+
     const d = [].concat(refs).reduce((n, el, i) => {
         if (obj[el] !== undefined) n[el] = obj[el]
         return n
@@ -1140,6 +1236,18 @@ const copyBy = (obj = {}, refs = []) => {
     }
 }
 
+/**
+ * Produce copy of any item
+ * @param {any} data
+ * @returns {any} copy of the same input type, or primitiveValue type if class or method suppied
+ *
+ * @example
+ * copy({ a: 1, b:function(){} }) //=>  {a:1}
+ * copy([1,2,3]) //=> / [1,2,3]
+ * copy( function(){}) //=>  Function: anonymous
+ * copy(null) //=>  null 
+ * copy(true) //=>  true
+ */
 const copy = (data) => {
     try {
         return JSON.parse(JSON.stringify(data))
@@ -1147,23 +1255,42 @@ const copy = (data) => {
         return typeCheck(data).primitiveValue
     }
 }
+
+
 /**
- * Return data in pretty json format 
- * - `returns JSON.stringify(o , null, 2)`
+ * 
+ * Provided data is returned in pretty json
+ * @param {any} data array/object
+ * @returns {string} JSON.stringify(o , null, 2)
+ *
+ * @example  
+ * asJson( { a:{ b: { c:'hello world' } } } )
+ * // returns:
+ * {
+ *  "a": {
+ *    "b": {
+ *      "c": "hello world"
+ *    }
+ *  }
+ * }
  */
-const asJson = (o) => {
+const asJson = (data) => {
     try {
-        return JSON.stringify(o, null, 2)
+        return JSON.stringify(data, null, 2)
     } catch (err) {
         return `[asJson], ` + err.toString()
     }
 }
 
 /** 
- * For complex arrays of objects: [{...},{...}] we can use copy deep
- * - will copy each item in array seperatly
- * - will check for Object>object and make copy
- * @return {*} same input as copy  
+ * For complex arrays of objects: [{...},{...}], will copy each array item seperatly and check for Object>object then make copy
+ * @param {any} data object or array
+ * @return {any} copy of the same input type, or primitiveValue type where method suppied
+ * 
+ * @example
+ * copyDeep({ a: {b:{c:{}}} }) //=>  { a: {b:{c:{}}} })
+ * copyDeep([{ a: (new function(){this.b=1}()) }]) //=>  [ { a: {b:1} } ]
+ * copyDeep({ a: (new function(){this.b=1}()) }) //=>  { a: { b:1 } }
 */
 const copyDeep = (data) => {
 
@@ -1459,11 +1586,11 @@ const uniqBy = (arr = [], propName = '') => {
 }
 
 /**
- * Provide mix array of objects and values
- * grab array items that include specific propName 
- * @param {*} arr[] mixed array: [{a:true},...]
- * @param {*} withProp example: withProp:"a"
- * - `returns []` only array items that include specific prop 
+ * Provide mix array of objects and values,
+ * grab array items that include specific withProp 
+ * @param {array} arr mixed [{a:true},...]
+ * @param {string} withProp example: withProp:"a"
+ * @returns {array} only items that include specific prop 
 * **/
 const arrayWith = (arr = [], withProp = '') => {
     if (isArray(arr)) return []
@@ -1486,8 +1613,8 @@ const arrayWith = (arr = [], withProp = '') => {
 /**
  * Provide mixed array including any objects and values
  * Exclude all prop/values from object that matches 
- * @param {*} arr[] mixed array with objects to exclude by propName
- * @param {*} excludes[] property names to match each object by
+ * @param {array} arr mixed with objects
+ * @param {array} excludes property names to match each object in arr[x]
  * - `returns {}`  mixed array with any other types as per input, in same order
  **/
 const exFromArray = (arr = [], excludes = []) => {
@@ -1687,9 +1814,9 @@ const pickFromArray = (arr = [], picks = []) => {
  * @param {*} uid (optional) will be generated if not supplied
  * @param {*} debug (optional) for extra debug messages
  */
-const dispatcher = function(uid, debug = false) {
+const dispatcher = (uid = undefined, debug = false) => {
 
-    return (new function dispatcher(uid, debug) {
+    function Dispatcher(uid, debug) {
 
         const plugin = `[dispatcher]`
         this.uid = ((uid || '').toString() || new Date().getTime()).toString() // id generated if not provided
@@ -1703,6 +1830,7 @@ const dispatcher = function(uid, debug = false) {
         // shorthand aliases
 
         /** 
+         * @ignore
          * @onComplete
          * when subscribe event is deleted complete even callback can be called
         */
@@ -1712,6 +1840,7 @@ const dispatcher = function(uid, debug = false) {
         }
 
         /** 
+         * @ignore
          * @Dispatch
          * initialize the dispatcher
         */
@@ -1722,6 +1851,7 @@ const dispatcher = function(uid, debug = false) {
         }
 
         /**
+         * @ignore
          * @next
          * send data to `subscribe` callback
          * @param {*} data any
@@ -1736,6 +1866,7 @@ const dispatcher = function(uid, debug = false) {
         }
 
         /**
+         * @ignore
          * @Dispatch
          * master listener, sends all event callbacks to `subscribe`
          */
@@ -1794,6 +1925,7 @@ const dispatcher = function(uid, debug = false) {
         }
 
         /** 
+         * @ignore
          * @del
          * delete dispatcher
         */
@@ -1806,6 +1938,7 @@ const dispatcher = function(uid, debug = false) {
         }
 
         /**
+         * @ignore
          * @subscribe
          * wait for callbacks forwarded from Dispatch and returned in callback of this method
          * - Dispatch must be set initially before you call `subscribe`
@@ -1827,33 +1960,40 @@ const dispatcher = function(uid, debug = false) {
         }
 
         /** 
+         * @ignore
         * @alias initListener
         */
         this.init = this.initListener
 
         /** 
+         * @ignore
          * @alias subscribe
         */
         this.sub = this.subscribe
 
         /** 
+         * @ignore
         * @alias next
         */
         this.emit = this.next
 
         /** 
+         * @ignore
         * @alias del
         */
         this.delete = this.del
 
         /** 
+         * @ignore
          * @alias del
         */
         this.unsubscribe = this.del
 
         // end
+    }
 
-    }(uid, debug))
+    // @ts-ignore
+    return new Dispatcher(uid, debug)
 }
 
 /**

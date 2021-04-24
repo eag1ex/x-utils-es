@@ -397,11 +397,11 @@ chunks( [1,2,3,4,5,6] , 2) // [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ]
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean
  * **/
+ 
 isString('') // true
 isString(new String()) // true
 isString(NaN) // false
 isString(new Date()) // false
-
 isString('123', ()=>'123'.length>5) // false, callback return !!false
 isString('123', ()=>'123'.length>2) // true
 
@@ -729,19 +729,17 @@ validDate( '', ()=>true ) // false // not a date
  * @returns always returns array []
  * **/
 
-// select >b from both arrays, and return same order
+// select b from both arrays, return same index order
 selectiveArray(['a.b'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
-//  [ [ 'hello'], [ 'world'] ] 
+//=>  [ [ 'hello'], [ 'world'] ] 
 
-// select >b, and select >c from both arrays, and return same format
+// select b, and select c from both arrays, return same index order
 selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
-// [ ['hello','hello'], ['world','world'] ]
+//=> [ ['hello','hello'], ['world','world'] ]
 
-/* head(..) */ selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) 
-//  [ [ 'hello', 'world'] ] << one pair from data array
-// example : 
+// destructuring example : 
 let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) ) ).values()
-
+//=>  [ [ 'hello', 'world'] ] << one pair from data array
 
 
 
