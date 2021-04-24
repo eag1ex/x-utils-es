@@ -397,7 +397,7 @@ chunks( [1,2,3,4,5,6] , 2) // [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ]
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean
  * **/
- 
+
 isString('') // true
 isString(new String()) // true
 isString(NaN) // false
@@ -557,9 +557,12 @@ matched('aaBC', /abc/i) // true
  * @param cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns boolean  true=> when at least 1 key name belongs to either obj/source
  * **/
-someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }) //=>  true
 
-someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }, ()=>1-1===1) //=>  false, because callback return !!false
+someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }) 
+//=>  true , {a} was found
+
+someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }, ()=>1-1===1) 
+//=>  false, because callback return !!false
 
 
 /**
@@ -571,10 +574,7 @@ someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }, ()=>1-1===1) //=>  fals
  * **/
 exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 }) //=>  true
 exactKeyMatch({ a: 2, b: 1 }, { c: 1, a: 1, b: 1 }) //=> false
-exactKeyMatch({ a: 2, b: 1 }, { c: 1, d: 1}) //=>  false
 exactKeyMatch({}, { c: 1, d: 1}) //=>  false
-exactKeyMatch(['a','b','c'], { c: 1, d: 1}) //=> false
-
 exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 }, ()=> 1+1===3) // false, because callback return !!false
 
 

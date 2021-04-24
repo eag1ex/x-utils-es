@@ -1210,6 +1210,8 @@ const isString = (str = '', cbEval = undefined) => {
     return str === '' ? true : String.prototype === (str).__proto__
 }
 
+
+
 /**
  * Copy object by property name
  * @param {object} obj 
@@ -1337,10 +1339,20 @@ const delay = (time = 100) => {
     })
 }
 
+
 /**
- * - match keys object{} > with source{}, order doesnt matter!
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
- * - `returns true/false` when at least 1 length matched
+ *  
+ * Test if ANY keys match between object{} and source{} 
+ * @param {object} object 
+ * @param {object} source 
+ * @param {function|undefined} cbEval (optional) operator, continue checking when callback returns !!true
+ * @returns {boolean} when at least 1 key is found between 2 objects, return true
+ *
+ * @example 
+ * someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }) 
+ * //=>  true , {a} was found
+ * someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }, ()=>1-1===1) 
+ * //=>  false, because callback return !!false
 */
 const someKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1355,9 +1367,18 @@ const someKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
 }
 
 /** 
- * - match keys object{} > with source{}, order doesnt matter!
- * @param cbEval (optional) callback operator, continue checking when callback returns !!true
- * - `returns true/false` when all lengths matched
+ * Test if ALL keys match between object{} and source{} 
+ * @param {object} object 
+ * @param {object} source 
+ * @param {function|undefined} cbEval (optional) operator, continue checking when callback returns !!true
+ * @returns {boolean} when ALL keys found between 2 objects, return true
+ * 
+ * @example
+ * exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 }) //=>  true
+ * exactKeyMatch({ a: 2, b: 1 }, { c: 1, a: 1, b: 1 }) //=> false
+ * exactKeyMatch({}, { c: 1, d: 1}) //=>  false
+ * exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 }, ()=> 1+1===3) 
+ * //=> false, because callback return !!false
 */
 const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1372,11 +1393,14 @@ const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
 }
 
 /**
- * @withTrueVal
- * - you have an array with false values: [0,null,false,{},undefined, -1,'',true,1, 'hello',[]], will only return any that are true, keeping same order: [true,1,'hello'], empty entities are also omitted
- * @param {*} arr array required
- * - `returns new array with only [<true?>] values`
- */
+ * Excludes/ommits any falsy values from array: [0,null,false,{},undefined, -1,'',[]]
+ * @param {array} arr mixed
+ * @returns {array} only non falsy items are returned 
+ * 
+ * @example 
+ * trueVal([-1, 0,1 {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined,true]) 
+ * //=> [1,'hello',{ name: 'jack' },true]
+ **/
 const trueVal = (arr = []) => {
     // provided must be array
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
@@ -1384,11 +1408,13 @@ const trueVal = (arr = []) => {
 }
 
 /**
- * @trueValDeep
- * - you have an array with false values: [0,null,false,[{}],undefined, -1,'',true,1, 'hello',[[]]], will only return any that are true entities, keeping same order: [true,1,'hello'], empty entities are omitted.
- * - similar to `withVal`, except it checks 1 depth> if entities them self are empty: [[]],[{}]
- * @param {*} arr array required
- * - `returns new array with only [<true?>] values`
+ * Excludes/ommits any falsy values from array: [0,null,false,{},undefined, -1,'',[]], testing 1 level deepper as compared to trueVal()
+ * @param {array} arr mixed
+ * @returns {array} only non falsy items are returned 
+ * 
+ * @example
+ * trueValDeep([1, 0, [], {}, "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined])
+ * //=> [ 1, 'hello', [ 1 ], { name: 'jack' } ] }
  */
 const trueValDeep = (arr = []) => {
     // provided must be array
@@ -1415,10 +1441,13 @@ const trueValDeep = (arr = []) => {
 }
 
 /**
- * @trueProp
- * - pass an object and only return object with true entities: `{a:1,b:2,c:null,d:-1}`, => `{a:1,b:2}`
- * @param {*} obj required
- * - `returns object with props {}` 
+ * Object with true entities will be returned 
+ * @param {object} obj required
+ * @returns {object} 
+ * 
+ * @example  
+ * trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined, j:'' })
+ * //=> {g: 'hello'}
  */
 const trueProp = (obj = {}) => {
     if (!(!obj ? false : Object.prototype === (obj).__proto__)) return 0
@@ -1430,12 +1459,20 @@ const trueProp = (obj = {}) => {
 }
 
 /** 
- * @resolver 
- * - this method will test `fn()` until timeout or when data/ not  undefined becomes available
- * @param {*} fn:function, callable method with data to return
- * @param {*} timeout:Number, specify max time to wait for data
- * @param {*} testEvery:Number, how ofter to check for data availability
- * - `returns Promise/always` resolves, and error, it will wrap it in {error} , if no data returns Promise.resolve(undefined), 
+ * Run some method that returns a value, will check for updated conditions until timeout or when data becomes available
+ * @param {function} fn callable method that returns some value
+ * @param {number} timeout (ms) specify max time to wait for data before timeout
+ * @param {number} testEvery how ofter to test data availability
+ * @returns {Promise} always resolves, when return is empty it will be wrapped in an {error}
+ * 
+ * @example 
+ * resolver(()=>Promise.resolve({data:'hello world'}),5000,50).then(n=>{
+ *   log({resolver:n})
+ * })
+ * 
+ * resolver(()=>Promise.reject('some error'),5000,50).then(n=>{
+ *   log({resolver:n}) // {error: 'some error'}
+ * })
 */
 const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
     let isFunction = typeof fn === 'function'
@@ -1499,6 +1536,7 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
     })
 }
 
+// REVIEW to continue jsdoc
 /** 
  * @flatten
  * - flattens 2 level array to 1 level, [[]] > [], [[[]]] > [[]]
@@ -2243,11 +2281,3 @@ export { truthFul }
 export { inIndex }
 export { isRegExp }
 export { matched }
-/**
- * @prop {*} l any data to print
- * @prop {*} err display as error if set to true
- */
-// @ts-ignore
-export const notify = function (logData = null, err = null) {
-    throw ('no notify support for x-utils-es, use: x-utils')
-}
