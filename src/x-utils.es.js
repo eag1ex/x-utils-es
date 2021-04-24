@@ -737,7 +737,7 @@ const sq = function() {
  * @param {Object} config {defer,checkEvery,maxWait,cbErr,message,logging,id}
  * @returns {Promise} -same promise provided in `{defer}`, dont need to use it, directly
 **/
-const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = ({ error, defer, id }) => {}, message = 'taken too long to respond', logging = false, id }) => {
+const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = ({ error, defer, id }) => {}, message = 'taken too long to respond', logging = false, id = undefined }) => {
 
     let isFN = (el) => typeof el === 'function'
     let validPromise = isPromise(defer) || isQPromise(defer)
@@ -891,12 +891,12 @@ const isPromise = (defer) => {
 }
 
 /**
- * Test provided item is an Object 
- *
+ * Test provided item is an Object,
+ * - Should not be a function/premitive or class (except for instance)
  * @param {any} obj
  * @param {function|undefined} cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns {true|false}
- * @example isObject([])===false,  isObject({})===true
+ * @example isObject([])===false,  isObject({})===true, isObject((class{}))===false, isObject(Function)===false
  */
 const isObject = (obj, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -907,13 +907,12 @@ const isObject = (obj, cbEval = undefined) => {
     // testing standard Object and Error
     const a = (Object.prototype === (obj).__proto__ || Error.prototype === (obj).__proto__)
     const ab = a && (obj instanceof Object)
-
     if (ab) return true
-
-    // testing (new class{})
     if (obj.__proto__ !== undefined) {
-        if (obj.__proto__.__proto__ !== undefined) {
-            if (obj.__proto__.__proto__ === Object.prototype && obj instanceof Object) return true
+        try {
+            return obj.__proto__ instanceof Object
+        } catch (err) {
+            return false
         }
     }
     // testing (class{}).prototype
