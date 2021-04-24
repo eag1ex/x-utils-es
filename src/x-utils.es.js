@@ -1313,8 +1313,20 @@ const copyDeep = (data) => {
     }
 }
 
+/**
+ * Delay sync/async process to be executed after delay is resolved
+ * @param {number} time in ms
+ * @returns {Promise} always resolves
+ * 
+ * @example 
+ *  // async 
+ *  log('delay start')
+ *  await delay(2000)
+ *  // continue with process
+ *  // sync
+ *  delay(2000).then(()=>{...})
+ */
 const delay = (time = 100) => {
-    // @ts-ignore
     const isNum = typeof time === 'number' && time >= 0 // must provide number
     if (!isNum) return Promise.resolve(true) // or resolve 
     return new Promise((resolve, reject) => {
