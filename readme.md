@@ -224,15 +224,17 @@ isNumber([]) // false
 
 
 /** 
- * @sq() / simpleQ / new Promsie / defer 
- * simplified `new Promise()`
- * access to {resolve,reject, promise}
- * @returns {Object} `{resolve,reject, promise}`
-**/
-
+ * SimpleQ / instanceOf Promise & SimpleQ
+ * @implements Promise
+ * - Deferred Promise, member of Promise
+ * - can access all Promise props: 
+ * 
+ * 
+*/
 let defer = sq()
 defer instanceof Promise === true
 
+// with/without .promise
 defer.promise.then(n=>{
     log('[sq][resolve]',n)
 }).catch(err=>{
@@ -241,6 +243,22 @@ defer.promise.then(n=>{
 
 defer.resolve('hello world')
 // defer.reject('kill it')
+
+// or
+defer.resolve('hello world')
+.then(log)
+
+// or
+defer.then(log)
+.resolve('hello world')
+
+// or 
+defer.reject('ups')
+.catch(onerror)
+
+// wait for promise options
+await defer // same
+await defer.promise // same
 
 
 

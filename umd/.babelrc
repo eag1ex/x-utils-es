@@ -1,6 +1,6 @@
 {
     "moduleId": "xutils",
-    "comments": false,
+    "comments": true,
     "presets": [
         [
             "@babel/preset-env",
@@ -24,7 +24,7 @@
                 "simplifyComparisons": false, // not a good idea
                 "keepFnName": true,
                 "mangle": false, // keep original method prop names for clarity
-                "deadcode": true
+                "deadcode": true              
             }
         ]
     ],

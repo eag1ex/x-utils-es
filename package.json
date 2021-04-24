@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "1.8.4",
+  "version": "1.9.0",
   "description": "helper tools for javascript validation",
   "main": "src/x-utils.es.js",
   "module": "src/x-utils.es.js",
@@ -80,7 +80,6 @@
     "matched",
     "isRegExp"
   ],
-
   "esm": {
     "mode": "auto"
   },
@@ -89,5 +88,11 @@
     "node": "*",
     "npm": "*"
   },
-  "contributors": []
+  "contributors": [],
+  "devDependencies": {
+    "q": "^1.5.1"
+  },
+  "dependencies": {
+    "esm": "^3.2.25"
+  }
 }
