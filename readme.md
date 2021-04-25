@@ -269,20 +269,20 @@ await defer.promise // same
  * @param any
  * @returns boolean
  * **/
-isPromise(function () { }) // false
-isPromise(Promise.resolve()) ) // true
+isPromise( function () { } ) // false
+isPromise( Promise.resolve()) ) // true
 isPromise( sq() ) // true
-
+isPromise( q.defer() ) // true
 
 /**
- * checks for q.defer/node.js promise, along with sq() promise 
+ * checks for q.defer/node.js promise
  * - checks if its a resolvable promise
  * @param any
  * @returns boolean
  * **/
 
 isQPromise(Promise.resolve()) }) // false 
-isQPromise( sq() ) // true
+isQPromise( sq() ) // false
 isQPromise( q.defer() ) // true (refering to node.js q )
 
 
@@ -715,10 +715,7 @@ hasProto({}, ()=> Object.keys({}).length ) // false because object has no keys
  * **/
 validDate(new Date('')) // false
 validDate(new Date()) // true
-validDate(new Date(1)) // true
-validDate(Date()) // false because its a string haha
 validDate( new Date(), ()=>false ) // false callback !!false
-validDate( '', ()=>true ) // false // not a date
 
 
 /**
@@ -768,7 +765,7 @@ arrayWith([ { a: 1 } , 1,[], undefined, { b: 3 } ], 'b') //  [ { b: 3 }]
 * **/
 
 exFromArray([{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 }], ['a', 'b']) 
- // [ { c: 5 }, undefined, undefined, { c: 1 }] // for consistency the index/positions are kept :)
+ // [ { c: 5 }, undefined, undefined, { c: 1 }] 
 
 exFromArray([ null,1,{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 },'2'], ['a', 'c']) 
 // [null,1, undefined,undefined,{ b: 2 },undefined,'2']
@@ -786,12 +783,14 @@ exFromArray([ null,1,{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 },'2'], [
  * @returns [...] only items passed by pick condition in same order
  * **/
 
-let picks = [Boolean, 'hello', Object, { a: 1 }, BigInt] // only these types or/and values will be tested
+// only these types/values will be tested
+let picks = [Boolean, 'hello', Object, { a: 1 }, BigInt] 
 pickFromArray([false, undefined, { a: 1 }, 'hello', ['hello'], {}, 1234567890123456789012345678901234567890n, 'not selected'], picks )
 //>  [ false,{ a: 1 },'hello',{},1234567890123456789012345678901234567890n ] 
 
 
-let picks = [Number, Boolean] // select only numbers and booleans from array
+
+let picks = [Number, Boolean] // select only numbers and booleans from array  
 pickFromArray([undefined, 1, {}, 2, null, [], 'hello world', 3, true, 4, null, 5], picks) 
 //> [ 1, 2, 3, true, 4, 5 ]
 
@@ -823,7 +822,7 @@ pickFromArray([{ data: ['hello'] }, { data: {} }, { data: 1 }, { data: { d: 2 } 
 
 let picks = [{ data: Object }] // we only want to pick items that are {data} objects containing inner objects
 pickFromArray([{ data: { a: 1 } }, { data: 1 },false, ['hello'], { data: { d: 2 } }, { data: { b: 2 } }, 1, 2, [], {}], picks)
- // [{ data: { a: 1 } },{ data: { d: 2 } },{ data: { b: 2 } } ]
+ //=> [{ data: { a: 1 } },{ data: { d: 2 } },{ data: { b: 2 } } ]
 
 
 let picks = [{ data: Object, a: 1 }]  // narrowing down the results
@@ -832,7 +831,7 @@ pickFromArray([{ data: { a: 1 }, a: 1 }, { data: 1 }, { data: { d: 2 } }, { data
 
 let picks = [{ a: Object, b: 1 }]  // narrowing down the results, should select all array objects that at least contain all the above
 pickFromArray([{ a: { a: 1 }, b: 1, c:1  }, { data: 1 }, { a: { a: 1 }, b: 1 }, { data: null }, false, 1, 2, [], {}], [{ a: Object, b: 1 }] )
-// >  [ { a: { a: 1 }, b: 1, c: 1 }, { a: { a: 1 }, b: 1 }]
+//=>  [ { a: { a: 1 }, b: 1, c: 1 }, { a: { a: 1 }, b: 1 }]
 
 
 
@@ -977,7 +976,7 @@ loop(2,inx=>{
 loop(3,inx=>{
     if(inx===3) return {break:true}
     return {[inx]:inx+1}
-}) //  [ { '0': 1 }, { '1': 2 }, { '2': 3 } ] // dont be fooled, 0 is also an index ;))
+}) //  [ { '0': 1 }, { '1': 2 }, { '2': 3 } ]
 
 
 
