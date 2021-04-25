@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 
 // import assert from 'assert'
-import { isArray, isObject, isString, isEmpty, isFalse, isFalsy, isBigInt } from '../src'
+import { isArray, isObject, isString, isEmpty, isFalse, isFalsy, isTrue, isBoolean, isNull, isUndefined } from '../src'
 import { describe, expect, it, jest } from '@jest/globals'
 
 describe('Evaluate Validators/ segment (1.)', () => {
@@ -60,11 +60,20 @@ describe('Evaluate Validators/ segment (1.)', () => {
     })
 
     it('isFalse()', (done) => {
-        let invalids = [1, true, 'a']
-        let valids = [false]
+        let invalids = [1, true, 'a', new Boolean(true), {}]
+        let valids = [false, new Boolean(false), undefined, null, 0, -1]
 
         for (let a of invalids) expect(isFalse(a)).toBe(false)
         for (let b of valids) expect(isFalse(b)).toBe(true)
+        done()
+    })
+
+    it('isTrue()', (done) => {
+        let invalids = [-1, 0, false, 'a', new Boolean(false), null, undefined, {}]
+        let valids = [true, new Boolean(true), 5 ]
+
+        for (let a of invalids) expect(isTrue(a)).toBe(false)
+        for (let b of valids) expect(isTrue(b)).toBe(true)
         done()
     })
     

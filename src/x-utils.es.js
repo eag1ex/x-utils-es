@@ -568,6 +568,7 @@ const isError = (el) => {
  * isFalse(true) // false
  * isFalse(false) // true
  * isFalse({}) // false
+ * isFalse( new Boolean(false) ) // true
  * 
 */
 const isFalse = (el) => {
@@ -575,7 +576,15 @@ const isFalse = (el) => {
     if (typeof el === 'undefined') return true
     if (typeof el === 'number' && el < 1) return true
     if (typeof el === 'boolean' && el === false) return true
-    else return false
+    try {
+        if (el instanceof Boolean) {
+            return el.valueOf() === false
+        }
+    } catch (err) {
+        //
+    }
+
+    return false
 }
 
 /** 
@@ -591,6 +600,7 @@ const isFalse = (el) => {
  * isTrue(true) // true
  * isTrue(false) // false
  * isTrue([]) // false
+ * isTrue( new Boolean(true) ) // true
  * 
 */
 const isTrue = (el) => {
@@ -598,7 +608,15 @@ const isTrue = (el) => {
     if (typeof el === 'undefined') return false
     if (typeof el === 'number' && el > 0) return true
     if (typeof el === 'boolean' && el === true) return true
-    else return false
+    
+    try {
+        if (el instanceof Boolean) {
+            return el.valueOf() === true
+        }
+    } catch (err) {
+        //
+    }
+    return false
 }
 
 /** 
@@ -616,7 +634,15 @@ const isTrue = (el) => {
 const isBoolean = (el) => {
     if (el === undefined) return false
     if (el === null) return false
-    return typeof el === 'boolean' ? true : Boolean.prototype === (el).__proto__
+
+    try {
+        if (el instanceof Boolean) {
+            return true
+        }
+    } catch (err) {
+        //
+    }
+    return false
 }
 
 /** 
@@ -1353,7 +1379,7 @@ const isFalsy = (el = undefined) => {
     if (el === false && typeof el === 'boolean') return true
     if (el === true && typeof el === 'boolean') return false
     if (typeof el === 'number' && el > 0) return false
-    
+
     if (String.prototype === (el).__proto__) return el.length < 1
     if (Array.prototype === (el).__proto__) return (el || []).length === 0
     if (Promise.prototype === (el || {}).__proto__) return false
