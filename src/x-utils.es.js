@@ -1,6 +1,9 @@
 /**
- * x-utils
  * @module x-utils
+ * @license CC-BY-SA-4.0
+ * {@link https://eaglex.net Eaglex}
+ * @description Simple javascript, lodash alternative library, for work contact me at: eaglex.net
+ * @author Developed by Anon
  */
 
 "use strict"
@@ -8,6 +11,7 @@
 
 
 /** 
+ * 
  * If you used logging in your application from the moment this method was called all logging will be disabled
  * - it affects: log, warn,error, onerror, errorTrace, stack, attention, alert, debug
  * @returns {true|false} 
@@ -767,7 +771,7 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
  * .catch(onerror)
  *
 **/
-const sq = function() {
+const sq = ()=> {
     
     class SimpleQ extends Promise {
         constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
