@@ -1,0 +1,21 @@
+{
+    "testRegex": "/*.xtest.js$",
+    "collectCoverage": true,
+    "testPathIgnorePatterns":[
+        "/node_modules/"
+      ],
+    "coverageReporters": ["lcov"],
+    "coverageDirectory": "coverage",
+    "coverageThreshold": {
+     "global": {
+     "branches": 0,
+     "functions": 0,
+     "lines": 0,
+     "statements": 0
+     }
+    },
+    "moduleDirectories": ["node_modules", "src"],
+    "transform": {
+        "^.+\\.[t|j]sx?$": "babel-jest"
+      }
+   }

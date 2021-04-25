@@ -9,7 +9,6 @@
 "use strict"
 /* eslint-disable no-proto */
 
-
 /** 
  * 
  * If you used logging in your application from the moment this method was called all logging will be disabled
@@ -771,7 +770,7 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
  * .catch(onerror)
  *
 **/
-const sq = ()=> {
+const sq = () => {
     
     class SimpleQ extends Promise {
         constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
@@ -938,7 +937,6 @@ const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = (
  **/
 const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCase().replace(/\s/g, '')
 
-
 /**
  * Check item is a number
  * @param {any} n 
@@ -982,7 +980,6 @@ const isDate = (d) => {
  * stringSize([123]) // 0
  */
 const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
-
 
 /** 
  * There are 2 types of promises available javascript standard Promise and the node.js `q.defer()` promise
@@ -1059,7 +1056,6 @@ const isPromise = (defer) => {
     }
 }
 
-
 /**
  * Test provided item is an Object,
  * - Should not be a function/primitive, or class (except for instance)
@@ -1080,8 +1076,9 @@ const isPromise = (defer) => {
  * isObject( [], ()=>Object.keys({1:1}).length ) // false, not an object
  *
  */
-const isObject = (obj, cbEval = undefined) => {
+const isObject = (obj = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isNaN(obj) && typeof obj === 'number') return false
     if (typeof obj === 'function') return false
     if (isBigInt(obj)) return false
     if (!isNaN((+obj)) || obj === undefined) return false
@@ -1227,7 +1224,6 @@ const selectiveArray = (selectBy = [], data = []) => {
     return nData
 }
 
-
 /**
  * Test if item is a class{} that can be initiated
  * @param {any} obj
@@ -1248,7 +1244,6 @@ const isClass = (obj = {}, cbEval = undefined) => {
  *
 */
 const hasPrototype = isClass
-
 
 /**
  * Check if item has access to __proto__
@@ -1352,10 +1347,13 @@ const objectSize = (obj = {}) => {
  * isFalsy( (new function(){}()) ) // true
  * isFalsy( (new function(){this.a=false}()) ) // false
  */
-const isFalsy = (el = null) => {
+const isFalsy = (el = undefined) => {
     if (el === undefined || 
         el === null) return true     
     if (el === false && typeof el === 'boolean') return true
+    if (el === true && typeof el === 'boolean') return false
+    if (typeof el === 'number' && el > 0) return false
+    
     if (String.prototype === (el).__proto__) return el.length < 1
     if (Array.prototype === (el).__proto__) return (el || []).length === 0
     if (Promise.prototype === (el || {}).__proto__) return false
@@ -1370,7 +1368,6 @@ const isFalsy = (el = null) => {
     if (el) return false
     else return false
 }
-
 
 /**
  * Test if an item is a string, or new String()
@@ -1393,8 +1390,6 @@ const isString = (str = '', cbEval = undefined) => {
     if (typeof str === 'boolean') return false
     return str === '' ? true : String.prototype === (str).__proto__
 }
-
-
 
 /**
  * Copy object by property name
@@ -1441,7 +1436,6 @@ const copy = (data) => {
         return typeCheck(data).primitiveValue
     }
 }
-
 
 /**
  * 
@@ -1522,7 +1516,6 @@ const delay = (time = 100) => {
         }, time)
     })
 }
-
 
 /**
  *  
@@ -1720,7 +1713,6 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
     })
 }
 
-
 /**
  * Flattens 2 level array to 1 level: [[]] > [], [[[]]] > [[]]
  * @param {array} arr 
@@ -1733,7 +1725,6 @@ const flatten = (arr = []) => {
     if (!isArray(arr)) return []
     return [].concat(...arr)
 }
-
 
 /** 
  * Flattens all array levels, example :[[['hello']]] > ['hello']
@@ -1890,7 +1881,7 @@ const arrayWith = (arr = [], prop = '') => {
  * exFromArray([ null,1,{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 },'2'], ['a', 'c']) 
  * // [null,1, undefined,undefined,{ b: 2 },undefined,'2']
  **/
-const exFromArray = (arr = [], excludes = [/**propName,propName */]) => {
+const exFromArray = (arr = [], excludes = [/** propName,propName */]) => {
     let o = []
     try {
         if (!(arr instanceof Array)) return o

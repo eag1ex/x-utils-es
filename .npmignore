@@ -19,3 +19,5 @@ umd/developer.md
 esm/developer.md
 jsdoc.json
 docs
+jest.config.json
+__tests__
