@@ -983,7 +983,7 @@ const stringSize = (str = '') => str !== undefined && str !== null ? (str).__pro
 /** 
  * There are 2 types of promises available javascript standard Promise and the node.js `q.defer()` promise
  * - this method tests for the q.defer node.js promise version
- * @param {Promise} defer
+ * @param {Promise} defer q.defer() promise to check against
  * @returns {true|false}
  * 
  * @example
