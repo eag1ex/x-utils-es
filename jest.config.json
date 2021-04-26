@@ -1,8 +1,10 @@
 {
     "testRegex": "/*.xtest.js$",
-    "collectCoverage": true,
+    "collectCoverage": false,
     "testPathIgnorePatterns":[
-        "/node_modules/"
+        "/node_modules/",
+        "/umd/",
+        "/esm/"
       ],
     "coverageReporters": ["lcov"],
     "coverageDirectory": "coverage",

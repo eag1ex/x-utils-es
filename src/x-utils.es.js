@@ -376,6 +376,10 @@ const error = onerror
  * Test provided item is a function
  * @param {any} el 
  * @returns {true|false}
+ * 
+ * @example
+ * isFunction(()=>{}) // true 
+ * isFunction(Function) // true 
  */
 const isFunction = (el = undefined) => typeof el === 'function'
 
@@ -383,6 +387,12 @@ const isFunction = (el = undefined) => typeof el === 'function'
  * Test provided item is BigInt 
  * @param {any} n 
  * @returns {true|false}
+ * 
+ * @example 
+ * isBigInt( BigInt(Number.MAX_SAFE_INTEGER) ) // true
+ * isBigInt( 1n ) // true
+ * isBigInt( (2n ** 54n) ) // true
+ * 
  */
 const isBigInt = (n) => {
     try {
@@ -466,7 +476,7 @@ const validDate = (dt, cbEval = undefined) => {
  * isArray(new Array(), ()=>[1,2].length===1) // false, because callback return !!false
  * isArray({}, ()=>true) // false // not array
  */
-const isArray = (arr = [], cbEval = undefined) => {
+const isArray = (arr = undefined, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (isBigInt(arr)) return false
     else return !arr ? false : Array.prototype === (arr).__proto__
@@ -634,7 +644,7 @@ const isTrue = (el) => {
 const isBoolean = (el) => {
     if (el === undefined) return false
     if (el === null) return false
-
+    if (el === true || el === false) return true
     try {
         if (el instanceof Boolean) {
             return true
@@ -970,13 +980,19 @@ const validID = (id = '') => !(id || '') ? '' : (id || '').toString().toLowerCas
  * 
  * @example
  * isNumber(-1) // true
+ * isNumber( new Number(-1) ) // true
  * isNumber(NaN) // true
  * isNumber(true) // false
  * isNumber([]) // false
  **/
 const isNumber = (n) => {
     if (isBigInt(n)) return false
-    else return n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
+    try {
+        if (n instanceof Number) return true
+    } catch (err) {
+        //
+    }
+    return n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
 }
 
 /**
@@ -1019,7 +1035,7 @@ const stringSize = (str = '') => str !== undefined && str !== null ? (str).__pro
  * isQPromise( q.defer() ) // true (referring to node.js q )
  * 
 **/
-const isQPromise = (defer) => {
+const isQPromise = (defer = undefined) => {
 
     try {
         if (
@@ -1102,11 +1118,11 @@ const isPromise = (defer) => {
  * isObject( [], ()=>Object.keys({1:1}).length ) // false, not an object
  *
  */
-const isObject = (obj = {}, cbEval = undefined) => {
+const isObject = (obj = undefined, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isBigInt(obj)) return false
     if (isNaN(obj) && typeof obj === 'number') return false
     if (typeof obj === 'function') return false
-    if (isBigInt(obj)) return false
     if (!isNaN((+obj)) || obj === undefined) return false
     if ((obj).__proto__ === ([]).__proto__) return false // is array 
     // testing standard Object and Error
@@ -1115,7 +1131,7 @@ const isObject = (obj = {}, cbEval = undefined) => {
     if (ab) return true
     if (obj.__proto__ !== undefined) {
         try {
-            return obj.__proto__ instanceof Object
+            return obj instanceof Object
         } catch (err) {
             return false
         }
@@ -1255,6 +1271,15 @@ const selectiveArray = (selectBy = [], data = []) => {
  * @param {any} obj
  * @param {*} cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns {true|false}
+ * 
+ * @example
+ * isClass(Array) // true
+ * isClass(Object) //true
+ * isClass((class {}) ) //true
+ * 
+ * // instance of a class
+ * isClass( (new function() {}()) ) // false
+ * isClass( new Object() ) // false
  */
 const isClass = (obj = {}, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
@@ -1409,7 +1434,7 @@ const isFalsy = (el = undefined) => {
  * isString('123', ()=>'123'.length>5) // false, callback return !!false
  * isString('123', ()=>'123'.length>2) // true
  */
-const isString = (str = '', cbEval = undefined) => {
+const isString = (str = undefined, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (str === undefined) return false
     if (str === null) return false
@@ -1815,12 +1840,12 @@ const dupes = (item, index = 0) => {
 }
 
 /**
- * New array with uniq object props
- * - selects the first match ignoring others
+ * New array with uniq object property values
+ * - selects the first match ignoring others, those which prop values are repeated
  * - non matching objects, preserved as usual
  * @param {array} arr mixed array of items and objects
- * @param {string} propName prop name that exists in the array of objects
- * @returns {array} [{},...]
+ * @param {string} propName select key and test values, are repeated
+ * @returns {array} [{},...] items with object items whos values are uniq
  * 
  * @example
  * uniqBy([{ a: 1, b: 2 }, 1, { b: 1 }, 5, { a: 1 }, null, { a: 1, b: 2 }], 'a')
@@ -1828,6 +1853,9 @@ const dupes = (item, index = 0) => {
  * 
  * uniqBy([{ c: 1, b: 2 }, { c: 1 }, { c: 1 }, { c: 1, b: 2 }], 'c')
  * //=> [ { c: 1, b: 2 } ]
+ * 
+ * uniqBy([{ a: 1, b: 2 }, null, undefined, true, 1, { a: 1 }, { a: 3 }, false], 'a')
+ * //=> [ { a: 1, b: 2 }, null, undefined, true, 1, { a: 3 }, false ] prop[values] are not uniq
  */
 const uniqBy = (arr = [], propName = '') => {
     const stored = {}
@@ -1838,6 +1866,11 @@ const uniqBy = (arr = [], propName = '') => {
     for (let inx = 0; inx < arr.length; inx++) {
         let item = arr[inx]
 
+        if (isUndefined(item) || isNull(item)) {
+            n.push(item)
+            continue
+        }
+        
         if (!isObject(item)) {
             n.push(item)
             continue
@@ -1876,8 +1909,9 @@ const uniqBy = (arr = [], propName = '') => {
  * //  [ { b: 3 }] 
 **/
 const arrayWith = (arr = [], prop = '') => {
-    if (isArray(arr)) return []
+    if (!isArray(arr)) return []
     let objWith = (o) => {
+        // if()
         if (isObject(o)) {
             if (Object.keys(o).indexOf(prop) !== -1) return o
             else return undefined
@@ -1895,7 +1929,7 @@ const arrayWith = (arr = [], prop = '') => {
 
 /**
  * Array including any objects and values
- * - Exclude items from array that match, and replace with undefined keeping same index position
+ * - Exclude items from array that match by excludes, and replace with undefined keeping same index position
  * @param {array} arr mixed with objects to exclude by propName
  * @param {array} excludes propNames to match each object in arr[x]
  * @returns {array} mixed with any other types as per input, in same index position
@@ -1966,7 +2000,7 @@ const exFromArray = (arr = [], excludes = [/** propName,propName */]) => {
   * //=> [{ data: { a: 1 } },{ data: { d: 2 } },{ data: { b: 2 } } ]
   * 
   * let picks = [{ a: Object, b: 1 }]  // narrowing down the results, should select all array objects that at least contain all the above
-  * pickFromArray([{ a: { a: 1 }, b: 1, c:1  }, { data: 1 }, { a: { a: 1 }, b: 1 }, { data: null }, false, 1, 2, [], {}], [{ a: Object, b: 1 }] )
+  * pickFromArray([{ a: { a: 1 }, b: 1, c:1  }, { data: 1 }, { a: { a: 1 }, b: 1 }, { data: null }, false, 1, 2, [], {}], picks)
   * //=>  [ { a: { a: 1 }, b: 1, c: 1 }, { a: { a: 1 }, b: 1 }]
  */
 const pickFromArray = (arr = [], picks = []) => {
@@ -2007,7 +2041,7 @@ const pickFromArray = (arr = [], picks = []) => {
                 if (pick.name.toLowerCase() === 'object') return true
             }
         }
-
+        
         try {
             // eslint-disable-next-line valid-typeof
             return (pick.name || '').toLowerCase() === typeof item
@@ -2052,6 +2086,7 @@ const pickFromArray = (arr = [], picks = []) => {
             // array === array (also matching contents of each pick)
             // each pick contents that can be matched =[number, boolean,string, primitiveValue]
             if (isArray(pick) && isArray(item)) {
+               
                 let pass = pick.filter(n => item.filter(nn => nn === n || isInstanceByName(nn, n)).length)
 
                 // all picks must match the requirement and array can have more items then pick has
@@ -2095,6 +2130,7 @@ const pickFromArray = (arr = [], picks = []) => {
         if (o instanceof Array) return o
         else return []
     } catch (err) {
+        console.log(err)
         return []
     }
   
