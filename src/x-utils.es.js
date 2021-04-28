@@ -1449,13 +1449,12 @@ const isString = (str = undefined, cbEval = undefined) => {
  * @returns {object} new object of copied values
  * 
  * @example
- * copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c']) } // {a: 1, c: 3}
- * copyBy({ a: 1, b: 2, c: 3 }) } // {}
+ * copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c'])  // {a: 1, c: 3}
+ * copyBy({ a: 1, b: 2, c: 3 })  // {}
  * copyBy({}) } // {}
  */
 const copyBy = (obj = {}, refs = []) => {
     if (!isObject(obj)) return {}
-
     const d = [].concat(refs).reduce((n, el, i) => {
         if (obj[el] !== undefined) n[el] = obj[el]
         return n
@@ -1626,7 +1625,7 @@ const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
  * @returns {array} only non falsy items are returned 
  * 
  * @example 
- * trueVal([-1, 0,1 {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined,true]) 
+ * trueVal([-1, 0,1, {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined,true]) 
  * //=> [1,'hello',{ name: 'jack' },true]
  **/
 const trueVal = (arr = []) => {
@@ -1642,12 +1641,12 @@ const trueVal = (arr = []) => {
  * 
  * @example
  * trueValDeep([1, 0, [], {}, "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined])
- * //=> [ 1, 'hello', [ 1 ], { name: 'jack' } ] }
+ * //=> [ 1, 'hello', [ 1 ], { name: 'jack' } ] 
  */
 const trueValDeep = (arr = []) => {
     // provided must be array
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
-
+    if (!arr.length) return []
     return [].concat(arr).map((itm, inx) => {
         const typeIs = typeCheck(itm, false)
         // this item has child, check for false entities
@@ -1678,12 +1677,12 @@ const trueValDeep = (arr = []) => {
  * //=> {g: 'hello'}
  */
 const trueProp = (obj = {}) => {
-    if (!(!obj ? false : Object.prototype === (obj).__proto__)) return 0
+    if (!(!obj ? false : Object.prototype === (obj).__proto__)) return {}
 
-    return Object.assign({}, Object.entries(obj).reduce((n, [key, val], inx) => {
+    return Object.entries(obj).reduce((n, [key, val], inx) => {
         if (!isFalsy(val)) n[key] = val
         return n
-    }, {}))
+    }, {})
 }
 
 /** 

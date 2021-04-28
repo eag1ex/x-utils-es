@@ -5,12 +5,12 @@
 /* eslint-env mocha */
 
 /*
-objectSize,stringSize,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,head,flatten,flattenDeep,trueVal,trueValDeep,trueProp,typeCheck,isEmpty,isError, log,warn,onerror,error,debug,loggerSetting,isClass,hasPrototype, isInstance,hasProto, chunks, validDate,stack,errorTrace,resolver,dupes,loop,isBigInt,dispatcher, withHoc,xrequire,asJson,truthFul,inIndex,matched,isRegExp 
+objectSize,stringSize,copyBy,timer,interval,validID,isNumber,isPromise,isQpromise,sq,cancelPromise,copy,copyDeep,delay,someKeyMatch,exactKeyMatch,trueValDeep,trueProp,typeCheck,loggerSetting,hasPrototype,hasProto, validDate,resolver,dupes,loop,dispatcher, withHoc,xrequire,asJson,truthFul,inIndex,matched,isRegExp 
 * */
 
 // import assert from 'assert'
 import { isArray, isObject, isString, isEmpty, isFalse, isFalsy, isTrue, isBoolean, isNull, isUndefined, isClass, isBigInt, isError, isFunction, isInstance, isNumber, sq, isPromise, isQPromise, isSQ, delay, isRegExp,
-    last, head, uniq, uniqBy, shuffle, arrayWith, exFromArray, pickFromArray
+    last, head, uniq, uniqBy, shuffle, arrayWith, exFromArray, pickFromArray, flatten, flattenDeep, chunks, trueVal, trueValDeep
 } from '../src'
 import { describe, expect, it, jest } from '@jest/globals'
 
@@ -143,6 +143,53 @@ describe('Evaluate Arrays/ segment (1.)', () => {
 
         done()
 
+    })
+
+    it('flatten()', (done) => {
+        
+        expect(flatten).toBeInstanceOf(Function)
+        expect(flatten(undefined)).toEqual([])
+        expect(flatten([[1]])).toEqual([1])
+        done()
+    })
+    it('flattenDeep()', (done) => {
+        
+        expect(flattenDeep).toBeInstanceOf(Function)
+        expect(flattenDeep(undefined)).toEqual([])
+        expect(flattenDeep([[[1]]])).toEqual([1])
+        expect(flattenDeep([[[[1]]]])).toEqual([1])
+        done()
+    })
+
+    it('chunks()', (done) => {
+        
+        expect(chunks).toBeInstanceOf(Function)
+        expect(chunks(undefined)).toEqual([])
+    
+        expect(chunks([1, 2, 3, 4, 5, 6], 2)).toEqual([ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ])
+        expect(chunks([1, 2, 3, 4, 5, 6, 7, 8], 2)).toEqual([ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [7, 8] ])
+   
+        done()
+    })
+
+    it('trueVal()', (done) => {
+        
+        expect(trueVal).toBeInstanceOf(Function)
+        expect(trueVal(undefined)).toEqual([])
+        expect(trueVal({})).toEqual([])
+        expect(trueVal([-1, 0, 1, {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined, true, NaN])).toEqual([1, 'hello', { name: 'jack' }, true])
+
+        done()
+    })
+
+    it('trueValDeep()', (done) => {
+        
+        expect(trueValDeep).toBeInstanceOf(Function)
+        expect(trueValDeep(undefined)).toEqual([])
+        expect(trueValDeep({})).toEqual([])
+        expect(trueValDeep([1, 0, [], {}, "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined])).toEqual([ 1, 'hello', [ 1 ], { name: 'jack' } ])
+
+        done()
     })
 
 })
