@@ -7,7 +7,7 @@
 // NOTE Provided tests are for arrays and objects, logical operators
 
 /*
-stringSize,timer,interval,validID,cancelPromise,copyDeep,delay,someKeyMatch,exactKeyMatch,typeCheck,loggerSetting,hasPrototype,hasProto, validDate,resolver,dupes,loop,dispatcher, withHoc,xrequire,asJson,truthFul,inIndex,matched 
+timer,interval,copyDeep,someKeyMatch,exactKeyMatch,typeCheck,loggerSetting,hasPrototype,hasProto, validDate,resolver,dupes,loop,dispatcher, withHoc,xrequire,truthFul
 * */
 
 // import assert from 'assert'
