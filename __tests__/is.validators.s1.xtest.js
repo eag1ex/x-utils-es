@@ -33,6 +33,8 @@ describe('Evaluate Validators/ segment (1.)', () => {
 
         for (let a of invalids) expect(isObject(a)).toBe(false)
         for (let b of valids) expect(isObject(b)).toBe(true)
+
+        expect(isObject({}, () => Object.keys({}).length > 0)).toBe(false)
         done()
     })
 

@@ -68,6 +68,7 @@ describe('Evaluate Arrays/ segment (1.)', () => {
     it('shuffle()', (done) => {
 
         expect(shuffle).toBeInstanceOf(Function)
+        expect(shuffle({})).toStrictEqual([])
         expect(shuffle([1, 2, 3])).not.toEqual([1, 2, 3])
         expect(shuffle([1, 2, 3])).toHaveLength(3)
         done()

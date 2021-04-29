@@ -117,7 +117,7 @@ describe('Evaluate Mixed/ segment (1.)', () => {
         expect(loop).toBeInstanceOf(Function)
         expect(loop(2, true)).toStrictEqual([])
         expect(loop(false, true)).toStrictEqual([])
-
+        
         expect(loop(2, (inx) => inx)).toStrictEqual([0, 1])
         let val = 0
         loop(3, (inx) => val = inx)

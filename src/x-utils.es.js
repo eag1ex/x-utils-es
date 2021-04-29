@@ -56,6 +56,8 @@ const disableLogging = () => {
 const isWindow = () => {
     try {
         if ((process.env || {}).NODE_ENV === 'test') return false
+
+        /* istanbul ignore next */ 
         if (window) return true
     } catch (err) {
         return false
@@ -159,10 +161,11 @@ const loggerSetting = (logType = 'log', logMode = 'off') => {
  * @param logType
 */
 const checkLoggerSetting = (logType = '') => {
-
+   
     try {
         /* istanbul ignore next */ 
         if (window) {
+            if (!window.xUtilsConfig) window.xUtilsConfig = {}
             //  on browser
             if (window.xUtilsConfig) {
                 if (window.xUtilsConfig.logging === 'off') return 'off'
@@ -177,6 +180,7 @@ const checkLoggerSetting = (logType = '') => {
     }
 
     try {
+        if (!global.xUtilsConfig) global.xUtilsConfig = {}
         // in node
         if (global.xUtilsConfig) {
             if (global.xUtilsConfig.logging === 'off') return 'off'
@@ -332,7 +336,7 @@ const onerror = function (...args) {
     } catch (err) {
         // using node
     }
-
+    
     args = [].concat(`\x1b[41m[error]\x1b[0m\x1b[31m${format} `, args, '\x1b[0m')
     console.log.apply(null, args)
 }
@@ -404,13 +408,7 @@ const isFunction = (el = undefined) => typeof el === 'function'
  * isBigInt( (2n ** 54n) ) // true
  * 
  */
-const isBigInt = (n) => {
-    try {
-        return typeof (n) === 'bigint'
-    } catch (err) {
-        return false
-    }
-}
+const isBigInt = (n) => typeof (n) === 'bigint'
 
 /** 
  * For loop initiating callback on each iteration
@@ -431,7 +429,6 @@ const loop = function (size = 0, cb = (index = 0) => {}) {
     let isFN = typeof cb === 'function'
     let isNum = typeof size === 'number'
     if (!isFN || !isNum) return []
-    if (!size) return []
     let d = []
     for (let inx = 0; inx < Array(size).length; inx++) {
 
@@ -499,7 +496,7 @@ const isArray = (arr = undefined, cbEval = undefined) => {
  * @returns {object} `{ "type":date,NaN,promise,instance,prototype,array,...typeof, value: number, primitiveValue }`
  * 
  * @example
- * typeCheck({}) // {type:object, value:0, primitiveValue: Object() }
+ * typeCheck({}) // {type:'object', value:0, primitiveValue: Object() }
  * typeCheck({a:1,b:2}) // {type:'object', value:2, primitiveValue: Object() }
  * typeCheck([2,3],false) // {type:'array', value:2, primitiveValue: Array() }
  * typeCheck(Date,false) // {type:'date', value:1, primitiveValue: Date() }
@@ -512,6 +509,8 @@ const isArray = (arr = undefined, cbEval = undefined) => {
  * typeCheck(function () { }) // {type:'function', value:1, primitiveValue: Function }
  * typeCheck(Promise.resolve(),false) // {type:'promise', value:1, primitiveValue: Function }
  * typeCheck(Promise.resolve()) // {type:'object', value:1, primitiveValue: Function }
+ * typeCheck(BigInt(1)) // { type: 'bigint', value: 1, primitiveValue: 0n }
+ * typeCheck( new Error()) // { type: 'object', value: 0, primitiveValue: Error() }
 */
 const typeCheck = (el, standard = true) => {
 
@@ -525,13 +524,16 @@ const typeCheck = (el, standard = true) => {
     }
 
     try {
+        /* istanbul ignore next */ 
         if (typeof el === 'symbol') return { "type": ofType(), value: 0, primitiveValue: Symbol('') }
 
         if (el === undefined) return { "type": ofType(), value: 0, primitiveValue: undefined }
 
         if (typeof el === 'boolean') return { "type": ofType(), value: +(el), primitiveValue: Boolean() }
-
+        
+        /* istanbul ignore next */ 
         if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": ofType(), value: 1, primitiveValue: BigInt('') } // eslint-disable-line no-undef
+
         if (el === null) return { "type": ofType('null'), value: 0, primitiveValue: Object() }
 
         if (el.__proto__ === Date.prototype || asPrototype(Date)) return { "type": ofType('date'), value: 1, primitiveValue: new Date() }
@@ -834,7 +836,9 @@ const sq = () => {
             // @ts-ignore
             let res = SimpleQ._resolve
             if (res instanceof Function) res(data) 
+            /* istanbul ignore next */ 
             else onerror('[SimpleQ][resolve]', 'not callable')
+
             return this
         }
 
@@ -847,7 +851,9 @@ const sq = () => {
             // @ts-ignore
             let rej = SimpleQ._reject
             if (rej instanceof Function) rej(data) 
+            /* istanbul ignore next */ 
             else onerror('[SimpleQ][reject]', 'not callable')
+
             return this
         }
 
@@ -875,6 +881,7 @@ const sq = () => {
     if (deferred instanceof Promise && 
         deferred instanceof SimpleQ) {
         return deferred
+        /* istanbul ignore next */ 
     } else throw ('sq() not a valid Promise ?')    
 }
 
@@ -932,6 +939,7 @@ const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = (
     const t = setInterval(() => {
         if (exit_interval) {
             //  if (logging) log('[cancelPromise]', 'cleared')
+            /* istanbul ignore next */ 
             return clearInterval(t)
         }
 
@@ -943,6 +951,7 @@ const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = (
                 defer.reject(`${message}, time: ${inx}`) 
             } catch (err) {
                 // ups
+                /* istanbul ignore next */ 
                 onerror('[cancelPromise]', err)
             }
 
@@ -1011,6 +1020,7 @@ const isNumber = (n) => {
  * @param {any} d 
  * @returns {true|false}
  **/
+/* istanbul ignore next */ 
 const isDate = (d) => {
     try {
         return (d) instanceof Date
@@ -1100,7 +1110,7 @@ const isPromise = (defer) => {
     else {
         try {
             if (defer instanceof Promise) return true
-            if (isSQ(defer)) return true
+            // if (isSQ(defer)) return true
         } catch (err) {
             // onerror('err', err)
         }
@@ -1139,6 +1149,7 @@ const isObject = (obj = undefined, cbEval = undefined) => {
     const a = (Object.prototype === (obj).__proto__ || Error.prototype === (obj).__proto__)
     const ab = a && (obj instanceof Object)
     if (ab) return true
+
     if (obj.__proto__ !== undefined) {
         try {
             return obj instanceof Object
@@ -1146,8 +1157,8 @@ const isObject = (obj = undefined, cbEval = undefined) => {
             return false
         }
     }
-    // testing (class{}).prototype
-    if ((obj).prototype) return true
+    /* istanbul ignore next */ 
+    if (obj.prototype) return true
     return false
 }
 
@@ -1720,17 +1731,10 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
         let every = testEvery || 50
         let max = timeout
         let inx = 0
-        // in case fn throws we return as {error}
-        let called = null
 
-        /** 
-         * - call only once if its a promise
-        */
-        let test = () => {
+        let test = async () => {
             try {
-                if (!called) called = fn()
-                if (isPromise(called)) return called
-                else return fn()
+                return await fn()
             } catch (error) {
                 if (isError(error)) return { error }
                 if (isObject(error)) {
@@ -1743,46 +1747,36 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
         let t = setInterval(async () => {
             let anon = test() 
 
-            // lets catch any errors
-            if (isPromise(anon)) {
-                anon.catch(err => {
-                    return err
-                })
-            }
+            // lets catch any errors      
+            anon.catch(err => {
+                return err
+            })
 
             if (inx >= max) {
-                if (isPromise(anon)) anon.resolve(undefined)   
+                if ((anon || {}).resolve) anon.resolve(undefined)   
                 resolve(undefined)
                 return clearInterval(t)
             }
 
-            // internally execute only once if a promise
-            if (isPromise(anon)) {
-                try {
-                    // NOTE for promise with asyn we need the counter above,
-                    inx = inx + every
+            inx = inx + every
+            try {
+                // NOTE for promise with asyn we need the counter above,
+                inx = inx + every
 
-                    let d = await anon
+                let d = await anon
+                if (d) {
                     resolve(d)
                     return clearInterval(t)
-                } catch (error) {
-
-                    if (isError(error)) resolve(error)
-                    if (isObject(error)) {
-                        if (error.error) resolve(error)
-                        else resolve({ error })
-                    } else resolve({ error })
-                    return clearInterval(t)
                 }
-            }
+             
+            } catch (error) {
 
-            if (!isPromise(anon)) {
-                if (anon !== undefined) {
-                    resolve(anon)
-                    return clearInterval(t)
-                }
-                // NOTE counter can be accesed here
-                inx = inx + every
+                if (isError(error)) resolve(error)
+                if (isObject(error)) {
+                    if (error.error) resolve(error)
+                    else resolve({ error })
+                } else resolve({ error })
+                return clearInterval(t)
             }
            
         }, every)
@@ -1820,6 +1814,7 @@ const flattenDeep = (arr = []) => {
     try {
         o = test(arr, Infinity) || []
         if (o instanceof Array) return o
+        /* istanbul ignore next */ 
         else return []
     } catch (err) {
         return []
@@ -2494,7 +2489,9 @@ function xrequire(path = '', ref = '') {
         }
     }
 
+    /* istanbul ignore next */ 
     if (!(Mod.prototype instanceof module.constructor)) return undefined
+
     else return Mod.prototype.require(path, ref)
 }
 

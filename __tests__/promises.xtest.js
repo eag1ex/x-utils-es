@@ -27,12 +27,41 @@ describe('Evaluate Promises', () => {
 
         defer = sq()
         defer.reject(true)
-            .promise.catch((err) => {
+            .catch((err) => {
                 expect(err).toBe(true)
                 expect(defer.entity).toBe('SimpleQ')
                 done()
             })
 
+    })
+
+    it('resolver()', async (done) => {
+
+        jest.setTimeout(5000)
+
+        // resolved
+        let defer = sq()
+        let o = resolver(() => defer.promise, 700, 100)
+        await delay(500)
+        defer.resolve(true)
+        expect(await o).toBe(true)
+
+        // rejected
+        defer = sq()
+        o = resolver(() => defer.promise, 500, 100)
+        await delay(300) // fake wait
+        defer.reject(true)
+            .catch(err => {})
+        expect(await o).toStrictEqual({ error: true })
+
+        // not resolved on time
+        defer = sq()
+        o = await resolver(() => defer.promise, 500, 100)
+        await delay(700) 
+        defer.resolve(true)
+        expect(o).toBe(undefined)
+
+        done()
     })
 
     it('cancelPromise()', async (done) => {
@@ -113,41 +142,6 @@ describe('Evaluate Promises', () => {
         await fn1()
         await fn2()
         await fn3()
-        done()
-    })
-
-    it('resolver()', async (done) => {
-        jest.setTimeout(5000)
-
-        // resolved
-        let fn1 = async () => {
-            let defer = sq()
-            let o = resolver(() => defer.promise, 700, 100)
-            await delay(500)
-            defer.resolve(true)
-            expect(await o).toBe(true)
-        }
-
-        // rejected
-        let fn2 = async () => {
-            let defer = sq()
-            let o = resolver(() => defer.promise, 500, 100)
-            await delay(300) // fake wait
-            defer.reject(true)
-                .catch(err => {})
-            expect(await o).toStrictEqual({ error: true })
-        }
-
-        // not resolved on time
-        let fn3 = async () => {
-            let defer = sq()
-            let o = await resolver(() => defer.promise, 500, 100)
-            expect(o).toBe(undefined)
-        }
-
-        await fn1()
-        // await fn2()
-        // await fn3()
         done()
     })
 

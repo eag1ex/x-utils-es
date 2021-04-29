@@ -76,6 +76,10 @@ describe('Evaluate Mixed/ segment (2.)', () => {
 
         expect(typeCheck).toBeInstanceOf(Function)
         expect(typeCheck({})).toStrictEqual({ type: 'object', value: 0, primitiveValue: Object() })
+        // expect(typeCheck(Symbol())).toStrictEqual({ type: 'symbol', value: 0, primitiveValue: Symbol() })
+
+        expect(typeCheck(new Error())).toStrictEqual({ type: 'object', value: 0, primitiveValue: Error() })
+        
         expect(typeCheck({ a: 1, b: 2 })).toStrictEqual({ type: 'object', value: 2, primitiveValue: Object() })
         expect(typeCheck([2, 3], false)).toStrictEqual({ type: 'array', value: 2, primitiveValue: Array() })
         // NOTE due to new date new cannot evaluate exect match

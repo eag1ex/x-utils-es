@@ -31,9 +31,11 @@ describe('Evaluate logging methods', () => {
         debug('on debug')
         expect(console.log).toHaveBeenCalled()
 
+        stack('on stack', true)
         stack('on stack')
         expect(console.log).toHaveBeenCalled()
 
+        errorTrace({ data: 'some data' })
         errorTrace({ data: 'some data' }, true)
         expect(console.error).toHaveBeenCalled()
         done()
@@ -41,9 +43,13 @@ describe('Evaluate logging methods', () => {
 
     it('test logger option settings', (done) => {
         expect(loggerSetting).toBeInstanceOf(Function)
-
+        resetLogging()
         expect(disableLogging()).toBe(true)
-        
+
+        // test invalid setting
+        expect(loggerSetting('blah', 'off')).toBe(false)
+        expect(loggerSetting('log', 'blah')).toBe(false)
+
         // no executed
         log()
         warn()
