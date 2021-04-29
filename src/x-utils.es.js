@@ -17,6 +17,7 @@
 */
 const disableLogging = () => {
     try {
+        /* istanbul ignore next */ 
         if (window) {
             //  on browser
             if (window.xUtilsConfig) {
@@ -38,9 +39,11 @@ const disableLogging = () => {
         if (global.xUtilsConfig) {
             global.xUtilsConfig.logging = 'off'
         } else {
+           
             global.xUtilsConfig = {
                 logging: 'off'
             }
+
         }
 
         return true
@@ -66,6 +69,7 @@ const isWindow = () => {
 */
 const resetLogging = () => {
     try {
+        /* istanbul ignore next */ 
         if (window) {
             if (window.xUtilsConfig) {
                 window.xUtilsConfig.logging = 'on'
@@ -115,6 +119,7 @@ const loggerSetting = (logType = 'log', logMode = 'off') => {
     if (logType === 'onerror') logType = 'error'
 
     try {
+        /* istanbul ignore next */ 
         if (window) {
             //  on browser
             if (window.xUtilsConfig) {
@@ -156,10 +161,12 @@ const loggerSetting = (logType = 'log', logMode = 'off') => {
 const checkLoggerSetting = (logType = '') => {
 
     try {
+        /* istanbul ignore next */ 
         if (window) {
             //  on browser
             if (window.xUtilsConfig) {
-                return (window.xUtilsConfig[logType] ? window.xUtilsConfig[logType] : 'on').toString()
+                if (window.xUtilsConfig.logging === 'off') return 'off'
+                else return (window.xUtilsConfig[logType] ? window.xUtilsConfig[logType] : 'on').toString()
             } else {
                 return 'on'
             }
@@ -172,7 +179,8 @@ const checkLoggerSetting = (logType = '') => {
     try {
         // in node
         if (global.xUtilsConfig) {
-            return (global.xUtilsConfig[logType] ? global.xUtilsConfig[logType] : 'on').toString()
+            if (global.xUtilsConfig.logging === 'off') return 'off'
+            else return (global.xUtilsConfig[logType] ? global.xUtilsConfig[logType] : 'on').toString()
         } else {
             return 'on'
         }
@@ -190,6 +198,7 @@ const checkLoggerSetting = (logType = '') => {
  */
 const loggingON = () => {
     try {
+        /* istanbul ignore next */ 
         if (window) return (window.xUtilsConfig || {}).logging === 'on' || (window.xUtilsConfig || {}).logging === undefined
     } catch (err) {
         //
@@ -717,7 +726,7 @@ const isEmpty = (value) => {
  * 
 */
 const head = (arr = []) => {
-    if (Array.prototype !== (arr || null).__proto__) return []
+    if (Array.prototype !== (arr || null).__proto__) return undefined
     return arr.flat().shift()
 }
 
@@ -730,7 +739,7 @@ const head = (arr = []) => {
  * last([{},{},[1], { value: 1 }]) // { value: 1 }
  */
 const last = (arr = []) => {
-    return (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : null
+    return (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : undefined
 }
 
 /**
@@ -744,7 +753,7 @@ const last = (arr = []) => {
  */
 const timer = (cb = () => {}, time = 0) => {
     const isFN = typeof cb === 'function'
-    if (!isFN) return null
+    if (!isFN) return undefined
     time = (typeof time === 'number' && time >= 0) ? time : 0 // must provide number
     const s = setTimeout(() => {
         cb()
@@ -1733,6 +1742,13 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
 
         let t = setInterval(async () => {
             let anon = test() 
+
+            // lets catch any errors
+            if (isPromise(anon)) {
+                anon.catch(err => {
+                    return err
+                })
+            }
 
             if (inx >= max) {
                 if (isPromise(anon)) anon.resolve(undefined)   

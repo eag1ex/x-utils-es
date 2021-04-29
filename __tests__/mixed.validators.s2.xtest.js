@@ -6,17 +6,11 @@
 
 // NOTE Provided tests are for arrays and objects, logical operators
 
-/*
- xrequire
-**/
-
-// import assert from 'assert'
-import { someKeyMatch, exactKeyMatch, withHoc, typeCheck, xrequire
-} from '../src'
-import { describe, expect, it, jest } from '@jest/globals'
+import { someKeyMatch, exactKeyMatch, withHoc, typeCheck, xrequire } from '../src'
+import { describe, expect, it } from '@jest/globals'
 
 describe('Evaluate Mixed/ segment (2.)', () => {
-  
+
     it('someKeyMatch()', (done) => {
 
         expect(someKeyMatch).toBeInstanceOf(Function)
@@ -36,7 +30,7 @@ describe('Evaluate Mixed/ segment (2.)', () => {
         expect(exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 })).toBe(true)
         expect(exactKeyMatch({ a: 2, b: 1 }, { c: 1, a: 1, b: 1 })).toBe(false)
         expect(exactKeyMatch({}, { c: 1, d: 1 })).toBe(false)
-        
+
         expect(exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 }, () => 1 + 1 === 3)).toBe(false)
         done()
     })
@@ -48,33 +42,33 @@ describe('Evaluate Mixed/ segment (2.)', () => {
         function fn(a = 1, b = 2, c = 3) {
             return a + b + c
         }
-        
+
         let fnHocked = withHoc(fn)
         expect(fnHocked()).toBe(6)
 
         fnHocked = withHoc(fn, 4, 5, 6)
         expect(fnHocked()).toBe(15)
 
-        fnHocked = withHoc(fn, 4, 5, 6) 
+        fnHocked = withHoc(fn, 4, 5, 6)
         expect(fnHocked(7, 8, 9)).toBe(24)
 
         fnHocked = withHoc(Promise.resolve(fn), 4, 5, 6)
         expect(await fnHocked(7, 8, 9)).toBe(24)
 
         try {
-            fnHocked = withHoc(Promise.reject(fn), 4, 5, 6) 
+            fnHocked = withHoc(Promise.reject(fn), 4, 5, 6)
             await fnHocked(7, 8, 9)
         } catch (err) {
             expect(err).toBe(24)
         }
 
         try {
-            fnHocked = withHoc(Promise.reject('fn'), 4, 5, 6) 
+            fnHocked = withHoc(Promise.reject('fn'), 4, 5, 6)
             await fnHocked(7, 8, 9)
         } catch (err) {
             expect(err).toBe('DEFERRED_NOT_CALLABLE')
         }
-        
+
         done()
     })
 
@@ -94,28 +88,32 @@ describe('Evaluate Mixed/ segment (2.)', () => {
         expect(typeCheck(null)).toStrictEqual({ type: 'object', value: 0, primitiveValue: Object() })
         expect(typeCheck(undefined)).toStrictEqual({ type: 'undefined', value: 0, primitiveValue: undefined })
         expect(typeCheck(function () { })).toStrictEqual({ type: 'function', value: 1, primitiveValue: Function })
-   
+        expect(typeCheck(BigInt(1))).toStrictEqual({ type: 'bigint', value: 1, primitiveValue: 0n })
         expect(typeCheck(Promise.resolve(), false)).toStrictEqual({ type: 'promise', value: 1, primitiveValue: Function })
         expect(typeCheck(Promise.resolve())).toStrictEqual({ type: 'object', value: 1, primitiveValue: Function })
         done()
     })
+    
+    // NOTE no support for mixing commonjs and esm modules while running tests
+    // only decleared it to get code coverege
+    it('xrequire()', (done) => {
 
-    // REVIEW can only be performed via commonjs module
-    // it('xrequire()', (done) => {
-    //     expect(xrequire).toBeInstanceOf(Function)
-    //     expect(xrequire('./example.data')).toBe('hello world')
+        expect(xrequire).toBeInstanceOf(Function)
+        // NOTE it actually works in commonjs
+        expect(xrequire('./example.data')).toBe(undefined)
 
-    //     let errSet = false
-    //     try {
-    //         xrequire('/a/b/a')
+        let errSet = false
+        try {
+            // NOTE it actually works in commonjs, should throw
+            xrequire('/a/b/a').toBe(undefined)
+            errSet = true  
+        } catch (err) {
+            // in commonjs this this hit!
+            errSet = true      
+        }
 
-    //     } catch (err) {
-    //         console.log('error set')
-    //         errSet = true      
-    //     }
-    //     expect(errSet).toBe(true)
-    //     done()
-      
-    // })
+        expect(errSet).toBe(true)
+        done()
+    })
 
 })

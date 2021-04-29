@@ -3,9 +3,8 @@
 /* eslint-disable no-new-wrappers */
 /* eslint-env mocha */
 
-// import assert from 'assert'
-import { isArray, isObject, isString, isEmpty, isFalse, isFalsy, isTrue, isBoolean, isNull, isUndefined, isClass, isBigInt, isError, isFunction, isInstance, isNumber, sq, isPromise, isQPromise, isSQ, delay, isRegExp, hasPrototype, hasProto, validDate } from '../src'
-import { describe, expect, it, jest } from '@jest/globals'
+import { isClass, isBigInt, isError, isFunction, isInstance, isNumber, sq, isPromise, isQPromise, isSQ, delay, isRegExp, hasProto, validDate } from '../src'
+import { describe, expect, it } from '@jest/globals'
 import q from 'q'
 
 describe('Evaluate Validators/ segment (2.)', () => {
@@ -144,7 +143,7 @@ describe('Evaluate Validators/ segment (2.)', () => {
         for (let b of valids) expect(validDate(b)).toBe(true)
 
         // false because object has no keys
-        expect(hasProto(new Date(), () => false)).toBe(false)
+        expect(validDate(new Date(), () => false)).toBe(false)
         done()
     })
 })

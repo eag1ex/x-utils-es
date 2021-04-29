@@ -1,11 +1,12 @@
 /* eslint-env mocha */
 
-// import assert from 'assert'
-import { sq, cancelPromise, delay, resolver } from '../src'
+import { sq, cancelPromise, delay, resolver, disableLogging, loggerSetting } from '../src'
 import { describe, expect, it, jest } from '@jest/globals'
+disableLogging()
+loggerSetting('error', 'off')
 
 describe('Evaluate Promises', () => {
-  
+
     it('delay()', async (done) => {
         jest.setTimeout(300)
         await delay(250)
@@ -28,70 +29,101 @@ describe('Evaluate Promises', () => {
         defer.reject(true)
             .promise.catch((err) => {
                 expect(err).toBe(true)
-                expect(defer.entity).toBe('SimpleQ')      
+                expect(defer.entity).toBe('SimpleQ')
                 done()
             })
-      
+
     })
 
-    it('cancelPromise()', (done) => {
+    it('cancelPromise()', async (done) => {
 
-        jest.setTimeout(1500)
-        let def = sq()
+        jest.setTimeout(3000)
+       
         expect(cancelPromise).toBeInstanceOf(Function)
-        let fn1 = () => {
-            cancelPromise({ defer: def, // can use standard Promise, sq(), or node.js q.defer
+
+        let fn1 = async () => {
+            let def = sq()
+            cancelPromise({
+                defer: def, // can use standard Promise, sq(), or node.js q.defer
                 checkEvery: 200, // << log process on every 
-                maxWait: 3000, // expire promise 
+                maxWait: 500, // expire promise 
                 message: 'waited too long', // << use this error message
                 logging: true, // display process
                 id: new Date().getTime(), // custom id to display or on error
                 // @ts-ignore
-                cbErr: function({ error, defer, id }) {
+                cbErr: function ({ error, defer, id }) {
                     // we use this.defer / defer / or df2.
                     // update our reject message
                     defer.reject('rejected')
                 }
             }) // returns promise
-    
-            def.catch((err) => {
+            try {
+                await def
+            } catch (err) {
                 expect(err).toBe('rejected')
-            })
-        }    
+            }
 
-        let fn2 = () => {
-            cancelPromise({ defer: def, // can use standard Promise, sq(), or node.js q.defer
+        }
+
+        let fn2 = async () => {
+            let def = sq()
+            cancelPromise({
+                defer: def, // can use standard Promise, sq(), or node.js q.defer
                 checkEvery: 200, // << log process on every 
                 maxWait: 1000, // expire promise 
                 message: 'waited too long', // << use this error message
                 logging: true, // display process
                 id: new Date().getTime(), // custom id to display or on error
                 // @ts-ignore
-                cbErr: function({ error, defer, id }) {
+                cbErr: function ({ error, defer, id }) {
                     // we use this.defer / defer / or df2.
                     // update our reject message
                     defer.reject('rejected')
                 }
             }) // returns promise
             def.resolve(true)
-            def.then((n) => {
-                expect(n).toBe(true)
-                done()
-            })
-        }  
+            await def
+            expect(await def).toBe(true)
 
-        fn1()
-        fn2()
+        }
+
+        let fn3 = async () => {
+            let d = cancelPromise({
+                defer: () => { }, // can use standard Promise, sq(), or node.js q.defer
+                checkEvery: 200, // << log process on every 
+                maxWait: 1000, // expire promise 
+                message: 'waited too long', // << use this error message
+                logging: true, // display process
+                id: new Date().getTime(), // custom id to display or on error
+                // @ts-ignore
+                cbErr: function ({ error, defer, id }) {
+                    // we use this.defer / defer / or df2.
+                    // update our reject message
+                    defer.reject('rejected')
+                }
+            })
+
+            try {
+                await d
+            } catch (err) {
+                expect(err).toBe('{defer,maxWait,cbErr} must be provided')
+            }
+        }
+
+        await fn1()
+        await fn2()
+        await fn3()
+        done()
     })
 
-    it('resolve()', async (done) => {
+    it('resolver()', async (done) => {
         jest.setTimeout(5000)
 
         // resolved
-        let fn1 = async () => {       
+        let fn1 = async () => {
             let defer = sq()
             let o = resolver(() => defer.promise, 700, 100)
-            await delay(710)
+            await delay(500)
             defer.resolve(true)
             expect(await o).toBe(true)
         }
@@ -100,8 +132,9 @@ describe('Evaluate Promises', () => {
         let fn2 = async () => {
             let defer = sq()
             let o = resolver(() => defer.promise, 500, 100)
-            await delay(400) // fake wait
+            await delay(300) // fake wait
             defer.reject(true)
+                .catch(err => {})
             expect(await o).toStrictEqual({ error: true })
         }
 
@@ -109,13 +142,13 @@ describe('Evaluate Promises', () => {
         let fn3 = async () => {
             let defer = sq()
             let o = await resolver(() => defer.promise, 500, 100)
-            expect(o).toBe(undefined)           
+            expect(o).toBe(undefined)
         }
 
         await fn1()
-        await fn2()
-        await fn3()
+        // await fn2()
+        // await fn3()
         done()
     })
-      
+
 })

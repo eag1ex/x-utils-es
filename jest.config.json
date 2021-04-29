@@ -4,7 +4,12 @@
     "testPathIgnorePatterns":[
         "/node_modules/",
         "/umd/",
-        "/esm/"
+        "/esm/",
+        "/Prototypes/",
+        "/prototyping/",
+        "/assets/",
+        "/docs/",
+        "/todo/"
       ],
     "coverageReporters": ["lcov"],
     "coverageDirectory": "coverage",

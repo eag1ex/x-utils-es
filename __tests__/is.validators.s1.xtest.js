@@ -1,35 +1,34 @@
 /* eslint-disable no-array-constructor */
 /* eslint-disable no-new-object */
 /* eslint-disable no-new-wrappers */
-
 /* eslint-env mocha */
 
-// import assert from 'assert'
 import { isArray, isObject, isString, isEmpty, isFalse, isFalsy, isTrue, isBoolean, isNull, isUndefined } from '../src'
 import { describe, expect, it } from '@jest/globals'
 
 describe('Evaluate Validators/ segment (1.)', () => {
-  
+
     it('isArray()', (done) => {
         expect(isArray).toBeInstanceOf(Function)
         let invalids = [null, undefined, false, 0, '', {}, Function, true, NaN]
-        let valids = [[], 
+        let valids = [[],
             new Array()
         ]
 
         for (let a of invalids) expect(isArray(a)).toBe(false)
         for (let b of valids) expect(isArray(b)).toBe(true)
 
+        expect(isArray([], () => [].length > 0)).toBe(false)
         done()
     })
 
     it('isObject()', (done) => {
         expect(isObject).toBeInstanceOf(Function)
-        let invalids = [[], undefined, new Array(), false, 0, '', Function, true, NaN, (class {}), Object]
-        let valids = [{}, 
+        let invalids = [[], undefined, new Array(), false, 0, '', Function, true, NaN, (class { }), Object]
+        let valids = [{},
             new Object(),
-            (new function() {}()), 
-            (new class {}())
+            (new function () { }()),
+            (new class { }())
         ]
 
         for (let a of invalids) expect(isObject(a)).toBe(false)
@@ -39,8 +38,8 @@ describe('Evaluate Validators/ segment (1.)', () => {
 
     it('isString()', (done) => {
         expect(isString).toBeInstanceOf(Function)
-        let invalids = [[], undefined, new Array(), false, 0, Function, true, NaN, (class {}), Object, String]
-        let valids = ['', 
+        let invalids = [[], undefined, new Array(), false, 0, Function, true, NaN, (class { }), Object, String]
+        let valids = ['',
             new String()
         ]
 
@@ -51,7 +50,7 @@ describe('Evaluate Validators/ segment (1.)', () => {
 
     it('isEmpty()', (done) => {
         expect(isEmpty).toBeInstanceOf(Function)
-        let invalids = [[0], new Array(1), 'hello', new String('hello'), 1, { a: 1 }, Function, true, (class {}), Object, String]
+        let invalids = [[0], new Array(1), 'hello', new String('hello'), 1, { a: 1 }, Function, true, (class { }), Object, String, new Error()]
 
         let valids = ['', new String(), undefined, false, null, {}, [], NaN]
 
@@ -73,18 +72,18 @@ describe('Evaluate Validators/ segment (1.)', () => {
     it('isTrue()', (done) => {
         expect(isTrue).toBeInstanceOf(Function)
         let invalids = [-1, 0, false, 'a', new Boolean(false), null, undefined, {}]
-        let valids = [true, new Boolean(true), 5 ]
+        let valids = [true, new Boolean(true), 5]
 
         for (let a of invalids) expect(isTrue(a)).toBe(false)
         for (let b of valids) expect(isTrue(b)).toBe(true)
         done()
     })
-    
+
     it('isFalsy()', (done) => {
         expect(isFalsy).toBeInstanceOf(Function)
-        let invalids = [[0], true, new Array(1), new Object({ a: 1 }), 'hello', new String('hello'), 1, { a: 1 }, Function, (class {}), Object, String, (new function() { this.a = 1 }())]
+        let invalids = [[0], true, new Array(1), new Object({ a: 1 }), 'hello', new String('hello'), 1, { a: 1 }, Function, (class { }), Object, String, (new function () { this.a = 1 }())]
 
-        let valids = [{}, [], false, null, -1, 0, undefined, new Array(), new Object(), (new (class {})()), (new function() {}())]
+        let valids = [{}, [], false, null, -1, 0, undefined, new Array(), new Object(), (new (class { })()), (new function () { }())]
 
         for (let a of invalids) expect(isFalsy(a)).toBe(false)
         for (let b of valids) expect(isFalsy(b)).toBe(true)
@@ -105,7 +104,7 @@ describe('Evaluate Validators/ segment (1.)', () => {
     it('isNull()', (done) => {
         expect(isNull).toBeInstanceOf(Function)
         let invalids = [{}, [], undefined, true, 1, false, NaN, new Boolean()]
-        let valids = [null ]
+        let valids = [null]
 
         for (let a of invalids) expect(isNull(a)).toBe(false)
         for (let b of valids) expect(isNull(b)).toBe(true)
@@ -115,11 +114,10 @@ describe('Evaluate Validators/ segment (1.)', () => {
     it('isUndefined()', (done) => {
         expect(isUndefined).toBeInstanceOf(Function)
         let invalids = [{}, [], true, 1, false, NaN, new Boolean()]
-        let valids = [undefined ]
+        let valids = [undefined]
 
         for (let a of invalids) expect(isUndefined(a)).toBe(false)
         for (let b of valids) expect(isUndefined(b)).toBe(true)
         done()
     })
-    
 })
