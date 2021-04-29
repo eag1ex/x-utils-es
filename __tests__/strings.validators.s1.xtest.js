@@ -5,7 +5,7 @@
 /* eslint-env mocha */
 
 /*
-timer,interval,copyDeep,someKeyMatch,exactKeyMatch,typeCheck,loggerSetting,hasPrototype,hasProto, validDate,resolver,dupes,loop,dispatcher, withHoc,xrequire,truthFul,inIndex,matched 
+timer,interval,copyDeep,someKeyMatch,exactKeyMatch,typeCheck,loggerSetting,hasPrototype,hasProto, validDate,dupes,loop,dispatcher, withHoc,xrequire,truthFul,inIndex,matched 
 * */
 
 // import assert from 'assert'

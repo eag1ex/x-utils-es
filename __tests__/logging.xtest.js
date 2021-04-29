@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 
 // import assert from 'assert'
-import { log, onerror, warn, alert, attention, debug, stack, errorTrace } from '../src'
+import { log, onerror, warn, alert, attention, debug, stack, errorTrace, loggerSetting, resetLogging, checkLoggerSetting } from '../src'
 import { describe, expect, it, jest } from '@jest/globals'
 
 describe('Evaluate logging methods', () => {
@@ -36,6 +36,20 @@ describe('Evaluate logging methods', () => {
         expect(console.error).toHaveBeenCalled()
         done()
     })
+
+    it('loggerSetting()/resetLogging()', (done) => {
+        expect(loggerSetting).toBeInstanceOf(Function)
+        
+        expect(loggerSetting('log', 'off')).toBe(true)
+        expect(checkLoggerSetting('log')).toBe('off') 
+        expect(loggerSetting('log', 'on')).toBe(true)
+        expect(checkLoggerSetting('log')).toBe('on')
+        
+        expect(resetLogging()).toBe(true)
+
+        done()
+    })
+
 })
 
 // log testing 

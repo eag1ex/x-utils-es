@@ -52,6 +52,7 @@ const disableLogging = () => {
 
 const isWindow = () => {
     try {
+        if ((process.env || {}).NODE_ENV === 'test') return false
         if (window) return true
     } catch (err) {
         return false
@@ -491,7 +492,7 @@ const isArray = (arr = undefined, cbEval = undefined) => {
  * @example
  * typeCheck({}) // {type:object, value:0, primitiveValue: Object() }
  * typeCheck({a:1,b:2}) // {type:'object', value:2, primitiveValue: Object() }
- * typeCheck([2,3],false) // {type:'array', value:2, primitiveValue: Object() }
+ * typeCheck([2,3],false) // {type:'array', value:2, primitiveValue: Array() }
  * typeCheck(Date,false) // {type:'date', value:1, primitiveValue: Date() }
  * typeCheck(2) // {type:'number', value:2, primitiveValue: Number() }
  * typeCheck(false) // {type:'boolean', value:0, primitiveValue: Boolean() }
@@ -499,9 +500,9 @@ const isArray = (arr = undefined, cbEval = undefined) => {
  * typeCheck(null,false) // {type:'null', value:0, primitiveValue: Object() }
  * typeCheck(null) // {type:'object', value:0, primitiveValue: Object() }
  * typeCheck(undefined) // {type:'undefined', value:0, primitiveValue: undefined }
- * typeCheck(function () { }) // {type:'function', value:1, primitiveValue: Function() }
- * typeCheck(Promise.resolve(),false) // {type:'promise', value:1, primitiveValue: Function() }
- * typeCheck(Promise.resolve()) // {type:'function', value:1, primitiveValue: Function() }
+ * typeCheck(function () { }) // {type:'function', value:1, primitiveValue: Function }
+ * typeCheck(Promise.resolve(),false) // {type:'promise', value:1, primitiveValue: Function }
+ * typeCheck(Promise.resolve()) // {type:'object', value:1, primitiveValue: Function }
 */
 const typeCheck = (el, standard = true) => {
 
@@ -530,9 +531,9 @@ const typeCheck = (el, standard = true) => {
 
         if (Array.prototype === (el).__proto__ || asPrototype(Array)) return { "type": ofType('array'), value: (el || []).length, primitiveValue: Array() } // eslint-disable-line no-array-constructor
 
-        if (Promise.prototype === (el || '').__proto__ || asPrototype(Promise)) return { type: ofType('promise'), value: 1, primitiveValue: Function() }
+        if (Promise.prototype === (el || '').__proto__ || asPrototype(Promise)) return { type: ofType('promise'), value: 1, primitiveValue: Function }
 
-        if (Function.prototype === (el).__proto__ || asPrototype(Function)) return { type: ofType(), value: 1, primitiveValue: Function() }
+        if (Function.prototype === (el).__proto__ || asPrototype(Function)) return { type: ofType(), value: 1, primitiveValue: Function }
 
         if ((Object.prototype === (el).__proto__) || asPrototype(Object)) return { "type": ofType(), value: Object.keys(el).length, primitiveValue: Object() }
 
@@ -769,11 +770,11 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
 
     let counter = 0
     const c = setInterval(() => {
-        if (endTime <= counter) {
-            clearInterval(c)
-        } else cb()
+        cb()
+        if (endTime <= counter) return clearInterval(c)      
         counter = counter + every
     }, every)
+
 }
 
 /** 
@@ -1726,39 +1727,48 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
                 if (isObject(error)) {
                     if (error.error) return error
                     else return { error: error }
-                } else return { error: error.toString() }
+                } else return { error }
             }
         }
 
         let t = setInterval(async () => {
+            let anon = test() 
+
             if (inx >= max) {
+                if (isPromise(anon)) anon.resolve(undefined)   
                 resolve(undefined)
                 return clearInterval(t)
             }
 
-            let anon = test() // internally execute only once if a promise
+            // internally execute only once if a promise
             if (isPromise(anon)) {
                 try {
+                    // NOTE for promise with asyn we need the counter above,
+                    inx = inx + every
 
                     let d = await anon
                     resolve(d)
                     return clearInterval(t)
                 } catch (error) {
 
-                    if (isError(error)) resolve({ error })
+                    if (isError(error)) resolve(error)
                     if (isObject(error)) {
                         if (error.error) resolve(error)
                         else resolve({ error })
-                    } else resolve({ error: error.toString() })
+                    } else resolve({ error })
                     return clearInterval(t)
                 }
             }
 
-            if (anon !== undefined) {
-                resolve(anon)
-                return clearInterval(t)
+            if (!isPromise(anon)) {
+                if (anon !== undefined) {
+                    resolve(anon)
+                    return clearInterval(t)
+                }
+                // NOTE counter can be accesed here
+                inx = inx + every
             }
-            inx = inx + every
+           
         }, every)
     })
 }
@@ -2447,17 +2457,17 @@ const withHoc = (item = () => { }, ...args) => {
  * xrequire('sdf56yfd','ERR_NO_THROW') // returns undefined
  *
  */
-function xrequire(path = '', ref = 'ERR_NO_THROW') {
+function xrequire(path = '', ref = '') {
     if (isWindow()) return undefined
     const Mod = function () {}
 
     Mod.prototype = Object.create(module.constructor.prototype)
     Mod.prototype.constructor = module.constructor
 
-    Mod.prototype.require = function (path, ref) {
+    Mod.prototype.require = function (_path, ref) {
         const self = this
         try {
-            return self.constructor._load(path, self)
+            return self.constructor._load(_path, self)
         } catch (err) {
             // NOTE magic if the ref has match instead of throw we return undefined
             if (ref === 'ERR_NO_THROW') return undefined
@@ -2468,7 +2478,7 @@ function xrequire(path = '', ref = 'ERR_NO_THROW') {
         }
     }
 
-    if (!(Mod.prototype.require instanceof require.constructor)) return undefined
+    if (!(Mod.prototype instanceof module.constructor)) return undefined
     else return Mod.prototype.require(path, ref)
 }
 
@@ -2553,6 +2563,7 @@ const matched = (str = '', expression = /\\/) => {
 export { disableLogging }
 export { resetLogging }
 export { loggerSetting }
+export { checkLoggerSetting }
 export { stack }
 export { errorTrace }
 export { loop }

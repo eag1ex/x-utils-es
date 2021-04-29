@@ -4,7 +4,7 @@
 /* eslint-env mocha */
 
 // import assert from 'assert'
-import { isArray, isObject, isString, isEmpty, isFalse, isFalsy, isTrue, isBoolean, isNull, isUndefined, isClass, isBigInt, isError, isFunction, isInstance, isNumber, sq, isPromise, isQPromise, isSQ, delay, isRegExp } from '../src'
+import { isArray, isObject, isString, isEmpty, isFalse, isFalsy, isTrue, isBoolean, isNull, isUndefined, isClass, isBigInt, isError, isFunction, isInstance, isNumber, sq, isPromise, isQPromise, isSQ, delay, isRegExp, hasPrototype, hasProto, validDate } from '../src'
 import { describe, expect, it, jest } from '@jest/globals'
 import q from 'q'
 
@@ -134,5 +134,17 @@ describe('Evaluate Validators/ segment (2.)', () => {
 
         done()
     })
-    
+
+    it('validDate()', (done) => {
+        expect(validDate).toBeInstanceOf(Function)
+        let invalids = [undefined, null, false, 1]
+        let valids = [new Date()]
+
+        for (let a of invalids) expect(validDate(a)).toBe(false)
+        for (let b of valids) expect(validDate(b)).toBe(true)
+
+        // false because object has no keys
+        expect(hasProto(new Date(), () => false)).toBe(false)
+        done()
+    })
 })

@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 // import assert from 'assert'
-import { sq, cancelPromise, delay } from '../src'
+import { sq, cancelPromise, delay, resolver } from '../src'
 import { describe, expect, it, jest } from '@jest/globals'
 
 describe('Evaluate Promises', () => {
@@ -82,6 +82,40 @@ describe('Evaluate Promises', () => {
 
         fn1()
         fn2()
-        
     })
+
+    it('resolve()', async (done) => {
+        jest.setTimeout(5000)
+
+        // resolved
+        let fn1 = async () => {       
+            let defer = sq()
+            let o = resolver(() => defer.promise, 700, 100)
+            await delay(710)
+            defer.resolve(true)
+            expect(await o).toBe(true)
+        }
+
+        // rejected
+        let fn2 = async () => {
+            let defer = sq()
+            let o = resolver(() => defer.promise, 500, 100)
+            await delay(400) // fake wait
+            defer.reject(true)
+            expect(await o).toStrictEqual({ error: true })
+        }
+
+        // not resolved on time
+        let fn3 = async () => {
+            let defer = sq()
+            let o = await resolver(() => defer.promise, 500, 100)
+            expect(o).toBe(undefined)           
+        }
+
+        await fn1()
+        await fn2()
+        await fn3()
+        done()
+    })
+      
 })
