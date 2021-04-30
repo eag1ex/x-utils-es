@@ -9,6 +9,17 @@
 "use strict"
 /* eslint-disable no-proto */
 
+const isWindow = () => {
+    try {
+        if ((process.env || {}).NODE_ENV === 'test') return false
+
+        /* istanbul ignore next */ 
+        if (window) return true
+    } catch (err) {
+        return false
+    }   
+}
+
 /** 
  * 
  * If you used logging in your application from the moment this method was called all logging will be disabled
@@ -18,7 +29,7 @@
 const disableLogging = () => {
     try {
         /* istanbul ignore next */ 
-        if (window) {
+        if (isWindow()) {
             //  on browser
             if (window.xUtilsConfig) {
                 window.xUtilsConfig.logging = 'off'
@@ -53,17 +64,6 @@ const disableLogging = () => {
     return false
 }
 
-const isWindow = () => {
-    try {
-        if ((process.env || {}).NODE_ENV === 'test') return false
-
-        /* istanbul ignore next */ 
-        if (window) return true
-    } catch (err) {
-        return false
-    }   
-}
-
 /** 
  * If you used logging in your application from the moment this method was called all logging will be enabled
  * - it affects: log, warn,error, onerror, errorTrace, stack, attention, alert, debug
@@ -72,7 +72,7 @@ const isWindow = () => {
 const resetLogging = () => {
     try {
         /* istanbul ignore next */ 
-        if (window) {
+        if (isWindow()) {
             if (window.xUtilsConfig) {
                 window.xUtilsConfig.logging = 'on'
             } else {
@@ -122,7 +122,7 @@ const loggerSetting = (logType = 'log', logMode = 'off') => {
 
     try {
         /* istanbul ignore next */ 
-        if (window) {
+        if (isWindow()) {
             //  on browser
             if (window.xUtilsConfig) {
                 window.xUtilsConfig[logType] = logMode
@@ -164,7 +164,7 @@ const checkLoggerSetting = (logType = '') => {
    
     try {
         /* istanbul ignore next */ 
-        if (window) {
+        if (isWindow()) {
             if (!window.xUtilsConfig) window.xUtilsConfig = {}
             //  on browser
             if (window.xUtilsConfig) {
@@ -203,7 +203,7 @@ const checkLoggerSetting = (logType = '') => {
 const loggingON = () => {
     try {
         /* istanbul ignore next */ 
-        if (window) return (window.xUtilsConfig || {}).logging === 'on' || (window.xUtilsConfig || {}).logging === undefined
+        if (isWindow()) return (window.xUtilsConfig || {}).logging === 'on' || (window.xUtilsConfig || {}).logging === undefined
     } catch (err) {
         //
     }
@@ -328,7 +328,7 @@ const onerror = function (...args) {
     let format = allData ? '\%o' : ''
 
     try {
-        if (window) {
+        if (isWindow()) {
             args = [].concat(`\x1b[31m[error]\x1b[0m\x1b[31m${format} `, args, '\x1b[0m')
             console.error.apply(null, args)
             return
@@ -338,7 +338,7 @@ const onerror = function (...args) {
     }
     
     args = [].concat(`\x1b[41m[error]\x1b[0m\x1b[31m${format} `, args, '\x1b[0m')
-    console.log.apply(null, args)
+    console.error.apply(null, args)
 }
 
 /** 
@@ -1212,7 +1212,7 @@ const shuffle = (arr = []) => {
  * 
  * // destructuring example : 
  * let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) ) ).values()
- * //=>  [ [ 'hello', 'world'] ] << one pair from data array
+ *  // b==="hello", c ==="world"
 */
 const selectiveArray = (selectBy = [], data = []) => {
     if (!isArray(data)) return []
@@ -1355,6 +1355,7 @@ const isRegExp = (expression = (/\\/)) => {
     try {
         return expression instanceof RegExp
     } catch (err) {
+        /* eslint-disable no-proto */
         return false
     }
 }
@@ -1380,6 +1381,7 @@ const isInstance = (obj = {}, cbEval = undefined) => {
         try {
             return obj.__proto__ instanceof Object
         } catch (err) {
+            /* eslint-disable no-proto */
             return false
         }
     }
@@ -1529,6 +1531,7 @@ const asJson = (data) => {
     try {
         return JSON.stringify(data, null, 2)
     } catch (err) {
+        /* eslint-disable no-proto */
         return `[asJson], ` + err.toString()
     }
 }

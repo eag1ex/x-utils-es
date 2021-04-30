@@ -20,6 +20,10 @@ describe('Evaluate Objects/ segment (1.)', () => {
         expect(objectSize((new function () { this.a = 1 }()))).toBe(1)
         expect(objectSize({ a: 1, b: 1 })).toBe(2)
         expect(objectSize(new Object({ a: 1, b: 1 }))).toBe(2)
+
+        let err = new Error()
+        err.name = 'XError'
+        expect(objectSize(err)).toBe(1)
         done()
     })
 
@@ -27,7 +31,7 @@ describe('Evaluate Objects/ segment (1.)', () => {
 
         expect(trueProp).toBeInstanceOf(Function)
         expect(trueProp()).toStrictEqual({})
-
+        expect(trueProp(false)).toStrictEqual({})
         expect(trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined, j: '' })).toStrictEqual({ g: 'hello' })
 
         expect(trueProp({ a: undefined, b: 0, c: 1, d: NaN })).toStrictEqual({ c: 1 })

@@ -14,6 +14,7 @@ describe('Evaluate Mixed/ segment (1.)', () => {
     it('copyBy()', (done) => {
         expect(copyBy).toBeInstanceOf(Function)
         expect(copyBy()).toStrictEqual({})
+        expect(copyBy([])).toStrictEqual({})
 
         expect(copyBy({ a: 1, b: 2, c: 3 }, ['a', 'c'])).toStrictEqual({ a: 1, c: 3 })
         expect(copyBy(new Object({ a: 1, b: 2, c: 3 }), ['a', 'c'])).toStrictEqual({ a: 1, c: 3 })
@@ -43,6 +44,7 @@ describe('Evaluate Mixed/ segment (1.)', () => {
 
         expect(copyDeep).toBeInstanceOf(Function)
         expect(copyDeep()).toBe(undefined)
+        expect(copyDeep([1, 2, 3])).toStrictEqual([1, 2, 3])
 
         class FN {
             constructor() {

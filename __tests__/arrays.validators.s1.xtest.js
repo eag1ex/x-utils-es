@@ -5,7 +5,7 @@
 /* eslint-env mocha */
 
 import {
-    last, head, uniq, uniqBy, shuffle, arrayWith, exFromArray, pickFromArray, flatten, flattenDeep, chunks, trueVal, trueValDeep
+    last, head, uniq, uniqBy, shuffle, arrayWith, exFromArray, pickFromArray, flatten, flattenDeep, chunks, trueVal, trueValDeep, selectiveArray
 } from '../src'
 import { describe, expect, it } from '@jest/globals'
 
@@ -174,6 +174,7 @@ describe('Evaluate Arrays/ segment (1.)', () => {
 
         expect(trueVal).toBeInstanceOf(Function)
         expect(trueVal(undefined)).toEqual([])
+        expect(trueVal(false)).toEqual([])
         expect(trueVal({})).toEqual([])
         expect(trueVal([-1, 0, 1, {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined, true, NaN])).toEqual([1, 'hello', { name: 'jack' }, true])
 
@@ -184,10 +185,46 @@ describe('Evaluate Arrays/ segment (1.)', () => {
 
         expect(trueValDeep).toBeInstanceOf(Function)
         expect(trueValDeep(undefined)).toEqual([])
+        expect(trueValDeep(false)).toEqual([])
         expect(trueValDeep({})).toEqual([])
         expect(trueValDeep([1, 0, [], {}, "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined])).toEqual([1, 'hello', [1], { name: 'jack' }])
 
         done()
     })
 
+    it('selectiveArray()', (done) => {
+
+        expect(selectiveArray).toBeInstanceOf(Function)
+        expect(selectiveArray([1])).toEqual([])
+        expect(selectiveArray([])).toEqual([])
+        expect(selectiveArray([], [])).toEqual([])
+        
+        expect(selectiveArray(['a.b'], [ { a: { b: 'hello' }, b: { c: 'hello' } }, { a: { b: 'world' }, b: { c: 'world' } } ])).toStrictEqual([ [ 'hello'], [ 'world'] ])
+
+        expect(selectiveArray(['a.b', 'b.c'], [ { a: { b: 'hello' }, b: { c: 'hello' } }, { a: { b: 'world' }, b: { c: 'world' } } ])).toStrictEqual([ ['hello', 'hello'], ['world', 'world'] ])
+
+        let arr = selectiveArray(['a.b', 'b.c'], [ { a: { b: 'hello' }, b: { c: 'world' } }])
+        expect(arr).toStrictEqual([ [ 'hello', 'world'] ])
+
+        let [a, b] = Array.from(flatten(arr)).values()
+        expect([a, b]).toStrictEqual(['hello', 'world'])
+
+        done()
+    })
+
 })
+
+/*
+ * // select b from both arrays, return same index order
+ * selectiveArray(['a.b'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
+ * //=>  [ [ 'hello'], [ 'world'] ] 
+ *
+ * //select b, and select c from both arrays, return same index order
+ * selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
+ * //=> [ ['hello','hello'], ['world','world'] ]
+ * 
+ * // destructuring example : 
+ * let [b,c]=Array.from( flatten(selectiveArray(['a.b','b.c'], [ { a: { b:'hello' }, b:{c:'world'} }]) ) ).values()
+ * //=>  [ [ 'hello', 'world'] ] << one pair from data array
+
+* */

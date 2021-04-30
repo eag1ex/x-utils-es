@@ -18,6 +18,22 @@ describe('Evaluate Validators/ segment (2.)', () => {
         for (let a of invalids) expect(isClass(a)).toBe(false)
         for (let b of valids) expect(isClass(b)).toBe(true)
 
+        expect(isClass(Object, () => false)).toBe(false)
+        
+        done()
+    })
+
+    it('hasProto()', (done) => {
+        
+        expect(hasProto).toBeInstanceOf(Function)
+        let valids = [NaN, false, {}, [], '', -1, (new function() {}()), new Object(), new Array(), (new (class {})())]
+        let invalids = [null, undefined ]
+
+        for (let a of valids) expect(hasProto(a)).toBe(true)
+        for (let b of invalids) expect(hasProto(b)).toBe(false)
+
+        expect(hasProto({}, () => false)).toBe(false)
+        
         done()
     })
 
@@ -72,6 +88,8 @@ describe('Evaluate Validators/ segment (2.)', () => {
 
         for (let a of invalids) expect(isInstance(a)).toBe(false)
         for (let b of valids) expect(isInstance(b)).toBe(true)
+
+        expect(isInstance((new function() {}()), () => false)).toBe(false)
 
         done()
     })
@@ -146,4 +164,5 @@ describe('Evaluate Validators/ segment (2.)', () => {
         expect(validDate(new Date(), () => false)).toBe(false)
         done()
     })
+    
 })

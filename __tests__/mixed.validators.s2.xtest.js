@@ -15,10 +15,11 @@ describe('Evaluate Mixed/ segment (2.)', () => {
 
         expect(someKeyMatch).toBeInstanceOf(Function)
         expect(someKeyMatch([], {})).toBe(false)
-        expect(someKeyMatch(true, {})).toBe(false)
+        expect(someKeyMatch(false, {})).toBe(false)
+        expect(someKeyMatch({}, false)).toBe(false)
         expect(someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 })).toBe(true)
         expect(someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }, () => 1 - 1 === 1)).toBe(false)
-        expect(someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, f: 1 })).toBe(false)
+        expect(someKeyMatch({ a: 2, b: 1, c: 2, m: 1, f: 3 }, { d: 1, e: 1, z: 1 })).toBe(false)
 
         done()
     })
@@ -28,6 +29,7 @@ describe('Evaluate Mixed/ segment (2.)', () => {
         expect(exactKeyMatch([], {})).toBe(false)
         expect(exactKeyMatch(true, {})).toBe(false)
         expect(exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 })).toBe(true)
+        expect(exactKeyMatch({ a: 2, b: 1, c: 2, g: 1, h: 1 }, { c: 1, a: 1, b: 1 })).toBe(false)
         expect(exactKeyMatch({ a: 2, b: 1 }, { c: 1, a: 1, b: 1 })).toBe(false)
         expect(exactKeyMatch({}, { c: 1, d: 1 })).toBe(false)
 

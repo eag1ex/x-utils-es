@@ -47,6 +47,8 @@ describe('Evaluate Validators/ segment (1.)', () => {
 
         for (let a of invalids) expect(isString(a)).toBe(false)
         for (let b of valids) expect(isString(b)).toBe(true)
+
+        expect(isString('a', () => 'a'.length > 1)).toBe(false)
         done()
     })
 
@@ -83,9 +85,13 @@ describe('Evaluate Validators/ segment (1.)', () => {
 
     it('isFalsy()', (done) => {
         expect(isFalsy).toBeInstanceOf(Function)
-        let invalids = [[0], true, new Array(1), new Object({ a: 1 }), 'hello', new String('hello'), 1, { a: 1 }, Function, (class { }), Object, String, (new function () { this.a = 1 }())]
 
-        let valids = [{}, [], false, null, -1, 0, undefined, new Array(), new Object(), (new (class { })()), (new function () { }())]
+        let err = new Error()
+        err.name = 'my error'
+
+        let invalids = [[0], true, new Array(1), new Object({ a: 1 }), 'hello', new String('hello'), 1, { a: 1 }, Function, (class { }), Object, String, (new function () { this.a = 1 }()), Promise.resolve('hello'), err]
+
+        let valids = [{}, [], false, null, -1, 0, undefined, new Array(), new Object(), (new (class { })()), (new function () { }()), new Error()]
 
         for (let a of invalids) expect(isFalsy(a)).toBe(false)
         for (let b of valids) expect(isFalsy(b)).toBe(true)
