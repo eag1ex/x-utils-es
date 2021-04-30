@@ -1,6 +1,6 @@
 {
     "testRegex": "/*.xtest.js$",
-    "collectCoverage": true,
+    "collectCoverage": false,
     "testPathIgnorePatterns":[
         "/node_modules/",
         "/umd/",
