@@ -41,8 +41,8 @@ describe('Evaluate Arrays/ segment (1.)', () => {
     it('uniqBy()', (done) => {
 
         expect(uniqBy).toBeInstanceOf(Function)
-        expect(uniqBy([], 'a'))
-            .toEqual([])
+        expect(uniqBy({}, 'a'))
+        expect(uniqBy(true, 'a')).toEqual([])
 
         expect(uniqBy())
             .toEqual([])
@@ -92,6 +92,8 @@ describe('Evaluate Arrays/ segment (1.)', () => {
 
         expect(exFromArray).toBeInstanceOf(Function)
         expect(exFromArray(undefined)).toEqual([])
+        expect(exFromArray(true)).toEqual([])
+        expect(exFromArray({})).toEqual([])
         expect(exFromArray([1, {}])).toEqual([1, {}])
 
         expect(exFromArray([{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 }], ['a', 'b']))
@@ -107,6 +109,8 @@ describe('Evaluate Arrays/ segment (1.)', () => {
 
         expect(pickFromArray).toBeInstanceOf(Function)
         expect(pickFromArray(undefined)).toEqual([])
+        expect(pickFromArray({})).toEqual([])
+        expect(pickFromArray(true)).toEqual([])
         expect(pickFromArray([1, 2], [])).toEqual([1, 2])
         expect(pickFromArray([1, 2, false], false)).toEqual([false])
 
@@ -147,6 +151,7 @@ describe('Evaluate Arrays/ segment (1.)', () => {
 
         expect(flatten).toBeInstanceOf(Function)
         expect(flatten(undefined)).toEqual([])
+        expect(flatten({})).toEqual([])
         expect(flatten([[1]])).toEqual([1])
         done()
     })
@@ -154,6 +159,7 @@ describe('Evaluate Arrays/ segment (1.)', () => {
 
         expect(flattenDeep).toBeInstanceOf(Function)
         expect(flattenDeep(undefined)).toEqual([])
+        expect(flattenDeep({})).toEqual([])
         expect(flattenDeep([[[1]]])).toEqual([1])
         expect(flattenDeep([[[[1]]]])).toEqual([1])
         done()
@@ -197,6 +203,8 @@ describe('Evaluate Arrays/ segment (1.)', () => {
         expect(selectiveArray).toBeInstanceOf(Function)
         expect(selectiveArray([1])).toEqual([])
         expect(selectiveArray([])).toEqual([])
+        expect(selectiveArray([], {})).toEqual([])
+        expect(selectiveArray({}, [])).toEqual([])
         expect(selectiveArray([], [])).toEqual([])
         
         expect(selectiveArray(['a.b'], [ { a: { b: 'hello' }, b: { c: 'hello' } }, { a: { b: 'world' }, b: { c: 'world' } } ])).toStrictEqual([ [ 'hello'], [ 'world'] ])

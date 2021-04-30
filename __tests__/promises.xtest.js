@@ -2,6 +2,8 @@
 
 import { sq, cancelPromise, delay, resolver, disableLogging, loggerSetting, asJson } from '../src'
 import { describe, expect, it, jest } from '@jest/globals'
+import q from 'q'
+
 disableLogging()
 loggerSetting('error', 'off')
 
@@ -55,6 +57,16 @@ describe('Evaluate Promises', () => {
         let oo = await o    
         expect(oo).toHaveProperty('error')
         expect(oo.error.toString()).toBe('Error: my error')
+
+        // rejected
+        defer = sq()
+        o = resolver(() => defer.promise, 500, 100)
+        await delay(300) // fake wait
+        defer.reject({ error: 'upsy' })
+            .catch(err => {})
+        oo = await o    
+        expect(oo).toHaveProperty('error')
+        expect(oo.error).toBe('upsy')
 
         defer = sq()
         o = resolver(() => defer.promise, 500, 100) 
@@ -129,7 +141,6 @@ describe('Evaluate Promises', () => {
             def.resolve(true)
             await def
             expect(await def).toBe(true)
-
         }
 
         let fn3 = async () => {
@@ -155,9 +166,31 @@ describe('Evaluate Promises', () => {
             }
         }
 
+        let fn4 = async () => {
+            
+            let def = q.defer()
+            cancelPromise({
+                defer: def, // can use standard Promise, sq(), or node.js q.defer
+                checkEvery: 200, // << log process on every 
+                maxWait: 1000, // expire promise 
+                message: 'waited too long', // << use this error message
+                logging: true, // display process
+                id: new Date().getTime(), // custom id to display or on error
+                // @ts-ignore
+                cbErr: function ({ error, defer, id }) {
+                    // we use this.defer / defer / or df2.
+                    // update our reject message
+                    defer.reject('rejected')
+                }
+            }) // returns promise
+            def.resolve(true) 
+            expect(await def.promise).toBe(true)
+        }
+
         await fn1()
         await fn2()
         await fn3()
+        await fn4()
         done()
     })
 

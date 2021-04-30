@@ -19,7 +19,7 @@ describe('Evaluate Mixed/ segment (2.)', () => {
         expect(someKeyMatch({}, false)).toBe(false)
         expect(someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 })).toBe(true)
         expect(someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }, () => 1 - 1 === 1)).toBe(false)
-        expect(someKeyMatch({ a: 2, b: 1, c: 2, m: 1, f: 3 }, { d: 1, e: 1, z: 1 })).toBe(false)
+        expect(someKeyMatch({ d: 1, e: 1, z: 1 }, { a: 2, b: 1, c: 2, m: 1, f: 3 })).toBe(false)
 
         done()
     })

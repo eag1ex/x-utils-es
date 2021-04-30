@@ -91,7 +91,7 @@ describe('Evaluate Validators/ segment (1.)', () => {
 
         let invalids = [[0], true, new Array(1), new Object({ a: 1 }), 'hello', new String('hello'), 1, { a: 1 }, Function, (class { }), Object, String, (new function () { this.a = 1 }()), Promise.resolve('hello'), err]
 
-        let valids = [{}, [], false, null, -1, 0, undefined, new Array(), new Object(), (new (class { })()), (new function () { }()), new Error()]
+        let valids = [{}, [], false, null, -1, 0, undefined, new Array(), new Object(), (new (class { })()), (new function () { }()), new Error(), new Number()]
 
         for (let a of invalids) expect(isFalsy(a)).toBe(false)
         for (let b of valids) expect(isFalsy(b)).toBe(true)

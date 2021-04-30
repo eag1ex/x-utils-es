@@ -49,12 +49,15 @@ describe('Evaluate Strings/ segment (1.)', () => {
 
         expect(inIndex('ab cd eFG', [/fg/i, /\sCD\s/i, /ab/])).toBe(3)
         expect(inIndex('abcdeFG', [/%fg/i, /1CD/i, /ab/])).toBe(1)
+        expect(inIndex('abcdeFG', [/%fg/i, /1CD/i, /ab/, NaN])).toBe(1)
         done()
     })
 
     it('matched()', (done) => {
         expect(matched).toBeInstanceOf(Function)
         expect(matched()).toBe(false)
+        expect(matched(true)).toBe(false)
+        expect(matched('', true)).toBe(false)
         expect(matched('', /\\/)).toBe(false)
 
         expect(matched('aabc', /^abc/)).toBe(false)

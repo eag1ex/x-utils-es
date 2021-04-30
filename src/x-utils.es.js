@@ -9,6 +9,7 @@
 "use strict"
 /* eslint-disable no-proto */
 
+/* istanbul ignore next */ 
 const isWindow = () => {
     try {
         if ((process.env || {}).NODE_ENV === 'test') return false
@@ -59,9 +60,10 @@ const disableLogging = () => {
 
         return true
     } catch (err) {
-        //
+        /* istanbul ignore next */ 
+        return false
     }
-    return false
+   
 }
 
 /** 
@@ -99,10 +101,9 @@ const resetLogging = () => {
 
         return true
     } catch (err) {
-        //
+        /* istanbul ignore next */ 
+        return false
     }
-
-    return false
 }
 
 /** 
@@ -149,9 +150,10 @@ const loggerSetting = (logType = 'log', logMode = 'off') => {
         }
         return true
     } catch (err) {
-        //
+        /* istanbul ignore next */ 
+        return false
     }
-    return false
+   
 }
 
 /** 
@@ -232,6 +234,7 @@ const callFN = (cb = undefined) => {
  * @ignore
  * @param {string} type log,error,warn,debug
 */
+/* istanbul ignore next */ 
 const logConstract = function (type = '', args) {
 
     if (!args.length) args[0] = ''
@@ -328,6 +331,7 @@ const onerror = function (...args) {
     let format = allData ? '\%o' : ''
 
     try {
+        /* istanbul ignore next */ 
         if (isWindow()) {
             args = [].concat(`\x1b[31m[error]\x1b[0m\x1b[31m${format} `, args, '\x1b[0m')
             console.error.apply(null, args)
@@ -535,7 +539,7 @@ const typeCheck = (el, standard = true) => {
         if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": ofType(), value: 1, primitiveValue: BigInt('') } // eslint-disable-line no-undef
 
         if (el === null) return { "type": ofType('null'), value: 0, primitiveValue: Object() }
-
+        /* istanbul ignore next */ 
         if (el.__proto__ === Date.prototype || asPrototype(Date)) return { "type": ofType('date'), value: 1, primitiveValue: new Date() }
 
         if (String.prototype === (el).__proto__) return { 'type': ofType(), value: el.length, primitiveValue: String() }
@@ -550,14 +554,17 @@ const typeCheck = (el, standard = true) => {
 
         if ((Error.prototype === (el).__proto__) || asPrototype(Error)) return { "type": ofType('error'), value: Object.keys(el).length, primitiveValue: Error() }
 
+        /* istanbul ignore next */ 
         if ((el).__proto__ === Number.prototype || asPrototype(Number)) {
             if (isNaN(el)) return { "type": ofType('NaN'), value: 0, primitiveValue: Number() }
             else return { "type": ofType(), value: el, primitiveValue: Number() }
 
             // Unary plus operator
+            /* istanbul ignore next */ 
         } else if ((+(el) >= 0) === false) return { 'type': typeof el, value: +(el), primitiveValue: undefined }
         else return { 'type': typeof el, value: 0, primitiveValue: undefined }
     } catch (err) {
+        /* istanbul ignore next */ 
         error(err)
         return {}
     }
@@ -821,6 +828,7 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
 const sq = () => {
     
     class SimpleQ extends Promise {
+        /* istanbul ignore next */ 
         constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
             // @ts-ignore
             SimpleQ._promise = super(deferrerCallback)
@@ -851,8 +859,11 @@ const sq = () => {
             // @ts-ignore
             let rej = SimpleQ._reject
             if (rej instanceof Function) rej(data) 
-            /* istanbul ignore next */ 
-            else onerror('[SimpleQ][reject]', 'not callable')
+           
+            else {
+                /* istanbul ignore next */ 
+                onerror('[SimpleQ][reject]', 'not callable')
+            }
 
             return this
         }
@@ -881,8 +892,11 @@ const sq = () => {
     if (deferred instanceof Promise && 
         deferred instanceof SimpleQ) {
         return deferred
+       
+    } else {
         /* istanbul ignore next */ 
-    } else throw ('sq() not a valid Promise ?')    
+        throw ('sq() not a valid Promise ?')   
+    } 
 }
 
 /** 
@@ -959,6 +973,7 @@ const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = (
         } else {
             if (logging) {
                 if (id) log('-- processing: ', id)
+                /* istanbul ignore next */ 
                 else alert('-- processing ')
             }
         }
@@ -978,6 +993,7 @@ const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = (
  
     if (isSQ(defer) || (isPromise(defer) && !isQPromise(defer))) return deffer(defer)
     if (isQPromise(defer)) return deffer(defer.promise)
+    /* istanbul ignore next */ 
     else return Promise.reject('[cancelPromise], Supplied {defer} is not a promise')
    
 }
@@ -1154,6 +1170,7 @@ const isObject = (obj = undefined, cbEval = undefined) => {
         try {
             return obj instanceof Object
         } catch (err) {
+            /* istanbul ignore next */ 
             return false
         }
     }
@@ -1243,6 +1260,7 @@ const selectiveArray = (selectBy = [], data = []) => {
             }
 
         } catch (err) {
+            /* istanbul ignore next */ 
             console.log(err.toString())
         }
 
@@ -1355,7 +1373,7 @@ const isRegExp = (expression = (/\\/)) => {
     try {
         return expression instanceof RegExp
     } catch (err) {
-        /* eslint-disable no-proto */
+        /* istanbul ignore next */ 
         return false
     }
 }
@@ -1381,7 +1399,7 @@ const isInstance = (obj = {}, cbEval = undefined) => {
         try {
             return obj.__proto__ instanceof Object
         } catch (err) {
-            /* eslint-disable no-proto */
+            /* istanbul ignore next */ 
             return false
         }
     }
@@ -1438,6 +1456,7 @@ const isFalsy = (el = undefined) => {
         if (isNaN(el)) return true
         else return el <= 0
     }
+    /* istanbul ignore next */ 
     if ((+(el) > 0) === false) return true
     if (el) return false
     else return false
@@ -1486,6 +1505,7 @@ const copyBy = (obj = {}, refs = []) => {
     try {
         return JSON.parse(JSON.stringify(d))
     } catch (err) {
+        /* istanbul ignore next */ 
         return {}
     }
 }
@@ -1531,7 +1551,7 @@ const asJson = (data) => {
     try {
         return JSON.stringify(data, null, 2)
     } catch (err) {
-        /* eslint-disable no-proto */
+        /* istanbul ignore next */ 
         return `[asJson], ` + err.toString()
     }
 }
@@ -1771,7 +1791,7 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
                     resolve(d)
                     return clearInterval(t)
                 }
-             
+                /* istanbul ignore next */ 
             } catch (error) {
 
                 if (isError(error)) resolve(error)
@@ -1820,6 +1840,7 @@ const flattenDeep = (arr = []) => {
         /* istanbul ignore next */ 
         else return []
     } catch (err) {
+        /* istanbul ignore next */ 
         return []
     }
     
@@ -1945,6 +1966,7 @@ const arrayWith = (arr = [], prop = '') => {
         let o = arr.map(n => objWith(n)).filter(n => !!n)
         return o instanceof Array ? o : []
     } catch (err) {
+        /* istanbul ignore next */ 
         return []
     }
 
@@ -1969,6 +1991,7 @@ const exFromArray = (arr = [], excludes = [/** propName,propName */]) => {
     try {
         if (!(arr instanceof Array)) return o
     } catch (err) {
+        /* istanbul ignore next */ 
         return []
     }
     excludes = [].concat(excludes)
@@ -1990,6 +2013,7 @@ const exFromArray = (arr = [], excludes = [/** propName,propName */]) => {
         let o = arr.map(n => excludeFrom(n, excludes)) // .filter(n => n !== undefined)
         return o instanceof Array ? o : []
     } catch (err) {
+        /* istanbul ignore next */ 
         return []
     }
 
@@ -2031,6 +2055,7 @@ const pickFromArray = (arr = [], picks = []) => {
     try {
         if (!(arr instanceof Array)) return o
     } catch (err) {
+        /* istanbul ignore next */ 
         return []
     }
 
@@ -2151,9 +2176,10 @@ const pickFromArray = (arr = [], picks = []) => {
             return n
         }, [])
         if (o instanceof Array) return o
+        /* istanbul ignore next */ 
         else return []
     } catch (err) {
-        console.log(err)
+        /* istanbul ignore next */ 
         return []
     }
   
@@ -2187,7 +2213,9 @@ const dispatcher = (uid = undefined, debug = false) => {
     function Dispatcher(uid, debug) {
 
         const plugin = `[dispatcher]`
+        /* istanbul ignore next */ 
         this.uid = ((uid || '').toString() || new Date().getTime()).toString() // id generated if not provided
+        
         this.debug = debug
         this.cbQueue = {}
         this.dispatchInstance = {}
@@ -2228,6 +2256,7 @@ const dispatcher = (uid = undefined, debug = false) => {
             if (this._isActive !== false) this.initListener() // in case next is called above subscribe, we need to make sure it is initiated
             if (this.dispatchInstance[this.uid]) this.dispatchInstance[this.uid].next(data)
             else {
+                /* istanbul ignore next */ 
                 if (this.debug) log({ message: `${plugin} for uid not available`, uid: this.uid })
             }
             return this
@@ -2275,6 +2304,7 @@ const dispatcher = (uid = undefined, debug = false) => {
 
                         }
                     } else {
+                        /* istanbul ignore next */ 
                         if (self.debug) warn(`${plugin} no callback data`)
                     }
                 }
@@ -2315,6 +2345,7 @@ const dispatcher = (uid = undefined, debug = false) => {
         this.subscribe = (cb) => {
             const isFN = typeof cb === 'function'
             if (!isFN) {
+                /* istanbul ignore next */ 
                 if (this.debug) warn(`${plugin}[subscribe] cb must be set`)
                 return this
             }
@@ -2422,6 +2453,7 @@ const withHoc = (item = () => { }, ...args) => {
 
                 return item(...argsFN())
             } catch (err) {
+                /* istanbul ignore next */ 
                 onerror('[HOC]', err)
             }
 
@@ -2450,6 +2482,7 @@ const withHoc = (item = () => { }, ...args) => {
             return fn()
 
         } else {
+            /* istanbul ignore next */ 
             onerror('[HOC]', 'item() must be callable function')
         }
 
@@ -2472,7 +2505,9 @@ const withHoc = (item = () => { }, ...args) => {
  *
  */
 function xrequire(path = '', ref = '') {
+    /* istanbul ignore next */ 
     if (isWindow()) return undefined
+
     const Mod = function () {}
 
     Mod.prototype = Object.create(module.constructor.prototype)
@@ -2484,8 +2519,10 @@ function xrequire(path = '', ref = '') {
             return self.constructor._load(_path, self)
         } catch (err) {
             // NOTE magic if the ref has match instead of throw we return undefined
+            /* istanbul ignore next */ 
             if (ref === 'ERR_NO_THROW') return undefined
             // if module not found, we have nothing to do, simply throw it back.
+            /* istanbul ignore next */ 
             if (err.code === 'MODULE_NOT_FOUND') {
                 throw err
             }
@@ -2537,6 +2574,7 @@ const inIndex = (str = '', patterns = []) => {
         try {
             return new RegExp(patt).test(s)
         } catch (err) {
+            /* istanbul ignore next */ 
             onerror('[inIndex]', `wrong pattern/expression at index:${inx}`)
             return false
         }
@@ -2568,6 +2606,7 @@ const matched = (str = '', expression = /\\/) => {
         try {
             return new RegExp(patt).test(s)
         } catch (err) {
+            /* istanbul ignore next */ 
             onerror('[matched]', err.toString())
             return false
         }

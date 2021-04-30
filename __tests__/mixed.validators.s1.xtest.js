@@ -50,11 +50,15 @@ describe('Evaluate Mixed/ segment (1.)', () => {
             constructor() {
                 this.a = 1
                 this.b = 2
+                this.c = {
+                    e: 1,
+                    f: 2
+                }
             }
         }
 
         expect(copyDeep(new FN())).not.toBeInstanceOf(FN)
-        expect(copyDeep(new FN())).toStrictEqual({ a: 1, b: 2 })
+        expect(copyDeep(new FN())).toStrictEqual({ a: 1, b: 2, c: { e: 1, f: 2 } })
 
         done()
     })

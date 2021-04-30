@@ -12,7 +12,7 @@ describe('Evaluate Validators/ segment (2.)', () => {
     it('isClass()', (done) => {
         
         expect(isClass).toBeInstanceOf(Function)
-        let invalids = [{}, [], (new function() {}()), new Object(), new Array()]
+        let invalids = [{}, [], (new function() {}()), new Object(), new Array(), false, null]
         let valids = [Array, Object, (class {}) ]
 
         for (let a of invalids) expect(isClass(a)).toBe(false)
