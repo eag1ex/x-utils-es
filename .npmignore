@@ -22,3 +22,6 @@ docs
 jest.config.json
 __tests__
 assets
+coverage
+jest.config.json
+.jsdoc.json

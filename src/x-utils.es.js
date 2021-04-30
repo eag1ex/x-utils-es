@@ -2,10 +2,11 @@
  * @module x-utils
  * @license CC-BY-SA-4.0
  * {@link https://eaglex.net Eaglex}
- * @description Simple javascript, lodash alternative library, for work contact me at: eaglex.net
+ * @description Simple javascript, lodash alternative library, for support contact me on eaglex.net
  * @author Developed by Anon
+ * @version 2.0.0
  */
-
+ 
 "use strict"
 /* eslint-disable no-proto */
 
@@ -114,7 +115,7 @@ const resetLogging = () => {
 */
 const loggerSetting = (logType = 'log', logMode = 'off') => {
 
-    let availTypes = ['log', 'warn', 'onerror', 'error', 'alert', 'attention', 'debug']
+    let availTypes = ['log', 'warn', 'onerror', 'error', 'alert', 'attention', 'debug', 'stack', 'errorTrace']
     let availModes = ['on', 'off']
 
     if (!availTypes.includes(logType) || !logType) return false
@@ -353,6 +354,7 @@ const onerror = function (...args) {
 */
 const stack = (data, asArray = false) => {
     if (!loggingON()) return
+    if (checkLoggerSetting('stack') === 'off') return
     let stackList = new Error(JSON.stringify(data)).stack.split('(')
     stackList.splice(1, 1)
     let stackHead = stackList[0].split(/\n/)[0].replace('Error', '[STACK TRACE]')
@@ -374,6 +376,7 @@ const stack = (data, asArray = false) => {
  */
 const errorTrace = (data, asArray = false) => {
     if (!loggingON()) return
+    if (checkLoggerSetting('errorTrace') === 'off') return
     let stackList = new Error(JSON.stringify(data)).stack.split('(')
     stackList.splice(1, 1)
     let errHead = stackList[0].split(/\n/)[0].replace('Error', '[ERROR]')
@@ -1212,8 +1215,7 @@ const shuffle = (arr = []) => {
 }
 
 /** 
- * Select data from array of objects by reference, 
- * and go down recursively in order of selectBy references
+ * Select data from array of objects by reference, and go down recursively in order of selectBy references
  * @param {array} selectBy list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
  * @param {array} data list of objects to target by select ref
  * @returns {array} by selected order in same pair index
@@ -1557,7 +1559,8 @@ const asJson = (data) => {
 }
 
 /** 
- * For complex arrays of objects: [{...},{...}], will copy each array item separately and check for Object>object then make copy
+ * For complex arrays of objects: `[{...},{...}]`
+ * - will copy each array item separately and check for Object>object then make copy
  * @param {any} data object or array
  * @return {any} copy of the same input type, or primitiveValue type where method supplied
  * 
@@ -1664,7 +1667,7 @@ const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
 }
 
 /**
- * Excludes/omits any falsy values from array: [0,null,false,{},undefined, -1,'',[]]
+ * Excludes/omits any falsy values from array: `[0,null,false,{},undefined, -1,'',[]]`
  * @param {array} arr mixed
  * @returns {array} only non falsy items are returned 
  * 
@@ -1679,7 +1682,7 @@ const trueVal = (arr = []) => {
 }
 
 /**
- * Excludes/omits any falsy values from array: [0,null,false,{},undefined, -1,'',[]], testing 1 level deeper as compared to trueVal()
+ * Excludes/omits any falsy values from array: `[0,null,false,{},undefined, -1,'',[]]`, testing 1 level deeper as compared to trueVal()
  * @param {array} arr mixed
  * @returns {array} only non falsy items are returned 
  * 
@@ -1730,7 +1733,7 @@ const trueProp = (obj = {}) => {
 }
 
 /** 
- * Run some method that returns a value, will check for updated conditions until timeout or when data becomes available
+ * Run some method that returns a value, check for updated conditions until timeout or when data becomes available
  * @param {function} fn callable method that returns some value
  * @param {number} timeout (ms) specify max time to wait for data before timeout
  * @param {number} testEvery how ofter to test data availability
@@ -1807,7 +1810,7 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
 }
 
 /**
- * Flattens 2 level array to 1 level: [[]] > [], [[[]]] > [[]]
+ * Flattens 2 level array to 1 level: `[[]] > [], [[[]]] > [[]]`
  * @param {array} arr 
  * @returns {array}
  * 
@@ -1820,7 +1823,7 @@ const flatten = (arr = []) => {
 }
 
 /** 
- * Flattens all array levels, example :[[['hello']]] > ['hello']
+ * Flattens all array levels, example: `[[['hello']]] > ['hello']`
  * @param {array} arr
  * @returns {array}
  * 
@@ -1939,8 +1942,7 @@ const uniqBy = (arr = [], propName = '') => {
 }
 
 /**
- * Mix array of objects and values,
- * - Grab items[] that include specific prop 
+ * Mix array of objects and values, grabs items[] that include specific prop 
  * @param {array} arr mixed [{a:true},...]
  * @param {string} prop
  * @returns {array} items that include specific prop 
@@ -2038,8 +2040,8 @@ const exFromArray = (arr = [], excludes = [/** propName,propName */]) => {
  * //> [ 1, 2, 3, true, 4, 5 ]
  * 
  * let picks = [undefined, [undefined] ] // select all undefined from array
- * pickFromArray([undefined, false, 1, true, {}, [1], [undefined, 'this one'], null], picks)
- * // [undefined, [undefined,'this one']]
+ * pickFromArray([undefined, false, 1, true, {}, [1], [undefined], null], picks)
+ * // [undefined, [undefined]]
  * 
  * // we only want to pick items that are {data} objects containing inner objects
  * let picks = [{ data: Object }] 
@@ -2492,7 +2494,7 @@ const withHoc = (item = () => { }, ...args) => {
 
 /**
  * THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
- * - Modified require does not throw when second arg ref >ERR_NO_THROW is provided
+ * - Modified require does not throw when second arg ref >`ERR_NO_THROW` is provided
  * - It does not modify the global require() method 
  * - Doesn't provide Intellisense, unfortunately
  * @param {string} path require(>path<)

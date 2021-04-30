@@ -2,8 +2,8 @@
 - (patched) we use babel to transpile to umd version, with browser supported js, the plugin `transform-es2015-modules-umd` works well but is missing the assignment `global = global || self || window` so we need to add it ourselfs after every `npm run build:umd` so that window/browser can support it!
 
 ```sh
- "devDependencies": {
- "@babel/cli": "^7.13.16",
+   "devDependencies": {
+    "@babel/cli": "^7.13.16",
     "@babel/core": "^7.13.16",
     "@babel/plugin-external-helpers": "^7.12.13",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
@@ -16,7 +16,6 @@
     "@babel/register": "^7.13.16",
     "@jest/globals": "^26.6.2",
     "@types/jest": "^26.0.22",
-    "assert": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
@@ -28,7 +27,9 @@
     "esm": "^3.2.25",
     "jest": "^26.6.3",
     "jest-cli": "^26.6.3",
-    "minami": "^1.2.3"
+    "minami": "^1.2.3",
+    "q": "^1.5.1",
+    "istanbul-badges-readme": "^1.2.1"
   }
 ```
 

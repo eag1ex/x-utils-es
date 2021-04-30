@@ -11,11 +11,11 @@
         "/docs/",
         "/todo/"
       ],
-    "coverageReporters": ["lcov"],
+    "coverageReporters": ["json-summary"],
     "coverageDirectory": "coverage",
     "coverageThreshold": {
      "global": {
-     "branches": 0,
+     "branches": 80,
      "functions": 0,
      "lines": 0,
      "statements": 0
