@@ -25,3 +25,5 @@ assets
 coverage
 jest.config.json
 .jsdoc.json
+package.production.json
+package.master.json
