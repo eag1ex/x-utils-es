@@ -2,11 +2,11 @@
  * @module x-utils
  * @license CC-BY-SA-4.0
  * {@link https://eaglex.net Eaglex}
- * @description Simple javascript, lodash alternative library, for support contact me on eaglex.net
+ * @description Simple javascript, lodash alternative library, for support contact me at eaglex.net
  * @author Developed by Anon
  * @version 2.0.0
  */
- 
+
 "use strict"
 /* eslint-disable no-proto */
 

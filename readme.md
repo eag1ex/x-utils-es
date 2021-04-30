@@ -8,7 +8,7 @@
 Simple javascript, lodash alternative library, to help with type validation, with no dependencies.
 * esmodule supports `esnext`, `es2015` and `umd`
 * Lightweight, minified
-&nbsp;
+&nbsp;\
 &nbsp;
 
 
@@ -16,21 +16,26 @@ Simple javascript, lodash alternative library, to help with type validation, wit
 ```shell
 $/ npm i x-utils-es
 ```
-&nbsp;
-&nbsp;
 
 
-### Why use it ?
+### Why use it
 * Validate data
 * Good naming conventions
 * Similar to lodash
 * No dependencies
 * UMD support so you can use in most environments: *(AMD, common.js/Node, or browser)*
-&nbsp;
+&nbsp;\
 &nbsp;
 
 
-### Version support
+#### Documentation
+Website docs: [utils.eaglex.net](https://utils.eaglex.net)
+&nbsp;\
+&nbsp;
+
+
+
+#### Version support
 For production with gulp/webpack ..etc, use source (1) version, otherwise use any other.
 
 ```js
@@ -45,11 +50,17 @@ const {} require('x-utils-es/umd') // with node/commonjs support
     const {...} = window.xutils // get access to all utils
 </script>
 ```
-&nbsp;
+&nbsp;\
 &nbsp;
 
 
-### Usage and Examples
+#### Coverage
+For full coverage details, refer to [utils.eaglex.net/coverage](https://utils.eaglex.net/coverage)
+&nbsp;\
+&nbsp;
+
+
+#### Usage and Examples
 For full detail refer to **website docs**: [utils.eaglex.net](https://utils.eaglex.net)
 
 ```js
@@ -324,5 +335,5 @@ loggerSetting('log', 'on ') // re-enable logging for log()
 
 
 
-### Contact
-Have questions, or would like to submit feedback, [contact eaglex.net](https://eaglex.net/app/contact?product=x-utils)
+#### Contact
+Have questions, or would like to submit feedback [contact eaglex.net](https://eaglex.net/app/contact?product=x-utils)
