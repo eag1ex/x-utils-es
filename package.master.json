@@ -29,6 +29,9 @@
   "author": "anon",
   "license": "CC-BY-SA-4.0",
   "keywords": [
+    "Full code documentation",
+    "code coverage",
+    "jest tests",
     "validation",
     "data validation",
     "data type checker",
