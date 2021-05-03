@@ -1,4 +1,45 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>x-utils.es.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="module-x-utils-SimpleQ.html">SimpleQ</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-x-utils.html">x-utils</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~hasPrototypeobj">hasPrototype</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~alert">alert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~arraySize">arraySize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~arrayWith">arrayWith</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~asJson">asJson</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~attention">attention</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~callFN">callFN</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~cancelPromise">cancelPromise</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~checkLoggerSetting">checkLoggerSetting</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~chunks">chunks</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~copyBy">copyBy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~copyDeep">copyDeep</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~debug">debug</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~delay">delay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~disableLogging">disableLogging</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~dispatcher">dispatcher</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~dupes">dupes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~errorTrace">errorTrace</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~exactKeyMatch">exactKeyMatch</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~exFromArray">exFromArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~flatten">flatten</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~flattenDeep">flattenDeep</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~hasProto">hasProto</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~inIndex">inIndex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~interval">interval</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isArray">isArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isBigInt">isBigInt</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isBoolean">isBoolean</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isClass">isClass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isEmpty">isEmpty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isError">isError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isFalse">isFalse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isFalsy">isFalsy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isFunction">isFunction</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isInstance">isInstance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isNull">isNull</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isNumber">isNumber</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isObject">isObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isPromise">isPromise</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isQPromise">isQPromise</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isRegExp">isRegExp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isSQ">isSQ</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isString">isString</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isTrue">isTrue</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~isUndefined">isUndefined</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~last">last</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~log">log</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~loggerSetting">loggerSetting</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~loggingON">loggingON</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~loop">loop</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~matched">matched</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~objectSize">objectSize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~onerror">onerror</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~pickFromArray">pickFromArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~resetLogging">resetLogging</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~resolver">resolver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~selectiveArray">selectiveArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~shuffle">shuffle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~someKeyMatch">someKeyMatch</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~sq">sq</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~stack">stack</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~stringSize">stringSize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~timer">timer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~trueProp">trueProp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~trueVal">trueVal</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~trueValDeep">trueValDeep</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~truthFul">truthFul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~typeCheck">typeCheck</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~uniq">uniq</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~uniqBy">uniqBy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~validDate">validDate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~validID">validID</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~warn">warn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~withHoc">withHoc</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-x-utils.html#~xrequire">xrequire</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#onerror">onerror</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">x-utils.es.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @module x-utils
  * @license CC-BY-SA-4.0
  * {@link https://eaglex.net Eaglex}
@@ -481,13 +522,13 @@ const loop = function (size = 0, cb = (index = 0) => {}) {
     let isNum = typeof size === 'number'
     if (!isFN || !isNum) return []
     let d = []
-    for (let inx = 0; inx < Array(size).length; inx++) {
+    for (let inx = 0; inx &lt; Array(size).length; inx++) {
 
         let r = cb.apply(this, [inx])
 
         // add support for break from the loop inside callback function
         try {
-            if (r && Object.entries(r).length) {
+            if (r &amp;&amp; Object.entries(r).length) {
                 if (r.break) break
             }
         } catch (err) {
@@ -512,10 +553,10 @@ const loop = function (size = 0, cb = (index = 0) => {}) {
  * validDate( new Date(), ()=>false ) // false callback !!false
 */
 const validDate = (dt, cbEval = undefined) => {
-    if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isFunction(cbEval) &amp;&amp; !callFN(cbEval)) return false
     try {
         // @ts-ignore
-        if (dt.__proto__ === Date.prototype && (dt).toString() !== 'Invalid Date') return true
+        if (dt.__proto__ === Date.prototype &amp;&amp; (dt).toString() !== 'Invalid Date') return true
         else return false
     } catch (err) {
         return false
@@ -536,7 +577,7 @@ const validDate = (dt, cbEval = undefined) => {
  * isArray({}, ()=>true) // false // not array
  */
 const isArray = (arr = undefined, cbEval = undefined) => {
-    if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isFunction(cbEval) &amp;&amp; !callFN(cbEval)) return false
     if (isBigInt(arr)) return false
     else return !arr ? false : Array.prototype === (arr).__proto__
 }
@@ -600,7 +641,7 @@ const typeCheck = (el, standard = true) => {
         if (typeof el === 'boolean') return { "type": ofType(), value: +(el), primitiveValue: Boolean() }
         
         /* istanbul ignore next */ 
-        if (typeof el === 'bigint' && typeof Object(el) === 'object') return { "type": ofType(), value: 1, primitiveValue: BigInt('') } // eslint-disable-line no-undef
+        if (typeof el === 'bigint' &amp;&amp; typeof Object(el) === 'object') return { "type": ofType(), value: 1, primitiveValue: BigInt('') } // eslint-disable-line no-undef
 
         if (el === null) return { "type": ofType('null'), value: 0, primitiveValue: Object() }
         /* istanbul ignore next */ 
@@ -667,8 +708,8 @@ const isError = (el) => {
 const isFalse = (el) => {
     if (el === null) return true
     if (typeof el === 'undefined') return true
-    if (typeof el === 'number' && el < 1) return true
-    if (typeof el === 'boolean' && el === false) return true
+    if (typeof el === 'number' &amp;&amp; el &lt; 1) return true
+    if (typeof el === 'boolean' &amp;&amp; el === false) return true
     try {
         if (el instanceof Boolean) {
             return el.valueOf() === false
@@ -699,8 +740,8 @@ const isFalse = (el) => {
 const isTrue = (el) => {
     if (el === null) return false
     if (typeof el === 'undefined') return false
-    if (typeof el === 'number' && el > 0) return true
-    if (typeof el === 'boolean' && el === true) return true
+    if (typeof el === 'number' &amp;&amp; el > 0) return true
+    if (typeof el === 'boolean' &amp;&amp; el === true) return true
     
     try {
         if (el instanceof Boolean) {
@@ -815,7 +856,7 @@ const head = (arr = []) => {
  */
 const last = (arr = []) => {
     // @ts-ignore
-    return (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : undefined
+    return (arr &amp;&amp; Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : undefined
 }
 
 
@@ -837,7 +878,7 @@ const last = (arr = []) => {
 const timer = (cb = () => {}, time = 0) => {
     const isFN = typeof cb === 'function'
     if (!isFN) return undefined
-    time = (typeof time === 'number' && time >= 0) ? time : 0 // must provide number
+    time = (typeof time === 'number' &amp;&amp; time >= 0) ? time : 0 // must provide number
     const s = setTimeout(() => {
         cb()
         clearTimeout(s)
@@ -865,13 +906,13 @@ const timer = (cb = () => {}, time = 0) => {
 const interval = (cb = () => {}, every = 0, endTime = 0) => {
     const isFN = typeof cb === 'function'
     if (!isFN) return null
-    every = (typeof every === 'number' && every >= 0) ? every : 0 // must provide number
-    endTime = (typeof endTime === 'number' && endTime >= 0) ? endTime : 0 // must provide number  
+    every = (typeof every === 'number' &amp;&amp; every >= 0) ? every : 0 // must provide number
+    endTime = (typeof endTime === 'number' &amp;&amp; endTime >= 0) ? endTime : 0 // must provide number  
 
     let counter = 0
     const c = setInterval(() => {
         cb()
-        if (endTime <= counter) return clearInterval(c)      
+        if (endTime &lt;= counter) return clearInterval(c)      
         counter = counter + every
     }, every)
 
@@ -949,7 +990,7 @@ class SimpleQ extends Promise {
 }
 
 /** 
- * SimpleQ / instanceof Promise & SimpleQ
+ * SimpleQ / instanceof Promise &amp; SimpleQ
  * - Deferred simplified promise 
  * @borrows Promise
  * @returns {SimpleQ} SimpleQ/Promise 
@@ -992,7 +1033,7 @@ const sq = () => {
     // @ts-ignore
     deferred.__proto__.entity = 'SimpleQ'
 
-    if (deferred instanceof Promise && 
+    if (deferred instanceof Promise &amp;&amp; 
         deferred instanceof SimpleQ) {
         return deferred
        
@@ -1006,7 +1047,7 @@ const sq = () => {
  * @ignore
  * @param {Object} o
  * @param {string} o.error
- * @param {Promise<any>} o.defer
+ * @param {Promise&lt;any>} o.defer
  * @param {string} o.id
  */
 const cancelPromiseCB = ({ error, defer, id }) => {}
@@ -1017,7 +1058,7 @@ const cancelPromiseCB = ({ error, defer, id }) => {}
  * - If the promise never resolves or takes too long, we can cancel when maxWait expires
  * 
  * @param {object} config `{defer,checkEvery,maxWait,cbErr,message,logging,id}`
- * @param {Promise<any>} config.defer resolved when process complete or called from callback on timeout
+ * @param {Promise&lt;any>} config.defer resolved when process complete or called from callback on timeout
  * @param {number} config.checkEvery how frequently to check if promise is resolved
  * @param {number} config.maxWait how long to wait before exciting with cbErr
  * @param {cancelPromiseCB} config.cbErr called on timeout cbErr(({error,defer,id})) here you can either resolve or reject the pending promise
@@ -1029,9 +1070,9 @@ const cancelPromiseCB = ({ error, defer, id }) => {}
  * @example 
  * let dfr = sq()
  * cancelPromise({ defer:dfr, // can use standard Promise, sq(), or node.js q.defer
- *   checkEvery: 200, // << log process on every 
+ *   checkEvery: 200, // &lt;&lt; log process on every 
  *   maxWait: 3000, // expire promise 
- *   message: 'waited too long', // << use this error message
+ *   message: 'waited too long', // &lt;&lt; use this error message
  *   logging: true, // display process
  *   id: new Date().getTime(), // custom id to display or on error
  *   cbErr: function({ error, defer, id }) {
@@ -1106,7 +1147,7 @@ const cancelPromise = ({ defer = undefined, checkEvery = 500, maxWait = 9500, cb
         })      
     }
  
-    if (isSQ(defer) || (isPromise(defer) && !isQPromise(defer))) return deffer(defer)
+    if (isSQ(defer) || (isPromise(defer) &amp;&amp; !isQPromise(defer))) return deffer(defer)
     // @ts-ignore
     if (isQPromise(defer)) return deffer(defer.promise)
     /* istanbul ignore next */ 
@@ -1143,7 +1184,7 @@ const isNumber = (n) => {
     } catch (err) {
         //
     }
-    return n !== undefined && n !== null && n !== '' ? (n).__proto__ === Number.prototype : false
+    return n !== undefined &amp;&amp; n !== null &amp;&amp; n !== '' ? (n).__proto__ === Number.prototype : false
 }
 
 /**
@@ -1174,7 +1215,7 @@ const isDate = (d) => {
  * stringSize([123]) // 0
  */
 // @ts-ignore
-const stringSize = (str = '') => str !== undefined && str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
+const stringSize = (str = '') => str !== undefined &amp;&amp; str !== null ? (str).__proto__ === String.prototype ? str.length : 0 : 0
 
 /** 
  * There are 2 types of promises available javascript standard Promise and the node.js `q.defer()` promise
@@ -1192,10 +1233,10 @@ const isQPromise = (defer = undefined) => {
 
     try {
         if (
-            (defer.promise !== undefined &&
-                typeof defer.resolve === 'function' &&
-                typeof defer.reject === 'function' &&
-                typeof defer.fulfill === 'function' &&
+            (defer.promise !== undefined &amp;&amp;
+                typeof defer.resolve === 'function' &amp;&amp;
+                typeof defer.reject === 'function' &amp;&amp;
+                typeof defer.fulfill === 'function' &amp;&amp;
                 typeof defer.notify === 'function'
             ) === true
         ) {
@@ -1272,16 +1313,16 @@ const isPromise = (defer) => {
  *
  */
 const isObject = (obj = undefined, cbEval = undefined) => {
-    if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isFunction(cbEval) &amp;&amp; !callFN(cbEval)) return false
     if (isBigInt(obj)) return false
-    if (isNaN(obj) && typeof obj === 'number') return false
+    if (isNaN(obj) &amp;&amp; typeof obj === 'number') return false
     if (typeof obj === 'function') return false
     if (!isNaN((+obj)) || obj === undefined) return false
     // @ts-ignore
     if ((obj).__proto__ === ([]).__proto__) return false // is array 
     // testing standard Object and Error
     const a = (Object.prototype === (obj).__proto__ || Error.prototype === (obj).__proto__)
-    const ab = a && (obj instanceof Object)
+    const ab = a &amp;&amp; (obj instanceof Object)
     if (ab) return true
 
     if (obj.__proto__ !== undefined) {
@@ -1331,8 +1372,8 @@ const shuffle = (arr = []) => {
 
 /** 
  * Select data from array of objects by reference, and go down recursively in order of selectBy references
- * @param {Array<string>} selectBy list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
- * @param {Array<any>} data list of objects to target by select ref
+ * @param {Array&lt;string>} selectBy list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
+ * @param {Array&lt;any>} data list of objects to target by select ref
  * @returns {array} by selected order in same pair index
  *
  * @example 
@@ -1385,7 +1426,7 @@ const selectiveArray = (selectBy = [], data = []) => {
         return found
     }
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i &lt; data.length; i++) {
         let item = data[i]
 
         if (!isObject(item)) {
@@ -1396,7 +1437,7 @@ const selectiveArray = (selectBy = [], data = []) => {
 
         let found
         let collective = [] // insert collective 
-        for (let o = 0; o < selectBy.length; o++) {
+        for (let o = 0; o &lt; selectBy.length; o++) {
             let sArr = (selectBy[o] || "").split('.')
             try {
                 found = findNest(sArr, item, 0)
@@ -1409,7 +1450,7 @@ const selectiveArray = (selectBy = [], data = []) => {
         // if all items are undef and selectBy/size matches collective/size
         // if all collective are undef filter them out
         // this helps with positioning of uneven results, and 1 side has match and the other does not, 
-        // valid example:[ [ 'abc', undefined ], 'efg', undefined  ] << pairs should be consistent, when selectBy has more then 1
+        // valid example:[ [ 'abc', undefined ], 'efg', undefined  ] &lt;&lt; pairs should be consistent, when selectBy has more then 1
         if (selectBy.length === collective.length) {
             let allUndef = collective.filter(n => n === undefined)
             if (allUndef.length === selectBy.length) collective = collective.filter(n => !!n)
@@ -1439,7 +1480,7 @@ const selectiveArray = (selectBy = [], data = []) => {
  * isClass( new Object() ) // false
  */
 const isClass = (obj, cbEval = undefined) => {
-    if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isFunction(cbEval) &amp;&amp; !callFN(cbEval)) return false
     if (!obj) return false
     if ((obj).prototype !== undefined) return true
     return false
@@ -1470,7 +1511,7 @@ const hasPrototype = isClass
  * hasProto({}, ()=> Object.keys({}).length ) // false because object has no keys
  */
 const hasProto = (el, cbEval = undefined) => {
-    if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isFunction(cbEval) &amp;&amp; !callFN(cbEval)) return false
     try {
         return el.__proto__ !== undefined
     } catch (err) {
@@ -1510,10 +1551,10 @@ const isRegExp = (expression = (/\\/)) => {
  * isInstance([]) // false
  */
 const isInstance = (obj = {}, cbEval = undefined) => {
-    if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isFunction(cbEval) &amp;&amp; !callFN(cbEval)) return false
     if (!obj) return false
     if (isArray(obj)) return false
-    if (obj.__proto__ && !isClass(obj)) {
+    if (obj.__proto__ &amp;&amp; !isClass(obj)) {
         try {
             return obj.__proto__ instanceof Object
         } catch (err) {
@@ -1560,19 +1601,19 @@ const objectSize = (obj = {}) => {
 const isFalsy = (el = undefined) => {
     if (el === undefined || 
         el === null) return true     
-    if (el === false && typeof el === 'boolean') return true
-    if (el === true && typeof el === 'boolean') return false
-    if (typeof el === 'number' && el > 0) return false
+    if (el === false &amp;&amp; typeof el === 'boolean') return true
+    if (el === true &amp;&amp; typeof el === 'boolean') return false
+    if (typeof el === 'number' &amp;&amp; el > 0) return false
 
-    if (String.prototype === (el).__proto__) return el.length < 1
+    if (String.prototype === (el).__proto__) return el.length &lt; 1
     if (Array.prototype === (el).__proto__) return (el || []).length === 0
     if (Promise.prototype === (el || {}).__proto__) return false
     if (typeof el === 'function') return false
     if ((Object.prototype === (el).__proto__) || isInstance(el)) return Object.keys(el).length === 0
     if ((Error.prototype === (el).__proto__)) return false
-    if (el !== undefined && (el).__proto__ === Number.prototype) {
+    if (el !== undefined &amp;&amp; (el).__proto__ === Number.prototype) {
         if (isNaN(el)) return true
-        else return el <= 0
+        else return el &lt;= 0
     }
     /* istanbul ignore next */ 
     if ((+(el) > 0) === false) return true
@@ -1595,7 +1636,7 @@ const isFalsy = (el = undefined) => {
  * isString('123', ()=>'123'.length>2) // true
  */
 const isString = (str = undefined, cbEval = undefined) => {
-    if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isFunction(cbEval) &amp;&amp; !callFN(cbEval)) return false
     if (str === undefined) return false
     if (str === null) return false
     if (typeof str === 'boolean') return false
@@ -1721,7 +1762,7 @@ const copyDeep = (data) => {
  *  delay(2000).then(()=>{...})
  */
 const delay = (time = 0) => {
-    const isNum = typeof time === 'number' && time >= 0 // must provide number
+    const isNum = typeof time === 'number' &amp;&amp; time >= 0 // must provide number
     if (!isNum) return Promise.resolve(true) // or resolve 
     // @ts-ignore
     return new Promise((resolve, reject) => {
@@ -1747,7 +1788,7 @@ const delay = (time = 0) => {
  * //=>  false, because callback return !!false
 */
 const someKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
-    if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isFunction(cbEval) &amp;&amp; !callFN(cbEval)) return false
     // test if its an object
     if (!(!object ? false : Object.prototype === (object).__proto__)) return false
     if (!(!source ? false : Object.prototype === (source).__proto__)) return false
@@ -1773,7 +1814,7 @@ const someKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
  * //=> false, because callback return !!false
 */
 const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
-    if (isFunction(cbEval) && !callFN(cbEval)) return false
+    if (isFunction(cbEval) &amp;&amp; !callFN(cbEval)) return false
     // test if its an object
     if (!(!object ? false : Object.prototype === (object).__proto__)) return false
     if (!(!source ? false : Object.prototype === (source).__proto__)) return false
@@ -1819,14 +1860,14 @@ const trueValDeep = (arr = []) => {
     return [].concat(arr).map((itm, inx) => {
         const typeIs = typeCheck(itm, false)
         // this item has child, check for false entities
-        if (typeIs.type === 'array' && typeIs.value > 0) {
+        if (typeIs.type === 'array' &amp;&amp; typeIs.value > 0) {
             return itm.map(child => {
                 // return only true entities, from 1 depth
                 if (typeCheck(child, false).value > 0) return child
                 else return null
             }).filter(n => !!n)
         }
-        if (typeIs.type === 'object' && typeIs.value) {
+        if (typeIs.type === 'object' &amp;&amp; typeIs.value) {
             // @ts-ignore
             return Object.entries(itm).reduce((n, [k, v], i) => {
                 if (typeCheck(k, false).value > 0) n[k] = v
@@ -2044,7 +2085,7 @@ const uniqBy = (arr = [], propName = '') => {
     if (!propName) return []
     if (!(arr || []).length) return []
 
-    for (let inx = 0; inx < arr.length; inx++) {
+    for (let inx = 0; inx &lt; arr.length; inx++) {
         let item = arr[inx]
 
         if (isUndefined(item) || isNull(item)) {
@@ -2113,7 +2154,7 @@ const arrayWith = (arr = [], prop = '') => {
  * Array including any objects and values
  * - Exclude items from array that match by excludes, and replace with undefined keeping same index position
  * @param {array} arr mixed with objects to exclude by propName
- * @param {Array<string>} excludes propNames to match each object in arr[x]
+ * @param {Array&lt;string>} excludes propNames to match each object in arr[x]
  * @returns {array} mixed with any other types as per input, in same index position
  * 
  * @example
@@ -2161,7 +2202,7 @@ const exFromArray = (arr = [], excludes = [/** propName,propName */]) => {
  * - Filter items from array by picks[] conditions 
  * - Does not support deep selections from picks[], only 1 level deep, but you can use object types,
  * @param {array} arr array of any 
- * @param {Array<any>} picks item in picks tests for all passing conditions, like object types, primitive type, and matching values
+ * @param {Array&lt;any>} picks item in picks tests for all passing conditions, like object types, primitive type, and matching values
  * - Empty types and strings, are excluded [{},[],'',NaN]
  * @returns {array} items that passed each pick condition, keeping the same index order
  * 
@@ -2200,7 +2241,7 @@ const pickFromArray = (arr = [], picks = []) => {
     if (!picks.length) return arr
     let allowedPicks = [undefined, null, false]
     // @ts-ignore
-    picks = picks.filter(n => !isFalsy(n) || allowedPicks.filter(nn => nn === n || (isNumber(n) && !isNaN(n)).length))
+    picks = picks.filter(n => !isFalsy(n) || allowedPicks.filter(nn => nn === n || (isNumber(n) &amp;&amp; !isNaN(n)).length))
 
     if (!picks.length) return arr
 
@@ -2246,10 +2287,10 @@ const pickFromArray = (arr = [], picks = []) => {
 
         let selected
 
-        for (let inx = 0; inx < picks.length; inx++) {
+        for (let inx = 0; inx &lt; picks.length; inx++) {
             let pick = picks[inx]
 
-            if (isObject(pick) && isObject(item)) {
+            if (isObject(pick) &amp;&amp; isObject(item)) {
                 // all entries on pick must match that on each item
                 let pEntries = Object.entries(pick)
                 let pass = pEntries.filter(([k, val]) => {
@@ -2262,9 +2303,9 @@ const pickFromArray = (arr = [], picks = []) => {
                 })
                 // all picks must match the requirement and object can have more props then pic has
                 // @ts-ignore
-                pass = pass.length === pEntries.length && Object.entries(item).length >= pass.length
+                pass = pass.length === pEntries.length &amp;&amp; Object.entries(item).length >= pass.length
 
-                if (pass && objectSize(item) >= objectSize(pick)) {
+                if (pass &amp;&amp; objectSize(item) >= objectSize(pick)) {
                     selected = true
                     break
                 }
@@ -2272,12 +2313,12 @@ const pickFromArray = (arr = [], picks = []) => {
 
             // array === array (also matching contents of each pick)
             // each pick contents that can be matched =[number, boolean,string, primitiveValue]
-            if (isArray(pick) && isArray(item)) {
+            if (isArray(pick) &amp;&amp; isArray(item)) {
                
                 let pass = pick.filter(n => item.filter(nn => nn === n || isInstanceByName(nn, n)).length)
 
                 // all picks must match the requirement and array can have more items then pick has
-                pass = pass.length === pick.length && item.length >= pass.length
+                pass = pass.length === pick.length &amp;&amp; item.length >= pass.length
 
                 if (pass) {
                     selected = true
@@ -2639,7 +2680,7 @@ const withHoc = (item = () => { }, ...args) => {
  * - Modified require does not throw when second arg ref >`ERR_NO_THROW` is provided
  * - It does not modify the global require() method 
  * - Doesn't provide Intellisense, unfortunately
- * @param {string} path require(>path<)
+ * @param {string} path require(>path&lt;)
  * @param {string} ref // ERR_NO_THROW and it wont throw an error
  * @returns {any} require module output or undefined
  * 
@@ -2700,11 +2741,11 @@ const truthFul = (obj = {}) => {
 /**
  * Test accuracy of a match[x] in a string
  * @param {string} str to match against
- * @param {Array<RegExp>} patterns RegExp patterns to test against
+ * @param {Array&lt;RegExp>} patterns RegExp patterns to test against
  * @returns {number} size of index patterns that matched in the string
  * 
  * @example
- * inIndex('ab cd eFG', [/fg/i, /\sCD\s/i, /ab/]) // 3 < found in three pattern arrays
+ * inIndex('ab cd eFG', [/fg/i, /\sCD\s/i, /ab/]) // 3 &lt; found in three pattern arrays
  * inIndex('abcdeFG', [/%fg/i, /1CD/i, /ab/]) // 1 (last)
  * 
  */
@@ -2838,3 +2879,22 @@ export { truthFul }
 export { inIndex }
 export { isRegExp }
 export { matched }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Mon May 03 2021 20:02:49 GMT+0000 (GMT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

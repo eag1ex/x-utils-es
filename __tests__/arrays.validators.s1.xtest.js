@@ -14,6 +14,7 @@ describe('Evaluate Arrays/ segment (1.)', () => {
     it('last()', (done) => {
 
         expect(last).toBeInstanceOf(Function)
+        expect(last()).toBe(undefined)
         expect(last(false)).toBe(undefined)
         expect(last([1, 2, 3])).toBe(3)
         expect(last([{}, [], "3"])).toBe("3")
@@ -23,6 +24,7 @@ describe('Evaluate Arrays/ segment (1.)', () => {
     it('head()', (done) => {
 
         expect(head).toBeInstanceOf(Function)
+        expect(head()).toBe(undefined)
         expect(head([1, 2, 3])).toBe(1)
         expect(head(true)).toBe(undefined)
         expect(head([[2], [], "3"])).toBe(2)
@@ -33,6 +35,7 @@ describe('Evaluate Arrays/ segment (1.)', () => {
     it('uniq()', (done) => {
 
         expect(uniq).toBeInstanceOf(Function)
+        expect(uniq()).toEqual([])
         expect(uniq([1, 2, 3, 1, 2, 5, 5, 6, 6, false, false, undefined, undefined])).toEqual([1, 2, 3, 5, 6, false, undefined])
         done()
 
@@ -68,6 +71,7 @@ describe('Evaluate Arrays/ segment (1.)', () => {
     it('shuffle()', (done) => {
 
         expect(shuffle).toBeInstanceOf(Function)
+        expect(shuffle()).toStrictEqual([])
         expect(shuffle({})).toStrictEqual([])
         expect(shuffle([1, 2, 3])).not.toEqual([1, 2, 3])
         expect(shuffle([1, 2, 3])).toHaveLength(3)

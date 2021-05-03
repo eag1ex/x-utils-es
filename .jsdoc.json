@@ -11,11 +11,13 @@
     "recurseDepth": 10,          // Only go 10 levels deep.  
     "plugins": [
         "plugins/markdown"
+      // "prettier-plugin-jsdoc",
+      //  "node_modules/jsdoc-typeof-plugin"
     ], 
     "templates": {
-        "cleverLinks": false,
+        "cleverLinks": true,
         "monospaceLinks": true,
-        "useLongnameInNav": false,
+        "useLongnameInNav": true,
         "showInheritedInNav": true
     },            
     "opts": {

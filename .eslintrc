@@ -178,7 +178,8 @@
     "standard/computed-property-even-spacing": 0,
     "standard/no-callback-literal": 0,
     "standard/object-curly-even-spacing": 0
-  },
+  }
+},
 
   "env": {
     "browser":true,
