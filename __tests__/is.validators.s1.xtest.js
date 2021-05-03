@@ -3,7 +3,7 @@
 /* eslint-disable no-new-wrappers */
 /* eslint-env mocha */
 
-import { isArray, isObject, isString, isEmpty, isFalse, isFalsy, isTrue, isBoolean, isNull, isUndefined } from '../src'
+import { isArray, arraySize, isObject, isString, isEmpty, isFalse, isFalsy, isTrue, isBoolean, isNull, isUndefined } from '../src'
 import { describe, expect, it } from '@jest/globals'
 
 describe('Evaluate Validators/ segment (1.)', () => {
@@ -19,6 +19,15 @@ describe('Evaluate Validators/ segment (1.)', () => {
         for (let b of valids) expect(isArray(b)).toBe(true)
 
         expect(isArray([], () => [].length > 0)).toBe(false)
+        done()
+    })
+
+    it('arraySize()', (done) => {
+        expect(arraySize).toBeInstanceOf(Function)
+        let invalids = [{ a: 1 }, 0, []]
+
+        for (let a of invalids) expect(arraySize(a)).toBe(0)
+        expect(arraySize([1, 2, 3])).toBe(3)
         done()
     })
 

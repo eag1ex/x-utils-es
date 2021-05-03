@@ -133,6 +133,7 @@ uniqBy([{ a: 1, b: 2 }, 1, { b: 1 }, 5, { a: 1 }, null, { a: 1, b: 2 } ], 'a')
 
 isObject({}) // true
 isArray([]) // true
+arraySize([1,2,3]) // 3
 chunks( [1,2,3,4,5,6] , 2) // [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ]
 isString('') // true
 isRegExp(/abc/) // true

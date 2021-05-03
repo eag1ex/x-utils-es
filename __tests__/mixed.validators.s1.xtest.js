@@ -93,7 +93,7 @@ describe('Evaluate Mixed/ segment (1.)', () => {
         let fn2 = async () => {
             let num = 0
             interval(() => num++, 100, 200)
-            await delay(210)
+            await delay(250)
             expect(num).toBe(2)
         }
 

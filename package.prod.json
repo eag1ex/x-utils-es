@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "helper tools for javascript validation",
   "main": "src/x-utils.es.js",
   "module": "src/x-utils.es.js",
@@ -28,6 +28,7 @@
     "tools",
     "isEmpty",
     "isArray",
+    "arraySize",
     "isObject",
     "isFunction",
     "isPromise",

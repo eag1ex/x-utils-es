@@ -141,6 +141,7 @@ const ds = dispatcher(/** uid, debug */)
     }).onComplete(uid => {
         log('completed', uid)
     })
+
 ds.next({ data: 'hello again' })
 ds.delete() 
 ds.next({ data: 'never called' })

@@ -4,11 +4,11 @@
  * {@link https://eaglex.net Eaglex}
  * @description Simple javascript, lodash alternative library, for support contact me at eaglex.net
  * @author Developed by Anon
- * @version 2.0.0
+ * @version ^2.x.x
  */
-
-"use strict"
 /* eslint-disable no-proto */
+// eslint-disable-next-line semi
+"use strict";
 
 /* istanbul ignore next */ 
 const isWindow = () => {
@@ -71,6 +71,9 @@ const disableLogging = () => {
  * If you used logging in your application from the moment this method was called all logging will be enabled
  * - it affects: log, warn,error, onerror, errorTrace, stack, attention, alert, debug
  * @returns {true|false} 
+ * 
+ * @example
+ * resetLogging() // will reset any previously set loggerSetting(...) options
 */
 const resetLogging = () => {
     try {
@@ -112,6 +115,10 @@ const resetLogging = () => {
  * @param {string} logType logger name
  * @param {string} logMode off/on
  * @returns {true|false} 
+ * 
+ * @example
+ * loggerSetting('log','off') // future calls to log() will be disabled
+ * // this applies to all logger methods: 
 */
 const loggerSetting = (logType = 'log', logMode = 'off') => {
 
@@ -422,7 +429,7 @@ const isBigInt = (n) => typeof (n) === 'bigint'
  * - When cb is returned this data is pushed to array
  * - break loop when returning {break:true} inside callback
  * @param {number} size
- * @param {function} cb((inx)=>) callback issued at end of each loop que
+ * @param {(index:number)=>any} cb((inx)=>) callback issued at end of each loop que
  * @returns {array} whatever was returned inside the loop
  * 
  * @example
@@ -494,6 +501,22 @@ const isArray = (arr = undefined, cbEval = undefined) => {
     if (isFunction(cbEval) && !callFN(cbEval)) return false
     if (isBigInt(arr)) return false
     else return !arr ? false : Array.prototype === (arr).__proto__
+}
+
+/**
+ * Test if an item is an Array and check the size
+ * @param {array} arr 
+ * @returns {number}
+ * 
+ * @example
+ * arraySize([1,2,3]) // 3
+ * arraySize({a:1}) // 0
+ */
+const arraySize = (arr = undefined) => {
+    let inx = 0
+    if (!isArray(arr)) return inx
+    inx = arr.length
+    return inx
 }
 
 /**
@@ -756,7 +779,7 @@ const last = (arr = []) => {
 
 /**
  * Timer callback is executed in timeout
- * @param {function} cb 
+ * @param {()=>any} cb 
  * @param {number} time 
  * 
  * @example
@@ -775,7 +798,7 @@ const timer = (cb = () => {}, time = 0) => {
 
 /**
   * Execute callback on every interval, and exit on endTime
-  * @param {function} cb 
+  * @param {()=>any} cb 
   * @param {number} every 
   * @param {number} endTime 
   * 
@@ -805,6 +828,7 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
  * @returns {SimpleQ} SimpleQ/Promise 
  * 
  * @example 
+ * let defer = sq()
  * // with/without .promise
  * defer.promise.then(n=>{
  *     log('[sq][resolve]',n)
@@ -832,6 +856,11 @@ const sq = () => {
     
     class SimpleQ extends Promise {
         /* istanbul ignore next */ 
+        /**
+         * 
+         * @param {(resolve:(data)=>{},reject:(data)=>{})=>any} deferrerCallback 
+         */
+        // @ts-ignore
         constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
             // @ts-ignore
             SimpleQ._promise = super(deferrerCallback)
@@ -873,7 +902,6 @@ const sq = () => {
 
         /**
          * - Returns promise, and instanceof Promise
-         * @implements Promise
          * @memberof Promise
          * @readonly
          * @memberof SimpleQ
@@ -905,15 +933,14 @@ const sq = () => {
 /** 
  * How long to wait before we exit synchronous process
  * - If the promise never resolves or takes too long, we can cancel when maxWait expires
- * @property {Promise} config.defer resolved when process complete or called from callback on timeout
- * @property {number} config.checkEvery how frequently to check if promise is resolved
- * @property {number} config.maxWait how long to wait before exciting with cbErr
- * @property {function} config.cbErr called on timeout cbErr(({error,defer,id})) here you can either resolve or reject the pending promise
- * @property {string} config.message (optional) defaults: **taken too long to respond**, or provide your own
- * @property {boolean} config.logging (optional) will prompt waiting process
- * @property {string|number} config.id (optional) added to error callback, and to logging
- * 
- * @param {Object} config {defer,checkEvery,maxWait,cbErr,message,logging,id}
+ * @param {object} config `{defer,checkEvery,maxWait,cbErr,message,logging,id}`
+ * @param {Promise<any>} config.defer resolved when process complete or called from callback on timeout
+ * @param {number} config.checkEvery how frequently to check if promise is resolved
+ * @param {number} config.maxWait how long to wait before exciting with cbErr
+ * @param {(o:{error:string,defer:Promise<any>,id:string})=>any} config.cbErr called on timeout cbErr(({error,defer,id})) here you can either resolve or reject the pending promise
+ * @param {string} config.message (optional) defaults: **taken too long to respond**, or provide your own
+ * @param {boolean} config.logging (optional) will prompt waiting process
+ * @param {string|number} config.id (optional) added to error callback, and to logging
  * @returns {Promise} the promise provided in config.defer, dont need to use it
  * 
  * @example 
@@ -938,8 +965,8 @@ const sq = () => {
  * // dfr.promise.then(log)
  * 
 **/
-const cancelPromise = ({ defer = {}, checkEvery = 500, maxWait = 9500, cbErr = ({ error, defer, id }) => {}, message = 'taken too long to respond', logging = false, id = undefined }) => {
-
+const cancelPromise = ({ defer = undefined, checkEvery = 500, maxWait = 9500, cbErr = ({ error, defer, id }) => {}, message = 'taken too long to respond', logging = false, id = undefined }) => {
+   
     let isFN = (el) => typeof el === 'function'
     let validPromise = isPromise(defer) || isQPromise(defer)
 
@@ -1065,7 +1092,7 @@ const stringSize = (str = '') => str !== undefined && str !== null ? (str).__pro
 /** 
  * There are 2 types of promises available javascript standard Promise and the node.js `q.defer()` promise
  * - this method tests for the q.defer node.js promise version
- * @param {Promise} defer q.defer() promise to check against
+ * @param {any} defer q.defer() promise to check against
  * @returns {true|false}
  * 
  * @example
@@ -1216,8 +1243,8 @@ const shuffle = (arr = []) => {
 
 /** 
  * Select data from array of objects by reference, and go down recursively in order of selectBy references
- * @param {array} selectBy list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
- * @param {array} data list of objects to target by select ref
+ * @param {Array<string>} selectBy list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
+ * @param {Array<any>} data list of objects to target by select ref
  * @returns {array} by selected order in same pair index
  *
  * @example 
@@ -1234,6 +1261,7 @@ const shuffle = (arr = []) => {
  *  // b==="hello", c ==="world"
 */
 const selectiveArray = (selectBy = [], data = []) => {
+
     if (!isArray(data)) return []
     if (!data.length) return []
     // NOTE if selectBy is empty or invalid will return same data
@@ -1734,7 +1762,7 @@ const trueProp = (obj = {}) => {
 
 /** 
  * Run some method that returns a value, check for updated conditions until timeout or when data becomes available
- * @param {function} fn callable method that returns some value
+ * @param {()=>any} fn callable method that returns some value
  * @param {number} timeout (ms) specify max time to wait for data before timeout
  * @param {number} testEvery how ofter to test data availability
  * @returns {Promise} always resolves, when return is empty it will be wrapped in an {error}
@@ -1978,7 +2006,7 @@ const arrayWith = (arr = [], prop = '') => {
  * Array including any objects and values
  * - Exclude items from array that match by excludes, and replace with undefined keeping same index position
  * @param {array} arr mixed with objects to exclude by propName
- * @param {array} excludes propNames to match each object in arr[x]
+ * @param {Array<string>} excludes propNames to match each object in arr[x]
  * @returns {array} mixed with any other types as per input, in same index position
  * 
  * @example
@@ -2026,7 +2054,7 @@ const exFromArray = (arr = [], excludes = [/** propName,propName */]) => {
  * - Filter items from array by picks[] conditions 
  * - Does not support deep selections from picks[], only 1 level deep, but you can use object types,
  * @param {array} arr array of any 
- * @param {array} picks item in picks tests for all passing conditions, like object types, primitive type, and matching values
+ * @param {Array<any>} picks item in picks tests for all passing conditions, like object types, primitive type, and matching values
  * - Empty types and strings, are excluded [{},[],'',NaN]
  * @returns {array} items that passed each pick condition, keeping the same index order
  * 
@@ -2187,6 +2215,187 @@ const pickFromArray = (arr = [], picks = []) => {
   
 }
 
+function Dispatcher(uid, debug) {
+
+    const plugin = `[dispatcher]`
+    /* istanbul ignore next */ 
+    this.uid = ((uid || '').toString() || new Date().getTime()).toString() // id generated if not provided
+    
+    this.debug = debug
+    this.cbQueue = {}
+    this.dispatchInstance = {}
+    this._isActive = null
+    this._onComplete_cb = null
+    this.index = 0 // count callbacks
+    this.data = null // dynamic next data becomes available when subscribe event is received
+    // shorthand aliases
+
+    /** 
+     * @ignore
+     * @onComplete
+     * when subscribe event is deleted complete even callback can be called
+    */
+    this.onComplete = (cb) => {
+        this._onComplete_cb = cb
+        return this
+    }
+
+    /** 
+     * @ignore
+     * @Dispatch
+     * initialize the dispatcher
+    */
+    this.initListener = () => {
+        this.Dispatch()
+        this._isActive = true
+        return this
+    }
+
+    /**
+     * @ignore
+     * @next
+     * send data to `subscribe` callback
+     * @param {*} data any
+     */
+    this.next = (data = null) => {
+        if (this._isActive !== false) this.initListener() // in case next is called above subscribe, we need to make sure it is initiated
+        if (this.dispatchInstance[this.uid]) this.dispatchInstance[this.uid].next(data)
+        else {
+            /* istanbul ignore next */ 
+            if (this.debug) log({ message: `${plugin} for uid not available`, uid: this.uid })
+        }
+        return this
+    }
+
+    /**
+     * @ignore
+     * @Dispatch
+     * master listener, sends all event callbacks to `subscribe`
+     */
+    this.Dispatch = () => {
+        if (this.dispatchInstance[this.uid]) return this
+        const self = this
+        const D = function () {
+            this.uid = self.uid
+            this.data = null
+
+            this.next = (data) => {
+                if ((data || {}).type !== 'cb') this.data = data
+                /**
+                     * @next
+                     * acts as a reverse callback, it sends back the `cb` from `subscribe`
+                     */
+                if ((data || {}).type === 'cb') {
+                    if (typeof data.cb === 'function') {
+                        // when calling next before subscribe is initiated
+                        // collect cb from .next
+                        if (!self.cbQueue[self.uid]) self.cbQueue[self.uid] = data.cb
+                        if (this.data) {
+                            self.index++
+                            self.data = this.data
+                            data.cb.call(self, this.data, self.uid, self.index)
+
+                        }
+                    }
+
+                    return
+                }
+
+                if (this.data) {
+                    if (typeof self.cbQueue[self.uid] === 'function') {
+                        self.index++
+                        self.data = this.data
+                        self.cbQueue[self.uid].call(self, this.data, self.uid, self.index)
+
+                    }
+                } else {
+                    /* istanbul ignore next */ 
+                    if (self.debug) warn(`${plugin} no callback data`)
+                }
+            }
+        }
+
+        if (!this.dispatchInstance[this.uid]) this.dispatchInstance[this.uid] = new D()
+        return this
+    }
+
+    /** 
+     * @isActive
+     * check if current Dispatcher is still valid and active
+    */
+    this.isActive = () => {
+        return this._isActive
+    }
+
+    /** 
+     * @ignore
+     * @del
+     * delete dispatcher
+    */
+    this.del = () => {
+        delete this.cbQueue[this.uid]
+        delete this.dispatchInstance[this.uid]
+        this._isActive = false
+        if (typeof this._onComplete_cb === 'function') this._onComplete_cb(this.uid)
+        return this
+    }
+
+    /**
+     * @ignore
+     * @subscribe
+     * wait for callbacks forwarded from Dispatch and returned in callback of this method
+     * - Dispatch must be set initially before you call `subscribe`
+     * @param {*} cb required
+     */
+    this.subscribe = (cb) => {
+        const isFN = typeof cb === 'function'
+        if (!isFN) {
+            /* istanbul ignore next */ 
+            if (this.debug) warn(`${plugin}[subscribe] cb must be set`)
+            return this
+        }
+        if (!this.dispatchInstance[this.uid]) {
+            // this means subscribe was executed prior to `Dispatch`, because it has forward with next
+            // it will get executed anyway
+            this.Dispatch()
+        }
+        if (this.dispatchInstance[this.uid]) this.dispatchInstance[this.uid].next({ type: 'cb', cb })
+        return this
+    }
+
+    /** 
+     * @ignore
+    * @alias initListener
+    */
+    this.init = this.initListener
+
+    /** 
+     * @ignore
+     * @alias subscribe
+    */
+    this.sub = this.subscribe
+
+    /** 
+     * @ignore
+    * @alias next
+    */
+    this.emit = this.next
+
+    /** 
+     * @ignore
+    * @alias del
+    */
+    this.delete = this.del
+
+    /** 
+     * @ignore
+     * @alias del
+    */
+    this.unsubscribe = this.del
+
+    // end
+}
+
 /**
  * Lightweight Event Dispatcher, allowing you dispatch anywhere in the code, very handy in callback hell situations, deep promises, or any other complicated computations. Integrated with callback memory so you dont have to subscribe first to get your data.
  * - Call next before subscribe
@@ -2211,188 +2420,6 @@ const pickFromArray = (arr = [], picks = []) => {
  * ds.next({ data: 'another' }) // never called
  */
 const dispatcher = (uid = undefined, debug = false) => {
-
-    function Dispatcher(uid, debug) {
-
-        const plugin = `[dispatcher]`
-        /* istanbul ignore next */ 
-        this.uid = ((uid || '').toString() || new Date().getTime()).toString() // id generated if not provided
-        
-        this.debug = debug
-        this.cbQueue = {}
-        this.dispatchInstance = {}
-        this._isActive = null
-        this._onComplete_cb = null
-        this.index = 0 // count callbacks
-        this.data = null // dynamic next data becomes available when subscribe event is received
-        // shorthand aliases
-
-        /** 
-         * @ignore
-         * @onComplete
-         * when subscribe event is deleted complete even callback can be called
-        */
-        this.onComplete = (cb) => {
-            this._onComplete_cb = cb
-            return this
-        }
-
-        /** 
-         * @ignore
-         * @Dispatch
-         * initialize the dispatcher
-        */
-        this.initListener = () => {
-            this.Dispatch()
-            this._isActive = true
-            return this
-        }
-
-        /**
-         * @ignore
-         * @next
-         * send data to `subscribe` callback
-         * @param {*} data any
-         */
-        this.next = (data = null) => {
-            if (this._isActive !== false) this.initListener() // in case next is called above subscribe, we need to make sure it is initiated
-            if (this.dispatchInstance[this.uid]) this.dispatchInstance[this.uid].next(data)
-            else {
-                /* istanbul ignore next */ 
-                if (this.debug) log({ message: `${plugin} for uid not available`, uid: this.uid })
-            }
-            return this
-        }
-
-        /**
-         * @ignore
-         * @Dispatch
-         * master listener, sends all event callbacks to `subscribe`
-         */
-        this.Dispatch = () => {
-            if (this.dispatchInstance[this.uid]) return this
-            const self = this
-            const D = function () {
-                this.uid = self.uid
-                this.data = null
-
-                this.next = (data) => {
-                    if ((data || {}).type !== 'cb') this.data = data
-                    /**
-                         * @next
-                         * acts as a reverse callback, it sends back the `cb` from `subscribe`
-                         */
-                    if ((data || {}).type === 'cb') {
-                        if (typeof data.cb === 'function') {
-                            // when calling next before subscribe is initiated
-                            // collect cb from .next
-                            if (!self.cbQueue[self.uid]) self.cbQueue[self.uid] = data.cb
-                            if (this.data) {
-                                self.index++
-                                self.data = this.data
-                                data.cb.call(self, this.data, self.uid, self.index)
-
-                            }
-                        }
-
-                        return
-                    }
-
-                    if (this.data) {
-                        if (typeof self.cbQueue[self.uid] === 'function') {
-                            self.index++
-                            self.data = this.data
-                            self.cbQueue[self.uid].call(self, this.data, self.uid, self.index)
-
-                        }
-                    } else {
-                        /* istanbul ignore next */ 
-                        if (self.debug) warn(`${plugin} no callback data`)
-                    }
-                }
-            }
-
-            if (!this.dispatchInstance[this.uid]) this.dispatchInstance[this.uid] = new D()
-            return this
-        }
-
-        /** 
-         * @isActive
-         * check if current Dispatcher is still valid and active
-        */
-        this.isActive = () => {
-            return this._isActive
-        }
-
-        /** 
-         * @ignore
-         * @del
-         * delete dispatcher
-        */
-        this.del = () => {
-            delete this.cbQueue[this.uid]
-            delete this.dispatchInstance[this.uid]
-            this._isActive = false
-            if (typeof this._onComplete_cb === 'function') this._onComplete_cb(this.uid)
-            return this
-        }
-
-        /**
-         * @ignore
-         * @subscribe
-         * wait for callbacks forwarded from Dispatch and returned in callback of this method
-         * - Dispatch must be set initially before you call `subscribe`
-         * @param {*} cb required
-         */
-        this.subscribe = (cb) => {
-            const isFN = typeof cb === 'function'
-            if (!isFN) {
-                /* istanbul ignore next */ 
-                if (this.debug) warn(`${plugin}[subscribe] cb must be set`)
-                return this
-            }
-            if (!this.dispatchInstance[this.uid]) {
-                // this means subscribe was executed prior to `Dispatch`, because it has forward with next
-                // it will get executed anyway
-                this.Dispatch()
-            }
-            if (this.dispatchInstance[this.uid]) this.dispatchInstance[this.uid].next({ type: 'cb', cb })
-            return this
-        }
-
-        /** 
-         * @ignore
-        * @alias initListener
-        */
-        this.init = this.initListener
-
-        /** 
-         * @ignore
-         * @alias subscribe
-        */
-        this.sub = this.subscribe
-
-        /** 
-         * @ignore
-        * @alias next
-        */
-        this.emit = this.next
-
-        /** 
-         * @ignore
-        * @alias del
-        */
-        this.delete = this.del
-
-        /** 
-         * @ignore
-         * @alias del
-        */
-        this.unsubscribe = this.del
-
-        // end
-    }
-
     // @ts-ignore
     return new Dispatcher(uid, debug)
 }
@@ -2401,7 +2428,7 @@ const dispatcher = (uid = undefined, debug = false) => {
  * High order caller, concept taken from React HOC.
  * - Promise support, we can provide deferred callback
  * - if rejectable error is not callable, message is: `DEFERRED_NOT_CALLABLE`
- * @param {function} item callable function
+ * @param {(...args)=>any} item callable function
  * @param {*} args (optional) any number of arguments (,,,,) that callable function has available
  * @returns {function} callable function withHoc(...args) OR deferred if a promise
  * 
@@ -2493,6 +2520,8 @@ const withHoc = (item = () => { }, ...args) => {
 }
 
 /**
+ * @class module.constructor
+ * @memberof module.constructor
  * THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
  * - Modified require does not throw when second arg ref >`ERR_NO_THROW` is provided
  * - It does not modify the global require() method 
@@ -2534,6 +2563,7 @@ function xrequire(path = '', ref = '') {
     /* istanbul ignore next */ 
     if (!(Mod.prototype instanceof module.constructor)) return undefined
 
+    // @ts-ignore
     else return Mod.prototype.require(path, ref)
 }
 
@@ -2556,7 +2586,7 @@ const truthFul = (obj = {}) => {
 /**
  * Test accuracy of a match[x] in a string
  * @param {string} str to match against
- * @param {array} patterns RegExp patterns to test against
+ * @param {Array<RegExp>} patterns RegExp patterns to test against
  * @returns {number} size of index patterns that matched in the string
  * 
  * @example
@@ -2682,6 +2712,7 @@ export { validDate }
 export { isInstance }
 export { isClass }
 export { isArray }
+export { arraySize }
 export { pickFromArray }
 export { dispatcher }
 export { isSQ }
