@@ -877,82 +877,11 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
 
 }
 
-
-class SimpleQ extends Promise {
-
-       
-    /**
-     * deferrerCallback
-     * 
-     * @callback SimpleQdeferrerCallback
-     * @param {function} resolve
-     * @param {function} reject
-     * 
-     */
-    /* istanbul ignore next */ 
-    /**
-     * 
-     * @param {SimpleQdeferrerCallback} deferrerCallback 
-     */
-
-    // @ts-ignore
-    constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
-        // @ts-ignore
-        SimpleQ._promise = super(deferrerCallback)
-    }
-
-    /**
-     *
-     * Resolve your promise outside of callback
-     * @param {*} data
-     * @memberof SimpleQ
-     */
-    resolve(data) {
-        // @ts-ignore
-        let res = SimpleQ._resolve
-        if (res instanceof Function) res(data) 
-        /* istanbul ignore next */ 
-        else onerror('[SimpleQ][resolve]', 'not callable')
-
-        return this
-    }
-
-    /**
-     * Reject your promise outside of callback
-     * @memberof SimpleQ
-     * @param {*} data 
-     */
-    reject(data) {
-        // @ts-ignore
-        let rej = SimpleQ._reject
-        if (rej instanceof Function) rej(data) 
-       
-        else {
-            /* istanbul ignore next */ 
-            onerror('[SimpleQ][reject]', 'not callable')
-        }
-
-        return this
-    }
-
-    /**
-     * - Returns promise, and instanceof Promise
-     * @memberof Promise
-     * @readonly
-     * @memberof SimpleQ
-     */
-    get promise() {
-        // @ts-ignore
-        let promise = SimpleQ._promise
-        return promise instanceof Promise ? promise : undefined
-    }
-}
-
 /** 
  * SimpleQ / instanceof Promise & SimpleQ
  * - Deferred simplified promise 
  * @borrows Promise
- * @returns {SimpleQ} SimpleQ/Promise 
+ * @returns {*} `{SimpleQ}`
  * 
  * @example 
  * let defer = sq()
@@ -981,6 +910,79 @@ class SimpleQ extends Promise {
 **/
 const sq = () => {
 
+    /**
+     * @ignore
+     */
+    class SimpleQ extends Promise {
+
+
+        /**
+         * deferrerCallback
+         * 
+         * @callback SimpleQdeferrerCallback
+         * @param {function} resolve
+         * @param {function} reject
+         * 
+         */
+        /* istanbul ignore next */
+        /**
+         * 
+         * @param {SimpleQdeferrerCallback} deferrerCallback 
+         */
+
+        // @ts-ignore
+        constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
+            // @ts-ignore
+            SimpleQ._promise = super(deferrerCallback)
+        }
+
+        /**
+         *
+         * Resolve your promise outside of callback
+         * @param {*} data
+         * @memberof SimpleQ
+         */
+        resolve(data) {
+            // @ts-ignore
+            let res = SimpleQ._resolve
+            if (res instanceof Function) res(data)
+            /* istanbul ignore next */
+            else onerror('[SimpleQ][resolve]', 'not callable')
+
+            return this
+        }
+
+        /**
+         * Reject your promise outside of callback
+         * @memberof SimpleQ
+         * @param {*} data 
+         */
+        reject(data) {
+            // @ts-ignore
+            let rej = SimpleQ._reject
+            if (rej instanceof Function) rej(data)
+
+            else {
+                /* istanbul ignore next */
+                onerror('[SimpleQ][reject]', 'not callable')
+            }
+
+            return this
+        }
+
+        /**
+         * - Returns promise, and instanceof Promise
+         * @memberof Promise
+         * @readonly
+         * @memberof SimpleQ
+         */
+        get promise() {
+            // @ts-ignore
+            let promise = SimpleQ._promise
+            return promise instanceof Promise ? promise : undefined
+        }
+    }
+
     let deferred = new SimpleQ((resolve, reject) => {
         // @ts-ignore
         SimpleQ._resolve = resolve
@@ -992,14 +994,14 @@ const sq = () => {
     // @ts-ignore
     deferred.__proto__.entity = 'SimpleQ'
 
-    if (deferred instanceof Promise && 
+    if (deferred instanceof Promise &&
         deferred instanceof SimpleQ) {
         return deferred
-       
+
     } else {
-        /* istanbul ignore next */ 
-        throw ('sq() not a valid Promise ?')   
-    } 
+        /* istanbul ignore next */
+        throw ('sq() not a valid Promise ?')
+    }
 }
 
 /**
