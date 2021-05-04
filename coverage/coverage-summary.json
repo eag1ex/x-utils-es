@@ -1,4 +1,0 @@
-{"total": {"lines":{"total":739,"covered":707,"skipped":0,"pct":95.67},"statements":{"total":956,"covered":891,"skipped":0,"pct":93.2},"functions":{"total":165,"covered":155,"skipped":0,"pct":93.94},"branches":{"total":806,"covered":672,"skipped":0,"pct":83.37}}
-,"X:\\workflow\\open-projects\\github\\x-utils\\src\\index.js": {"lines":{"total":0,"covered":0,"skipped":0,"pct":100},"functions":{"total":0,"covered":0,"skipped":0,"pct":100},"statements":{"total":0,"covered":0,"skipped":0,"pct":100},"branches":{"total":0,"covered":0,"skipped":0,"pct":100}}
-,"X:\\workflow\\open-projects\\github\\x-utils\\src\\x-utils.es.js": {"lines":{"total":739,"covered":707,"skipped":0,"pct":95.67},"functions":{"total":165,"covered":155,"skipped":0,"pct":93.94},"statements":{"total":956,"covered":891,"skipped":0,"pct":93.2},"branches":{"total":806,"covered":672,"skipped":0,"pct":83.37}}
-}
