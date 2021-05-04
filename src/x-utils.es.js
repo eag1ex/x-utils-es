@@ -452,7 +452,6 @@ const isFunction = (el = undefined) => typeof el === 'function'
  */
 const isBigInt = (n) => typeof (n) === 'bigint'
 
-
 /**
  * loopCB 
  *
@@ -818,7 +817,6 @@ const last = (arr = []) => {
     return (arr && Array.prototype === (arr).__proto__) ? arr[arr.length - 1] : undefined
 }
 
-
 /**
  * timerCB 
  *
@@ -844,13 +842,11 @@ const timer = (cb = () => {}, time = 0) => {
     }, time)
 }
 
-
 /**
  * intervalCB 
  *
  * @callback intervalCB
  */
-
 
 /**
   * Execute callback on every interval, and exit on endTime
@@ -914,7 +910,6 @@ const sq = () => {
      * @ignore
      */
     class SimpleQ extends Promise {
-
 
         /**
          * deferrerCallback
@@ -1011,8 +1006,8 @@ const sq = () => {
  * @param {Promise<any>} o.defer
  * @param {string} o.id
  */
+// eslint-disable-next-line no-unused-vars
 const cancelPromiseCB = ({ error, defer, id }) => {}
-
 
 /** 
  * How long to wait before we exit synchronous process
@@ -1857,7 +1852,6 @@ const trueProp = (obj = {}) => {
         return n
     }, {})
 }
-
 
 /**
  * @callback resolverCB
