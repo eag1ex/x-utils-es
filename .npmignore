@@ -27,4 +27,6 @@ coverage
 jest.config.json
 .jsdoc.json
 package.production.json
+package.prod.json
 package.master.json
+package-lock.json
