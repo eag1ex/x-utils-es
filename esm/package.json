@@ -1,7 +1,6 @@
 {
     "name": "x-utils-es",
     "main": "index.js",
-    "type": "module",
     "esm": {
         "mode": "auto"
     }
