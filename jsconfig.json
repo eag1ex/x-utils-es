@@ -1,8 +1,14 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "emitDeclarationOnly":true,
+    "typeRoots": [
+      "./src/x-utils.es.d.ts"
+    ],
+    "declaration": true,
     "sourceMap": false,
     "checkJs":true,
+    "esModuleInterop":true,
     "moduleResolution": "node",
     "module": "esnext",
     "target": "es2018", 
@@ -11,6 +17,10 @@
     "allowSyntheticDefaultImports": true, 
     "baseUrl": "."
   },
+  "outDir":"./types",
+  "files": [
+    "./src/x-utils.es.js"
+  ],
   "paths": {
     "*": ["node_modules/*"]
   },

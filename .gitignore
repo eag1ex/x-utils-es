@@ -5,6 +5,8 @@ info.md
 
 *.dev
 .DS_Store
+docs
+coverage
 example.test.js
 developer.code.js
 src/x-fetch.js

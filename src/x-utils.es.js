@@ -1,4 +1,7 @@
+/// <reference path="./x-utils.es.d.ts" />
+/** global xutils isArray*/
 /**
+ * @namespace xutils
  * @module x-utils
  * @license CC-BY-SA-4.0
  * {@link https://eaglex.net Eaglex}
@@ -187,6 +190,7 @@ const loggerSetting = (logType = 'log', logMode = 'off') => {
  * Internal method
  * check if any log,warn,error,onerror are currently disabled
  * @param logType
+ * @returns {'on'|'off'}
 */
 const checkLoggerSetting = (logType = '') => {
    
