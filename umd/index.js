@@ -1,3 +1,4 @@
+/// <reference path="../src/x-utils.es.d.ts" />
 // @ts-nocheck
 // eslint-disable-next-line semi
 "use strict";
@@ -6,6 +7,8 @@
 /* eslint-disable no-proto */
 
 /**
+ * @namespace xutils
+ * @module x-utils
  * @x-utils
  * * Simple javascript, lodash alternative library
  * * Developed by Anon

@@ -24,6 +24,7 @@ $/ npm i x-utils-es
 * Similar to lodash
 * No dependencies
 * UMD support so you can use in most environments: *(AMD, common.js/Node, or browser)*
+* @types support for main import, can be used with typescript
 &nbsp;\
 &nbsp;
 
@@ -39,7 +40,7 @@ Website docs: [utils.eaglex.net](https://utils.eaglex.net)
 For production with gulp/webpack ..etc, use source (1) version, otherwise use any other.
 
 ```js
-import {} from 'x-utils-es' // src e-module  (1)
+import {} from 'x-utils-es' // src e-module  (1) (supports @types)
 import {} from 'x-utils-es/esm' // (minified) (2)
 import {} from 'x-utils-es/umd' // for browser and commonjs support (minified) (3)
 const {} require('x-utils-es/umd') // with node/commonjs support 

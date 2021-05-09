@@ -1334,7 +1334,7 @@ const shuffle = (arr = []) => {
  * Select data from array of objects by reference, and go down recursively in order of selectBy references
  * @param {Array<string>} selectBy list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
  * @param {Array<any>} data list of objects to target by select ref
- * @returns {array} by selected order in same pair index
+ * @returns {Array<[]>} by selected order in same pair index
  *
  * @example 
  * // select b from both arrays, return same index order
@@ -1787,8 +1787,8 @@ const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
 
 /**
  * Excludes/omits any falsy values from array: `[0,null,false,{},undefined, -1,'',[]]`
- * @param {array} arr mixed
- * @returns {array} only non falsy items are returned 
+ * @param {Array<any>} arr mixed
+ * @returns {Array<any>} only non falsy items are returned 
  * 
  * @example 
  * trueVal([-1, 0,1, {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined,true]) 
@@ -1804,8 +1804,8 @@ const trueVal = (arr = []) => {
 
 /**
  * Excludes/omits any falsy values from array: `[0,null,false,{},undefined, -1,'',[]]`, testing 1 level deeper as compared to trueVal()
- * @param {array} arr mixed
- * @returns {array} only non falsy items are returned 
+ * @param {Array<any>} arr mixed
+ * @returns {Array<any>} only non falsy items are returned 
  * 
  * @example
  * trueValDeep([1, 0, [], {}, "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined])
@@ -1867,7 +1867,7 @@ const trueProp = (obj = {}) => {
  * @param {resolverCB} fn callable method that returns some value
  * @param {number} timeout (ms) specify max time to wait for data before timeout
  * @param {number} testEvery how ofter to test data availability
- * @returns {Promise} always resolves, when return is empty it will be wrapped in an {error}
+ * @returns {Promise<any>} always resolves, when return is empty it will be wrapped in an {error}
  * 
  * @example 
  * resolver(()=>Promise.resolve({data:'hello world'}),5000,50).then(n=>{
