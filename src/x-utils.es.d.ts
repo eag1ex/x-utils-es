@@ -51,15 +51,15 @@ declare namespace xutils {
     declare function loggerSetting(logType: TlogTypes, logMode?: TlogMode): boolean;
     declare function checkLoggerSetting(logType: TlogTypes): TlogMode;
     declare function loggingON(): boolean;
-    declare function log(...: any): any;
-    declare function attention(...: any): any;
-    declare function debug(...: any): any;
-    declare function alert(...: any): any;
+    declare function log(...any:any): any;
+    declare function attention(...any:any): any;
+    declare function debug(...any:any): any;
+    declare function alert(...any:any): any;
     declare function stack(data: any, asArray: boolean): any;
     declare function errorTrace(data: any, asArray: boolean): any;
-    declare function warn(...: any): any;
-    declare function error(...: any): any;
-    declare function onerror(...: any): any;
+    declare function warn(...any:any): any;
+    declare function error(...any:any): any;
+    declare function onerror(...any:any): any;
 
 
     declare function isFunction(el: any): boolean;

@@ -29,6 +29,10 @@ $/ npm i x-utils-es
 &nbsp;
 
 
+#### @types
+Types support is available
+
+
 #### Documentation
 Website docs: [utils.eaglex.net](https://utils.eaglex.net)
 &nbsp;\
