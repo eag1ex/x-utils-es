@@ -315,6 +315,34 @@ loop(2,inx=>{
 }) // [undefined, undefined]
 
 
+// Error Generators
+try {
+    throw xError({ id:123,name: 'MyError', message: 'my message', fileName: 'example.js', lineNumber: 20 })
+} catch (e) {
+    console.log(e instanceof Error)   // true
+    console.log(e.id)                         // "123"
+    console.log(e.name)                       // "MyError"
+    console.log(e.message)                    // "my message"      
+    console.log(e.fileName)                   // "example.js"
+    console.log(e.lineNumber)                 // 20
+    console.log(e.stack)                      // "@Scratchpad/2:2:9\n"
+}
+
+try {
+    throw referenceError({name:'MyReferenceError',message:'my message',fileName:'example.js' lineNumber:1})
+} catch(err){
+    log(e instanceof ReferenceError)  // true
+    log(e.name)                       // "MyReferenceError"
+    log(e.message)                    // "my message"
+    log(e.fileName)                   // "example.js"
+    log(e.lineNumber)                 // 1
+    log(e.stack)                      // "@Scratchpad/2:2:9\n"
+}
+  
+
+
+
+
 // LIMITED FUNCTIONALITY
 // THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
 // Modified require() does not throw when second arg ref >ERR_NO_THROW is provided
