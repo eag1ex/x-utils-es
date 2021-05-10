@@ -2,7 +2,7 @@
 
 | Statements                  | Branches                | Functions                 | Lines                |
 | --------------------------- | ----------------------- | ------------------------- | -------------------- |
-| ![Statements](https://img.shields.io/badge/Coverage-93.27%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-83.73%25-yellow.svg) | ![Functions](https://img.shields.io/badge/Coverage-94.08%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-95.62%25-brightgreen.svg)    |
+| ![Statements](https://img.shields.io/badge/Coverage-93.21%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-83.81%25-yellow.svg) | ![Functions](https://img.shields.io/badge/Coverage-94.12%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-95.51%25-brightgreen.svg)    |
 
 
 Simple javascript, lodash alternative library, to help with type validation, with no dependencies.

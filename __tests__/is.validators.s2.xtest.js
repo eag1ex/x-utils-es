@@ -3,7 +3,7 @@
 /* eslint-disable no-new-wrappers */
 /* eslint-env mocha */
 
-import { isClass, isBigInt, isError, isFunction, isInstance, isNumber, sq, isPromise, isQPromise, isSQ, delay, isRegExp, hasProto, validDate } from '../src'
+import { isClass, isBigInt, isError, isFunction, xError,referenceError, isInstance, isNumber, sq, isPromise, isQPromise, isSQ, delay, isRegExp, hasProto, validDate } from '../src/x-utils.es'
 import { describe, expect, it } from '@jest/globals'
 import q from 'q'
 
@@ -55,8 +55,7 @@ describe('Evaluate Validators/ segment (2.)', () => {
 
         expect(isError).toBeInstanceOf(Function)
         let invalids = ['error', new Object(), {}, [], false, null, undefined]
-        let valids = [Error(), new Error()]
-
+        let valids = [Error(), new Error(), xError(),referenceError()]     
         for (let a of invalids) expect(isError(a)).toBe(false)
         for (let b of valids) expect(isError(b)).toBe(true)
 

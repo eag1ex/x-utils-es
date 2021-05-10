@@ -153,8 +153,8 @@ declare namespace xutils {
     declare const xrequire: Ixrequire;
     declare function inIndex(str: string, patterns: Array<string>): number;
     declare function matched(str: string, expression: RegExp): boolean;
-    declare function referenceError(opts:IXReferenceOpts):TXReferenceError;
-    declare function xError(opts:IXErrorOpts):TXError
+    declare function referenceError(opts?:IXReferenceOpts):TXReferenceError;
+    declare function xError(opts?:IXErrorOpts):TXError
   
 }
 export = xutils

@@ -637,20 +637,6 @@ const typeCheck = (el, standard = true) => {
     }
 }
 
-/**
- * Check item is an error object
- * @param {any} el 
- * @returns {true|false}
- * 
- * @example
- * isError(Error()) // true
- * isError(new Error()) // true
- * isError(true) // false
- */
-const isError = (el) => {
-    return (Error.prototype === (el || '').__proto__)
-}
-
 /** 
  * Check if an item is less then 1, false, null or undefined
  * @param {any} el number/boolean
@@ -2851,6 +2837,28 @@ class XError extends Error {
  *
  */
 const xError = (opts = { name: 'XError', id: undefined, message: undefined, fileName: undefined, lineNumber: undefined }) => new XError(opts.name, opts.id, opts.message, opts.fileName, opts.lineNumber)
+
+/**
+ * Check item is an error object
+ * @param {any} el 
+ * @returns {true|false}
+ * 
+ * @example
+ * isError(Error()) // true
+ * isError(new Error()) // true
+ * isError(true) // false
+ * isError(xError()) // true
+ * isError(referenceError()) // true
+ */
+const isError = (el) => {
+    let generic = () => Error.prototype === (el || '').__proto__
+    try {
+        if (generic()) return true
+        return (el instanceof Error) || (el instanceof XReferenceError)
+    } catch (err) {
+        return false
+    }
+}
 
 export { disableLogging }
 export { resetLogging }
