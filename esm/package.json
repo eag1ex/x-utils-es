@@ -1,7 +1,0 @@
-{
-    "name": "x-utils-es",
-    "main": "index.js",
-    "esm": {
-        "mode": "auto"
-    }
-}

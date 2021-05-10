@@ -908,6 +908,7 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
  * .catch(onerror)
  *
 **/
+//  @ts-ignore
 const sq = () => {
 
     /**
@@ -2761,6 +2762,99 @@ const matched = (str = '', expression = /\\/) => {
     return o
 }
 
+
+
+/**
+ * @ignore
+ */
+class XReferenceError extends ReferenceError {
+    constructor(namee, msg, fName, lNumber, colNumber) {
+        // @ts-ignore
+        super(msg, fName, lNumber)
+        // due to native support, if no available add it!     
+        // override existing reference
+        if (stringSize(namee) > 0) this.name = namee
+        if (typeof fName === 'string' && !this.fileName) this.fileName = fName
+        if (typeof lNumber === 'number' && this.lineNumber === undefined) this.lineNumber = lNumber
+        if (typeof colNumber === 'number' && this.columnNumber === undefined) this.columnNumber = colNumber
+    }
+}
+
+
+/**
+ * @description Used to throw reference error, with access to available props as describe on `(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError`
+ * - method extends {ReferenceError}
+ * 
+ * @param {Object} opts
+ * @param {string} opts.name (optional) defaults to ReferenceError, provide your own
+ * @param {string} opts.message (optional)
+ * @param {string} opts.fileName (optional)
+ * @param {number} opts.lineNumber (optional)
+ * @param {number} opts.columnNumber (optional)
+ * @returns {XReferenceError} extended new ReferenceError(...)
+ *
+ * @example 
+ * try {
+ *   throw referenceError({name:'MyReferenceError',message:'my message',fileName:'example.js' lineNumber:1})
+ * } catch(err){
+ *   log(e instanceof ReferenceError)  // true
+ *   log(e.name)                       // "MyReferenceError"
+ *   log(e.message)                    // "my message"
+ *   log(e.fileName)                   // "example.js"
+ *   log(e.lineNumber)                 // 1
+ *   log(e.stack)                      // "@Scratchpad/2:2:9\n"
+ * }
+ * 
+ */
+const referenceError = (opts = { name: 'ReferenceError', message: undefined, fileName: undefined, lineNumber: undefined, columnNumber: undefined }) => new XReferenceError(opts.name, opts.message, opts.fileName, opts.lineNumber, opts.columnNumber)
+
+
+/**
+ * @ignore
+ */
+class XError extends Error {
+    constructor(name, id, message, fileName, lineNumber) {
+        // @ts-ignore
+        super(message, fileName, lineNumber)
+        this.id = undefined
+        this.name = undefined
+        if (typeof fileName === 'string' && this.fileName === undefined) this.fileName = fileName
+        if (typeof lineNumber === 'number' && this.lineNumber === undefined) this.lineNumber = lineNumber
+        if (stringSize(name)) this.name = name
+        if (isString(id) || isNumber(id)) this.id = id.toString()
+    }
+}
+
+/**
+ * 
+ * @description Used to throw new Error, with access to available props as describe on `https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Error`
+ * - method extends {Error}
+ *
+ * @param {Object} opts
+ * @param {string?} opts.name (optional) defaults to XError, provide your own 
+ * @param {string?} opts.id (optional) assign error id 
+ * @param {string?} opts.message (optional) reason for the error 
+ * @param {string?} opts.fileName (optional)
+ * @param {string?} opts.lineNumber (optional)
+ * @returns {XError} extended new Error(...)
+ *
+ * @example
+ *    try {
+ *       throw xError({ id:123,name: 'MyError', message: 'my message', fileName: 'example.js', lineNumber: 20 })
+ *   } catch (e) {
+ *       console.log(e instanceof Error)   // true
+ *       console.log(e.id)                         // "123"
+ *       console.log(e.name)                       // "MyError"
+ *       console.log(e.message)                    // "my message"      
+ *       console.log(e.fileName)                   // "someFile.js"
+ *       console.log(e.lineNumber)                 // 10
+ *       console.log(e.stack)                      // "@Scratchpad/2:2:9\n"
+ *   }
+ *
+ */
+const xError = (opts = { name: 'XError', id: undefined, message: undefined, fileName: undefined, lineNumber: undefined }) => new XError(opts.name, opts.id, opts.message, opts.fileName, opts.lineNumber)
+
+
 export { disableLogging }
 export { resetLogging }
 export { loggerSetting }
@@ -2838,3 +2932,5 @@ export { truthFul }
 export { inIndex }
 export { isRegExp }
 export { matched }
+export { referenceError }
+export {xError}

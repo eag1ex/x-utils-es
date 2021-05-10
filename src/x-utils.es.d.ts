@@ -43,6 +43,33 @@ declare namespace xutils {
     declare interface Ixrequire extends NodeRequire {
         (id: SelectionMode, ref?: string): any
     }
+    declare interface IXReferenceOpts{
+        name:string
+        message:string
+        fileName:string
+        lineNumber:number
+        columnNumber:number
+    }
+    declare interface TXReferenceError extends ReferenceErrorConstructor{
+        lineNumber?:number
+        fileName?:string
+        columnNumber?:number
+    }
+
+    declare interface IXErrorOpts{
+        id?:string|number
+        name?:string
+        message?:string
+        fileName?:string
+        lineNumber?:number
+    }
+    declare interface TXError extends Error{
+        id?:string|number
+        name?:string
+        message?:string
+        fileName?:string
+        lineNumber?:number
+    }
 
 
     // logging types
@@ -126,6 +153,9 @@ declare namespace xutils {
     declare const xrequire: Ixrequire;
     declare function inIndex(str: string, patterns: Array<string>): number;
     declare function matched(str: string, expression: RegExp): boolean;
+    declare function referenceError(opts:IXReferenceOpts):TXReferenceError;
+    declare function xError(opts:IXErrorOpts):TXError
+  
 }
 export = xutils
 export as namespace xutils

@@ -11,6 +11,7 @@
         "/docs/",
         "/todo/"
       ],
+    "collectCoverageFrom":["./src/x-utils.es.js"],
     "coverageReporters": ["json-summary"],
     "coverageDirectory": "coverage",
     "coverageThreshold": {
