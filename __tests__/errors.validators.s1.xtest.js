@@ -26,6 +26,20 @@ describe('Evaluate Errors/ segment (1.)', () => {
             expect(e.stack.toString()).toMatch(/MyError/gi)
             done()
         }
+
+        try {
+            throw xError()
+        } catch (e) {
+            expect(e).toBeInstanceOf(Error)
+            expect(e.id).toBeUndefined()
+            expect(e.name).toBe('XError')
+            expect(e.message).toBe("")
+            expect(e.fileName).toBeUndefined()
+            expect(e.lineNumber).toBeUndefined()
+            expect(e.stack.toString()).toMatch(/XError/gi)
+            done()
+        }
+
     })
 
     it('referenceError()', (done) => {
@@ -44,8 +58,19 @@ describe('Evaluate Errors/ segment (1.)', () => {
             expect(e.stack.toString()).toMatch(/MyRefError/gi)
             done()
         }
-    })
 
-  
+        try {
+            throw referenceError()
+        } catch (e) {
+            expect(e).toBeInstanceOf(ReferenceError)
+            expect(e.name).toBe('ReferenceError')
+            expect(e.message).toBe("")
+            expect(e.fileName).toBeUndefined()
+            expect(e.lineNumber).toBeUndefined()
+            expect(e.columnNumber).toBeUndefined()
+            expect(e.stack.toString()).toMatch(/ReferenceError/gi)
+            done()
+        }
+    })
 
 })

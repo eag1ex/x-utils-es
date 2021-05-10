@@ -11,8 +11,7 @@
         "/docs/",
         "/todo/"
       ],
-    "collectCoverageFrom":["./src/x-utils.es.js"],
-    "coverageReporters": ["json-summary"],
+    "coverageReporters": ["json-summary","json", "lcov", "text", "clover"],
     "coverageDirectory": "coverage",
     "coverageThreshold": {
      "global": {

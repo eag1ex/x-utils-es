@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "helper tools for javascript validation",
   "main": "src/x-utils.es.js",
   "module": "umd/index.js",
@@ -76,6 +76,8 @@
     "truthFul",
     "inIndex",
     "matched",
+    "referenceError",
+    "xError",
     "isRegExp",
     "types support"
   ],

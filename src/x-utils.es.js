@@ -1,5 +1,5 @@
 /// <reference path="./x-utils.es.d.ts" />
-/** global xutils isArray*/
+/** global xutils isArray */
 /**
  * @namespace xutils
  * @module x-utils
@@ -1335,7 +1335,7 @@ const shuffle = (arr = []) => {
  * Select data from array of objects by reference, and go down recursively in order of selectBy references
  * @param {Array<string>} selectBy list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
  * @param {Array<any>} data list of objects to target by select ref
- * @returns {Array<[]>} by selected order in same pair index
+ * @returns {array} by selected order in same pair index
  *
  * @example 
  * // select b from both arrays, return same index order
@@ -2762,8 +2762,6 @@ const matched = (str = '', expression = /\\/) => {
     return o
 }
 
-
-
 /**
  * @ignore
  */
@@ -2779,7 +2777,6 @@ class XReferenceError extends ReferenceError {
         if (typeof colNumber === 'number' && this.columnNumber === undefined) this.columnNumber = colNumber
     }
 }
-
 
 /**
  * @description Used to throw reference error, with access to available props as describe on `(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError`
@@ -2808,7 +2805,6 @@ class XReferenceError extends ReferenceError {
  */
 const referenceError = (opts = { name: 'ReferenceError', message: undefined, fileName: undefined, lineNumber: undefined, columnNumber: undefined }) => new XReferenceError(opts.name, opts.message, opts.fileName, opts.lineNumber, opts.columnNumber)
 
-
 /**
  * @ignore
  */
@@ -2821,6 +2817,8 @@ class XError extends Error {
         if (typeof fileName === 'string' && this.fileName === undefined) this.fileName = fileName
         if (typeof lineNumber === 'number' && this.lineNumber === undefined) this.lineNumber = lineNumber
         if (stringSize(name)) this.name = name
+        else this.name = 'XError'
+        
         if (isString(id) || isNumber(id)) this.id = id.toString()
     }
 }
@@ -2846,14 +2844,13 @@ class XError extends Error {
  *       console.log(e.id)                         // "123"
  *       console.log(e.name)                       // "MyError"
  *       console.log(e.message)                    // "my message"      
- *       console.log(e.fileName)                   // "someFile.js"
- *       console.log(e.lineNumber)                 // 10
+ *       console.log(e.fileName)                   // "example.js"
+ *       console.log(e.lineNumber)                 // 20
  *       console.log(e.stack)                      // "@Scratchpad/2:2:9\n"
  *   }
  *
  */
 const xError = (opts = { name: 'XError', id: undefined, message: undefined, fileName: undefined, lineNumber: undefined }) => new XError(opts.name, opts.id, opts.message, opts.fileName, opts.lineNumber)
-
 
 export { disableLogging }
 export { resetLogging }
@@ -2933,4 +2930,4 @@ export { inIndex }
 export { isRegExp }
 export { matched }
 export { referenceError }
-export {xError}
+export { xError }
