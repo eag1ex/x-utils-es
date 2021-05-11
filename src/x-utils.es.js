@@ -25,6 +25,11 @@ const isWindow = () => {
     }   
 }
 
+
+/**
+ * @typedef {'log' | 'warn' | 'onerror' | 'error' | 'alert'| 'attention' | 'debug' | 'stack' | 'errorTrace'} logType 
+ */
+
 /** 
  * 
  * If you used logging in your application from the moment this method was called all logging will be disabled
@@ -77,8 +82,8 @@ const disableLogging = () => {
 }
 
 /** 
- * If you used logging in your application from the moment this method was called all logging will be enabled
- * - it affects: log, warn,error, onerror, errorTrace, stack, attention, alert, debug
+ * Change state of xutils loggers when calling at top of hoist level. 
+ * - affects: log, warn,error, onerror, errorTrace, stack, attention, alert, debug
  * @returns {true|false} 
  * 
  * @example
@@ -126,8 +131,8 @@ const resetLogging = () => {
 }
 
 /** 
- * Allow enabling and disabling: log/warn/error/onerror/attention/debug/alert consoles
- * @param {string} logType logger name
+ * Allow enabling and disabling of loggers: `log/warn/error/onerror/attention/debug/alert`
+ * @param {logType} logType logger name
  * @param {string} logMode off/on
  * @returns {true|false} 
  * 
@@ -136,7 +141,6 @@ const resetLogging = () => {
  * // this applies to all logger methods: 
 */
 const loggerSetting = (logType = 'log', logMode = 'off') => {
-
     let availTypes = ['log', 'warn', 'onerror', 'error', 'alert', 'attention', 'debug', 'stack', 'errorTrace']
     let availModes = ['on', 'off']
 
@@ -185,15 +189,16 @@ const loggerSetting = (logType = 'log', logMode = 'off') => {
    
 }
 
+
+
 /** 
  * 
  * Internal method
  * check if any log,warn,error,onerror are currently disabled
- * @param logType
+ * @param {logType} logType
  * @returns {'on'|'off'}
 */
-const checkLoggerSetting = (logType = '') => {
-   
+const checkLoggerSetting = (logType = undefined) => {
     try {
         /* istanbul ignore next */ 
         if (isWindow()) {
@@ -258,6 +263,7 @@ const loggingON = () => {
 }
 
 /** 
+ * @ignore
  * Designed for executing callback functions
 */
 const callFN = (cb = undefined) => {
@@ -288,7 +294,7 @@ const logConstract = function (type = '', args) {
     if (type === 'attention') args = [].concat(`\x1b[90m[attention]\x1b[0m\x1b[36m${format} `, args, '\x1b[0m')
 
     try {
-        if (window) console.log.apply(null, args)
+        if (isWindow()) console.log.apply(null, args)
         return
     } catch (err) {
         // using node     
@@ -297,7 +303,7 @@ const logConstract = function (type = '', args) {
 }
 
 /**
- * Implements console.log with [log] prefix
+ * Extends console.log with [log] prefix
  * @borrows console.log
  * @param  {...any} args 
  */
@@ -310,8 +316,9 @@ const log = function (...args) {
 
 /** 
  * 
- * Implements console.log with [debug] prefix
+ * Extends console.log with [debug] prefix
  * - produces green color output
+ * @borrows console.log
  * @param  {...any} args 
 */
 const debug = function (...args) {
@@ -322,7 +329,7 @@ const debug = function (...args) {
 }
 
 /** 
- * Implements console.log with [warn] prefix
+ * Extends console.log with [warn] prefix
  * - produces bright color output
  * @param  {...any} args 
 */
@@ -334,11 +341,13 @@ const warn = function (...args) {
 }
 
 /** 
- * Implements console.log with [alert] prefix
+ * Extends console.log with [alert] prefix
  * - produces yellow color output
+ * - this method does not work on window object _( for obvious reasons! )_
  * @param  {...any} args 
 */
 const alert = function (...args) {
+    if(isWindow()) return
     if (!loggingON()) return
     if (checkLoggerSetting('alert') === 'off') return
 
@@ -346,7 +355,7 @@ const alert = function (...args) {
 }
 
 /** 
- * Implements console.log with [attention] prefix
+ * Extends console.log with [attention] prefix
  * - produces blue color output
  * @param  {...any} args 
 */
@@ -358,7 +367,7 @@ const attention = function (...args) {
 }
 
 /** 
- * Implements console.log with [error] prefix
+ * Extends console.error with [error] prefix
  * - produces red color output
  * @param  {...any} args 
 */
@@ -386,8 +395,8 @@ const onerror = function (...args) {
 }
 
 /** 
- * Good for stack tracing
- * - produces [STACK TRACE]: ...
+ * For stack tracing 
+ * - produces/prefixed [STACK TRACE]: ...
  * @param {any} data 
  * @param {boolean} asArray if set, will output stack trace as array, otherwise a string
 */
@@ -405,8 +414,8 @@ const stack = (data, asArray = false) => {
 }
 
 /**
- *  Console.error stack trace
- * - produces [ERROR]: ...
+ *  Extended console.error,  stack trace
+ * - produces/prefixed [ERROR]: ...
  * @param {any} data optional
  * @param {boolean} asArray if set, will output stack trace as array, otherwise a string
  * 
@@ -433,7 +442,7 @@ const errorTrace = (data, asArray = false) => {
 const error = onerror
 
 /**
- * Test provided item is a function
+ * Check if item is a function
  * @param {any} el 
  * @returns {true|false}
  * 
@@ -464,9 +473,9 @@ const isBigInt = (n) => typeof (n) === 'bigint'
  */
 
 /**
- * @description For loop initiating callback on each iteration
- * - When cb is returned this data is pushed to array
- * - break loop when returning {break:true} inside callback
+ * @description Looping each item inside of callback
+ * - Returned cb is pushed to array
+ * - break loop when returning `{break:true}` inside callback
  * @param {number} size
  * @param {loopCB} cb callback issued at end of each loop que
  * @returns {array} whatever was returned inside the loop
@@ -504,7 +513,7 @@ const loop = function (size = 0, cb = (index = 0) => {}) {
 }
 
 /** 
- * Evaluate provided data is an actual Date
+ * Evaluate if data is an actual `Date`
  * @param {Date} dt 
  * @param {function|undefined} cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns {true|false}
@@ -545,7 +554,7 @@ const isArray = (arr = undefined, cbEval = undefined) => {
 }
 
 /**
- * Test if an item is an Array and check the size
+ * Test item is an array, and check the size
  * @param {array} arr 
  * @returns {number}
  * 
@@ -561,10 +570,10 @@ const arraySize = (arr = undefined) => {
 }
 
 /**
- * Evaluate type of element and check if its falsy
+ * Examines element for its `type`, provided `value`, and `primitive value`
  * @param {any} el
  * @param {boolean} standard `standard==true` > return javascript standard types, `standard==false` > return user friendly definition types:`[date,NaN,promise,array,...typeof]`
- * @returns {object} `{ "type":date,NaN,promise,instance,prototype,array,...typeof, value: number, primitiveValue }`
+ * @returns {{type:any,value:number,primitiveValue:object}} `{ "type":date,NaN,promise,instance,prototype,array,...typeof, value: number, primitiveValue }`
  * 
  * @example
  * typeCheck({}) // {type:'object', value:0, primitiveValue: Object() }
@@ -638,7 +647,7 @@ const typeCheck = (el, standard = true) => {
 }
 
 /** 
- * Check if an item is less then 1, false, null or undefined
+ * Check if item is `lt < 1`, `false`, `null` or `undefined`
  * @param {any} el number/boolean
  * @returns {true|false}
  * 
@@ -670,7 +679,7 @@ const isFalse = (el) => {
 }
 
 /** 
- * Check if an item is gth>0, true, basically the opposite of isFalse()
+ * Check if item is `gth > 0`, `true`, basically opposite of `isFalse()`
  * @param {any} el number/boolean
  * @returns {true|false}
  * 
@@ -702,7 +711,7 @@ const isTrue = (el) => {
 }
 
 /** 
- * Check if an item is a boolean
+ * Check if item is a boolean
  * @param {any} el
  * @returns {true|false}
  * 
@@ -728,7 +737,7 @@ const isBoolean = (el) => {
 }
 
 /** 
- * Check if an item is ===null
+ * Check if item is `===null`
  * @param {any} el
  * @returns {true|false}
  * 
@@ -742,7 +751,7 @@ const isNull = (el) => {
 }
 
 /** 
- * Check if an item is ===undefined
+ * Check if item is `===undefined`
  * @param {any} el
  * @returns {true|false}
  * 
@@ -757,7 +766,7 @@ const isUndefined = (el) => {
 }
 
 /** 
- * Check if given item has some value, set of props, or length
+ * Check item has some value, set of props, or length
  * @param {any} value any
  * @borrows typeCheck
  * @returns {boolean}
@@ -776,7 +785,7 @@ const isEmpty = (value) => {
 }
 
 /** 
- * Get first item from an array 
+ * Get first item from array 
  * - Allow 1 level [[1,2]]
  * @param {array} arr
  * @returns {any} first array[] item[0] 
@@ -795,7 +804,7 @@ const head = (arr = []) => {
 }
 
 /**
- * Get last item from an array 
+ * Gets last item from array 
  * @param {array} arr 
  * @returns {any}
  * 
@@ -814,7 +823,7 @@ const last = (arr = []) => {
  */
 
 /**
- * Timer callback is executed in timeout
+ * Timer callback executes on timeout
  * @param {timerCB} cb 
  * @param {number} time 
  * 
@@ -839,7 +848,7 @@ const timer = (cb = () => {}, time = 0) => {
  */
 
 /**
-  * Execute callback on every interval, and exit on endTime
+  * Execute callback every interval, then exit on endTime
   * @param {intervalCB} cb 
   * @param {number} every 
   * @param {number} endTime 
@@ -863,11 +872,86 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
 
 }
 
+
+
+/**
+ * @ignore
+ */
+class SimpleQ extends Promise {
+
+    /**
+     * deferrerCallback
+     * 
+     * @callback SimpleQdeferrerCallback
+     * @param {function} resolve
+     * @param {function} reject
+     * 
+     */
+    /* istanbul ignore next */
+    /**
+     * 
+     * @param {SimpleQdeferrerCallback} deferrerCallback 
+     */
+
+    // @ts-ignore
+    constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
+        // @ts-ignore
+        SimpleQ._promise = super(deferrerCallback)
+    }
+
+    /**
+     *
+     * Resolve your promise outside of callback
+     * @param {*} data
+     * @memberof SimpleQ
+     */
+    resolve(data) {
+        // @ts-ignore
+        let res = SimpleQ._resolve
+        if (res instanceof Function) res(data)
+        /* istanbul ignore next */
+        else onerror('[SimpleQ][resolve]', 'not callable')
+
+        return this
+    }
+
+    /**
+     * Reject your promise outside of callback
+     * @memberof SimpleQ
+     * @param {*} data 
+     */
+    reject(data) {
+        // @ts-ignore
+        let rej = SimpleQ._reject
+        if (rej instanceof Function) rej(data)
+
+        else {
+            /* istanbul ignore next */
+            onerror('[SimpleQ][reject]', 'not callable')
+        }
+
+        return this
+    }
+
+    /**
+     * - Returns promise, and instanceof Promise
+     * @memberof Promise
+     * @readonly
+     * @memberof SimpleQ
+     */
+    get promise() {
+        // @ts-ignore
+        let promise = SimpleQ._promise
+        return promise instanceof Promise ? promise : undefined
+    }
+}
+
+
 /** 
  * SimpleQ / instanceof Promise & SimpleQ
  * - Deferred simplified promise 
  * @borrows Promise
- * @returns {*} `{SimpleQ}`
+ * @returns {SimpleQ}
  * 
  * @example 
  * let defer = sq()
@@ -896,78 +980,6 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
 **/
 //  @ts-ignore
 const sq = () => {
-
-    /**
-     * @ignore
-     */
-    class SimpleQ extends Promise {
-
-        /**
-         * deferrerCallback
-         * 
-         * @callback SimpleQdeferrerCallback
-         * @param {function} resolve
-         * @param {function} reject
-         * 
-         */
-        /* istanbul ignore next */
-        /**
-         * 
-         * @param {SimpleQdeferrerCallback} deferrerCallback 
-         */
-
-        // @ts-ignore
-        constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
-            // @ts-ignore
-            SimpleQ._promise = super(deferrerCallback)
-        }
-
-        /**
-         *
-         * Resolve your promise outside of callback
-         * @param {*} data
-         * @memberof SimpleQ
-         */
-        resolve(data) {
-            // @ts-ignore
-            let res = SimpleQ._resolve
-            if (res instanceof Function) res(data)
-            /* istanbul ignore next */
-            else onerror('[SimpleQ][resolve]', 'not callable')
-
-            return this
-        }
-
-        /**
-         * Reject your promise outside of callback
-         * @memberof SimpleQ
-         * @param {*} data 
-         */
-        reject(data) {
-            // @ts-ignore
-            let rej = SimpleQ._reject
-            if (rej instanceof Function) rej(data)
-
-            else {
-                /* istanbul ignore next */
-                onerror('[SimpleQ][reject]', 'not callable')
-            }
-
-            return this
-        }
-
-        /**
-         * - Returns promise, and instanceof Promise
-         * @memberof Promise
-         * @readonly
-         * @memberof SimpleQ
-         */
-        get promise() {
-            // @ts-ignore
-            let promise = SimpleQ._promise
-            return promise instanceof Promise ? promise : undefined
-        }
-    }
 
     let deferred = new SimpleQ((resolve, reject) => {
         // @ts-ignore
@@ -1001,7 +1013,7 @@ const sq = () => {
 const cancelPromiseCB = ({ error, defer, id }) => {}
 
 /** 
- * How long to wait before we exit synchronous process
+ * Cancelable synchronous process, determines how long to wait before we exit
  * - If the promise never resolves or takes too long, we can cancel when maxWait expires
  * 
  * @param {object} config `{defer,checkEvery,maxWait,cbErr,message,logging,id}`
@@ -1103,7 +1115,7 @@ const cancelPromise = ({ defer = undefined, checkEvery = 500, maxWait = 9500, cb
 }
 
 /**
- * Convert to string, remove spaces, and toLowerCase
+ * Convert to string, remove spaces, toLowerCase
  * @param {string|number} id 
  * @returns {string} 
  * 
@@ -1150,7 +1162,7 @@ const isDate = (d) => {
 }
 
 /**
- * Test the length of provided string
+ * Test the length of string
  * @param {string} str 
  * @returns {number} length of string
  * 
@@ -1240,7 +1252,7 @@ const isPromise = (defer) => {
 }
 
 /**
- * Test provided item is an Object,
+ * Test item is a true object, and not array
  * - Should not be a function/primitive, or class (except for instance)
  * @param {any} obj
  * @param {function|undefined} cbEval (optional) callback operator, continue checking when callback returns !!true
@@ -1286,7 +1298,7 @@ const isObject = (obj = undefined, cbEval = undefined) => {
 }
 
 /**
- * Item to return new array of unique values
+ * Returns new array of unique values
  * @param {array} arr 
  * @returns {array}
  *
@@ -1301,7 +1313,7 @@ const uniq = (arr = []) => {
 }
 
 /** 
- * Provided item returns values in random order
+ * Randomise items in array
  * @param {array} arr
  * @returns {array} 
  *
@@ -1318,7 +1330,7 @@ const shuffle = (arr = []) => {
 }
 
 /** 
- * Select data from array of objects by reference, and go down recursively in order of selectBy references
+ * Select data from array of objects by reference, and go down recursively in order of selectBy `['a.b']` ref
  * @param {Array<string>} selectBy list of uniq references, example ['a.b.c.d.e','e.f.g'], each selectBy/item targets nested object props
  * @param {Array<any>} data list of objects to target by select ref
  * @returns {array} by selected order in same pair index
@@ -1412,7 +1424,7 @@ const selectiveArray = (selectBy = [], data = []) => {
 }
 
 /**
- * Test if item is a class{} that can be initiated
+ * Test item is a class{} constractor, that can be initiated
  * @param {any} obj
  * @param {*} cbEval (optional) callback operator, continue checking when callback returns !!true
  * @returns {true|false}
@@ -1421,7 +1433,6 @@ const selectiveArray = (selectBy = [], data = []) => {
  * isClass(Array) // true
  * isClass(Object) //true
  * isClass((class {}) ) //true
- * 
  * // instance of a class
  * isClass( (new function() {}()) ) // false
  * isClass( new Object() ) // false
@@ -1467,7 +1478,7 @@ const hasProto = (el, cbEval = undefined) => {
 }
 
 /**
- * Check is pattern is an expression of RegExp
+ * Check pattern is an expression of RegExp
  * @param {RegExp} expression
  * @returns {boolean}
  *
@@ -1485,7 +1496,7 @@ const isRegExp = (expression = (/\\/)) => {
 }
 
 /**
- * Testing if item is (new class{})
+ * Testing if item{} is a `new Item{}`, instance of a class
  * @param {any} obj
  * @param {function|undefined} cbEval (optional) continue checking when callback returns !!true
  * @returns {boolean}
@@ -1530,7 +1541,7 @@ const objectSize = (obj = {}) => {
 }
 
 /**
- * Check if any item type is falsy, an object, array, class/instance having no props set
+ * Check if any item type is falsy, object, array, class/instance, having no props set
  * @param {any} el 
  * @returns {boolean}
  *
@@ -1569,7 +1580,7 @@ const isFalsy = (el = undefined) => {
 }
 
 /**
- * Test if an item is a string, or new String()
+ * Test item is a string type
  * @param {any} str 
  * @param {function|undefined} cbEval (optional) operator, continue checking when callback returns !!true
  * @returns {boolean}
@@ -1618,7 +1629,7 @@ const copyBy = (obj = {}, refs = []) => {
 }
 
 /**
- * Produce copy of any item
+ * Makes item copy
  * @param {any} data
  * @returns {any} copy of the same input type, or primitiveValue type if class or method supplied
  *
@@ -1696,7 +1707,7 @@ const copyDeep = (data) => {
 }
 
 /**
- * Delay sync/async process to be executed after delay is resolved
+ * Delay a sync/async process, to be executed after `delay` is resolved
  * @param {number} time in ms
  * @returns {Promise} always resolves
  * 
@@ -1773,7 +1784,7 @@ const exactKeyMatch = (object = {}, source = {}, cbEval = undefined) => {
 }
 
 /**
- * Excludes/omits any falsy values from array: `[0,null,false,{},undefined, -1,'',[]]`
+ * Exclude any falsy values from array, such as: `[0,null,false,{},undefined, -1,'',[]]`
  * @param {Array<any>} arr mixed
  * @returns {Array<any>} only non falsy items are returned 
  * 
@@ -1790,7 +1801,7 @@ const trueVal = (arr = []) => {
 }
 
 /**
- * Excludes/omits any falsy values from array: `[0,null,false,{},undefined, -1,'',[]]`, testing 1 level deeper as compared to trueVal()
+ * Exclude any falsy values from array: `[0,null,false,{},undefined, -1,'',[]]`, but testing 1 level deeper, compared to `trueVal()`
  * @param {Array<any>} arr mixed
  * @returns {Array<any>} only non falsy items are returned 
  * 
@@ -1850,7 +1861,7 @@ const trueProp = (obj = {}) => {
  */
 
 /** 
- * Run some method that returns a value, check for updated conditions until timeout or when data becomes available
+ * Run some method that returns value in future, checking updates until timeout, or exit when data becomes available
  * @param {resolverCB} fn callable method that returns some value
  * @param {number} timeout (ms) specify max time to wait for data before timeout
  * @param {number} testEvery how ofter to test data availability
@@ -1929,7 +1940,7 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
 }
 
 /**
- * Flattens 2 level array to 1 level: `[[]] > [], [[[]]] > [[]]`
+ * Flatten 2 level array to 1 level: `[[]] > [], [[[]]] > [[]]`
  * @param {array} arr 
  * @returns {array}
  * 
@@ -1942,7 +1953,7 @@ const flatten = (arr = []) => {
 }
 
 /** 
- * Flattens all array levels, example: `[[['hello']]] > ['hello']`
+ * Flatten all array levels to 1, example: `[[['hello']]] > ['hello']`
  * @param {array} arr
  * @returns {array}
  * 
@@ -1969,7 +1980,7 @@ const flattenDeep = (arr = []) => {
 }
 
 /** 
-  * Split an array to chunks by providing size number
+  * Split array to chunks by providing size number
   * @param {array} arr required
   * @param {number} size how many chunks per batch
   * @returns {array} chunked array by size
@@ -2008,8 +2019,8 @@ const dupes = (item, index = 0) => {
 }
 
 /**
- * New array with uniq object property values
- * - selects the first match ignoring others, those which prop values are repeated
+ * New array with uniq property values
+ * - Selects first match ignoring others of those which prop values are repeated
  * - non matching objects, preserved as usual
  * @param {array} arr mixed array of items and objects
  * @param {string} propName select key and test values, are repeated
@@ -2064,7 +2075,7 @@ const uniqBy = (arr = [], propName = '') => {
 }
 
 /**
- * Mix array of objects and values, grabs items[] that include specific prop 
+ * Mixed array of objects and values, grab items[] that include specific prop 
  * @param {array} arr mixed [{a:true},...]
  * @param {string} prop
  * @returns {array} items that include specific prop 
@@ -2098,7 +2109,7 @@ const arrayWith = (arr = [], prop = '') => {
 
 /**
  * Array including any objects and values
- * - Exclude items from array that match by excludes, and replace with undefined keeping same index position
+ * - Exclude items from array matchd by `excludes[]`, and replace with undefined keeping index position
  * @param {array} arr mixed with objects to exclude by propName
  * @param {Array<string>} excludes propNames to match each object in arr[x]
  * @returns {array} mixed with any other types as per input, in same index position
@@ -2145,7 +2156,7 @@ const exFromArray = (arr = [], excludes = [/** propName,propName */]) => {
 
 /**
  * Array selection tool
- * - Filter items from array by picks[] conditions 
+ * - Filter items in `array[item,item]` by `picks[Types|primitives,values]` conditions 
  * - Does not support deep selections from picks[], only 1 level deep, but you can use object types,
  * @param {array} arr array of any 
  * @param {Array<any>} picks item in picks tests for all passing conditions, like object types, primitive type, and matching values
@@ -2493,7 +2504,7 @@ function Dispatcher(uid, debug) {
 }
 
 /**
- * Lightweight Event Dispatcher, allowing you dispatch anywhere in the code, very handy in callback hell situations, deep promises, or any other complicated computations. Integrated with callback memory so you dont have to subscribe first to get your data.
+ * Lightweight Event Dispatcher, allowing dispatch anywhere in code, very handy in callback/hell situations, deep promises, or other computations. Integrated with callback memory so you dont have to subscribe first to get your data.
  * - Call next before subscribe
  * - Avoid ugly callback > callback > callback hell!
  * - Avoid messy Promises
@@ -2623,10 +2634,10 @@ const withHoc = (item = () => { }, ...args) => {
 
 /**
  * THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
- * - Modified require does not throw when second arg ref >`ERR_NO_THROW` is provided
- * - It does not modify the global require() method 
- * - Doesn't provide Intellisense, unfortunately
- * @param {string} path require(>path<)
+ * - Extended NodeRequire, does not throw when second argument `ref=ERR_NO_THROW` provided
+ * - Does not modify global require() method 
+ * - _( Does not provide Intellisense unfortunately )_
+ * @param {Selection} path require(>path<)
  * @param {string} ref // ERR_NO_THROW and it wont throw an error
  * @returns {any} require module output or undefined
  * 
@@ -2635,7 +2646,9 @@ const withHoc = (item = () => { }, ...args) => {
  * xrequire('sdf56yfd','ERR_NO_THROW') // returns undefined
  *
  */
-function xrequire(path = '', ref = '') {
+// @ts-ignore
+function xrequire(path = '', ref) {
+    
     /* istanbul ignore next */ 
     if (isWindow()) return undefined
 
@@ -2669,7 +2682,7 @@ function xrequire(path = '', ref = '') {
 }
 
 /**
- * New object that excludes all undefined values, in top level
+ * Return new object excluding all undefined values in top level
  * @param {object} obj
  * @returns {object}
  * 
@@ -2685,7 +2698,7 @@ const truthFul = (obj = {}) => {
 }
 
 /**
- * Test accuracy of a match[x] in a string
+ * Test accuracy of a `match[x]` in a string
  * @param {string} str to match against
  * @param {Array<RegExp>} patterns RegExp patterns to test against
  * @returns {number} size of index patterns that matched in the string
@@ -2765,7 +2778,7 @@ class XReferenceError extends ReferenceError {
 }
 
 /**
- * @description Used to throw reference error, with access to available props as describe on `(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError`
+ * @description Extended ReferenceError with extra props, native behaviour describe on `(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError`
  * - method extends {ReferenceError}
  * 
  * @param {Object} opts
@@ -2811,7 +2824,7 @@ class XError extends Error {
 
 /**
  * 
- * @description Used to throw new Error, with access to available props as describe on `https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Error`
+ * @description Extended Error(...) with extra `{id,name}` used to throw exception. Access to available props as describe on `https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Error`
  * - method extends {Error}
  *
  * @param {Object} opts
@@ -2839,7 +2852,7 @@ class XError extends Error {
 const xError = (opts = { name: 'XError', id: undefined, message: undefined, fileName: undefined, lineNumber: undefined }) => new XError(opts.name, opts.id, opts.message, opts.fileName, opts.lineNumber)
 
 /**
- * Check item is an error object
+ * Check item is of Error object family 
  * @param {any} el 
  * @returns {true|false}
  * 

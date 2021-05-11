@@ -3,7 +3,8 @@
   "compilerOptions": {
     "emitDeclarationOnly":true,
     "typeRoots": [
-      "./src"
+      "./src",
+      "./types"
     ],
     "declaration": true,
     "sourceMap": false,

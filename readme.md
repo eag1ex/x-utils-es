@@ -5,9 +5,21 @@
 | ![Statements](https://img.shields.io/badge/Coverage-93.21%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-83.81%25-yellow.svg) | ![Functions](https://img.shields.io/badge/Coverage-94.12%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-95.51%25-brightgreen.svg)    |
 
 
-Simple javascript, lodash alternative library, to help with type validation, with no dependencies.
+&nbsp;
+Simple javascript utility, lodash alternative, to help with type validation, with no dependencies.
 * esmodule supports `esnext`, `es2015` and `umd`
 * Lightweight, minified
+&nbsp;\
+&nbsp;
+
+
+### Documentation
+Website docs at: [utils.eaglex.net](https://utils.eaglex.net)
+&nbsp;\
+&nbsp;
+
+### Coverage
+Full coverage details at: [utils.eaglex.net/coverage](https://utils.eaglex.net/coverage)
 &nbsp;\
 &nbsp;
 
@@ -16,37 +28,31 @@ Simple javascript, lodash alternative library, to help with type validation, wit
 ```shell
 $/ npm i x-utils-es
 ```
+&nbsp;
 
 
 ### Why use it
 * Validate data
-* Good naming conventions
+* Good with naming conventions
 * Similar to lodash
 * No dependencies
 * UMD support so you can use in most environments: *(AMD, common.js/Node, or browser)*
-* @types support for main import, can be used with typescript
+* @types supported, can be used with typescript
 &nbsp;\
 &nbsp;
 
 
 #### @types
-Types support is suported
+Typed declaration support on all exported version
 &nbsp;\
 &nbsp;
-
-
-#### Documentation
-Website docs: [utils.eaglex.net](https://utils.eaglex.net)
-&nbsp;\
-&nbsp;
-
 
 
 #### Version support
 For production with gulp/webpack ..etc, use source (1) version, otherwise use any other.
 
 ```js
-import {} from 'x-utils-es' // src e-module  (1) (supports @types)
+import {} from 'x-utils-es' // src e-module  (1)
 import {} from 'x-utils-es/esm' // (minified) (2)
 import {} from 'x-utils-es/umd' // for browser and commonjs support (minified) (3)
 const {} require('x-utils-es/umd') // with node/commonjs support 
@@ -61,315 +67,346 @@ const {} require('x-utils-es/umd') // with node/commonjs support
 &nbsp;
 
 
-#### Coverage
-For full coverage details, refer to [utils.eaglex.net/coverage](https://utils.eaglex.net/coverage)
+
+### Example overview
+> For full detail refer to **website docs**: [utils.eaglex.net](https://utils.eaglex.net)
+
+&nbsp;\
+&nbsp;
+
+<style>
+r { color: Red }
+o { color: Orange }
+g { color: Green }
+st {color:#666666}
+</style>
+
+***
+```js
+import { ... } from 'x-utils-es' 
+```
+
+### [#][id:1] <st>**objectSize()**</st>
+> [id:1]: https://utils.eaglex.net/module-x-utils.html#~objectSize  "Detailed in docs"
+> Check item is an array
+
+### [#][id:2] <st>**stringSize()**</st>
+> [id:2]: https://utils.eaglex.net/module-x-utils.html#~stringSize  "Detailed in docs"
+> Test the length of string
+
+### [#][id:3] <st>**head()**</st>
+> [id:3]: https://utils.eaglex.net/module-x-utils.html#~head  "Detailed in docs"
+> Get first item from array 
+
+### [#][id:4] <st>**shuffle()**</st>
+> [id:4]: https://utils.eaglex.net/module-x-utils.html#~shuffle  "Detailed in docs"
+> Randomise items in array
+
+### [#][id:5] <st>**flatten()**</st>
+> [id:5]: https://utils.eaglex.net/module-x-utils.html#~flatten  "Detailed in docs"
+> Flatten 2 level array to 1 level
+
+### [#][id:6] <st>**flattenDeep()**</st>
+> [id:6]: https://utils.eaglex.net/module-x-utils.html#~flattenDeep  "Detailed in docs"
+> Flatten all array levels to 1
+
+### [#][id:7] <st>**last()**</st>
+> [id:7]: https://utils.eaglex.net/module-x-utils.html#~last  "Detailed in docs"
+> Gets last item from array 
+
+### [#][id:8] <st>**copy()**</st>
+> [id:8]: https://utils.eaglex.net/module-x-utils.html#~copy  "Detailed in docs"
+> Makes item copy
+
+### [#][id:9] <st>**copyBy()**</st>
+> [id:9]: https://utils.eaglex.net/module-x-utils.html#~copyBy  "Detailed in docs"
+> Copy object by property name
+
+### [#][id:10] <st>**copyDeep()**</st>
+> [id:10]: https://utils.eaglex.net/module-x-utils.html#~copyDeep  "Detailed in docs"
+> Makes deep copy including nested items
+
+### [#][id:11] <st>**asJson()**</st>
+> [id:11]: https://utils.eaglex.net/module-x-utils.html#~asJson  "Detailed in docs"
+> Returns in pretty json fromat
+
+### [#][id:12] <st>**isFunction()**</st>
+> [id:12]: https://utils.eaglex.net/module-x-utils.html#~isFunction  "Detailed in docs"
+> Check if item is a function
+
+### [#][id:13] <st>**timer()**</st>
+> [id:13]: https://utils.eaglex.net/module-x-utils.html#~timer  "Detailed in docs"
+> Timer callback executes on timeout
+
+### [#][id:14] <st>**interval()**</st>
+> [id:14]: https://utils.eaglex.net/module-x-utils.html#~interval  "Detailed in docs"
+> Execute callback every interval, then exit on endTime
+
+### [#][id:15] <st>**validID()**</st>
+> [id:15]: https://utils.eaglex.net/module-x-utils.html#~validID  "Detailed in docs"
+> Convert to string, remove spaces, toLowerCase
+
+### [#][id:16] <st>**isNumber()**</st>
+> [id:16]: https://utils.eaglex.net/module-x-utils.html#~isNumber  "Detailed in docs"
+> Check item is a number
+
+### [#][id:17] <st>**sq()**</st>
+> [id:17]: https://utils.eaglex.net/module-x-utils.html#~sq  "Detailed in docs"
+> SimpleQ / instanceof Promise, deferred simplified promise 
+
+### [#][id:18] <st>**isPromise()**</st>
+> [id:18]: https://utils.eaglex.net/module-x-utils.html#~isPromise  "Detailed in docs"
+> Check for `Promise` / `q.defer` / and xutils promise `sq()`
+
+### [#][id:19] <st>**isQPromise()**</st>
+> [id:19]: https://utils.eaglex.net/module-x-utils.html#~isQPromise  "Detailed in docs"
+> Tests for the `q.defer()` node.js promise version
+
+### [#][id:20] <st>**cancelPromise()**</st>
+> [id:20]: https://utils.eaglex.net/module-x-utils.html#~cancelPromise  "Detailed in docs"
+> Cancelable synchronous process, determines how long to wait before we exit
+
+### [#][id:21] <st>**uniq()**</st>
+> [id:21]: https://utils.eaglex.net/module-x-utils.html#~uniq  "Detailed in docs"
+> Returns new array of unique values
+
+### [#][id:22] <st>**uniqBy()**</st>
+> [id:22]: https://utils.eaglex.net/module-x-utils.html#~uniqBy  "Detailed in docs"
+> Selects first match ignoring others of those which prop values are repeated
+
+### [#][id:23] <st>**isObject()**</st>
+> [id:23]: https://utils.eaglex.net/module-x-utils.html#~isObject  "Detailed in docs"
+> Test item is a true object, and not array
+
+### [#][id:24] <st>**isArray()**</st>
+> [id:24]: https://utils.eaglex.net/module-x-utils.html#~isArray  "Detailed in docs"
+> Test item is a true array, and not object
+
+### [#][id:25] <st>**arraySize()**</st>
+> [id:25]: https://utils.eaglex.net/module-x-utils.html#~arraySize  "Detailed in docs"
+> Test item is an array, and check the size
+
+### [#][id:26] <st>**chunks()**</st>
+> [id:26]: https://utils.eaglex.net/module-x-utils.html#~chunks  "Detailed in docs"
+> Split array to chunks by providing size number
+
+### [#][id:27] <st>**isString()**</st>
+> [id:27]: https://utils.eaglex.net/module-x-utils.html#~isString  "Detailed in docs"
+> Test item is a string type
+
+### [#][id:27a] <st>**isRegExp()**</st>
+> [id:27a]: https://utils.eaglex.net/module-x-utils.html#~isRegExp  "Detailed in docs"
+> Check pattern is an expression of RegExp
+
+### [#][id:28] <st>**isFalsy()**</st>
+> [id:28]: https://utils.eaglex.net/module-x-utils.html#~isFalsy  "Detailed in docs"
+> Check if any item type is falsy, object, array, class/instance, 
+> having no props set
+
+### [#][id:29] <st>**isTrue()**</st>
+> [id:29]: https://utils.eaglex.net/module-x-utils.html#~isTrue  "Detailed in docs"
+> Check if item is `gth > 0`, `true`, basically opposite of `isFalse()`
+
+### [#][id:30] <st>**isFalse()**</st>
+> [id:30]: https://utils.eaglex.net/module-x-utils.html#~isFalse  "Detailed in docs"
+> Check if item is `lt < 1`, `false`, `null` or `undefined`
+
+### [#][id:31] <st>**isBoolean()**</st>
+> [id:31]: https://utils.eaglex.net/module-x-utils.html#~isBoolean  "Detailed in docs"
+> Check if item is a boolean
+
+### [#][id:32] <st>**isNull()**</st>
+> [id:32]: https://utils.eaglex.net/module-x-utils.html#~isNull  "Detailed in docs"
+> Check if item is `===null`
+
+### [#][id:33] <st>**isUndefined()**</st>
+> [id:33]: https://utils.eaglex.net/module-x-utils.html#~isUndefined  "Detailed in docs"
+> Check if item is `===undefined`
+
+### [#][id:34] <st>**delay()**</st>
+> [id:34]: https://utils.eaglex.net/module-x-utils.html#~delay  "Detailed in docs"
+> Delay a sync/async process, to be executed after `delay` is resolved
+
+### [#][id:35] <st>**truthFul()**</st>
+> [id:35]: https://utils.eaglex.net/module-x-utils.html#~truthFul  "Detailed in docs"
+> Return new object excluding all undefined values in top level
+
+### [#][id:36] <st>**inIndex()**</st>
+> [id:36]: https://utils.eaglex.net/module-x-utils.html#~inIndex  "Detailed in docs"
+> Test accuracy of a `match[x]` in a string
+
+### [#][id:37] <st>**matched()**</st>
+> [id:37]: https://utils.eaglex.net/module-x-utils.html#~matched  "Detailed in docs"
+> Match string value by expression
+
+### [#][id:38] <st>**someKeyMatch()**</st>
+> [id:38]: https://utils.eaglex.net/module-x-utils.html#~someKeyMatch  "Detailed in docs"
+> Test if ANY keys match between `object{}` and `source{}` 
+
+### [#][id:39] <st>**exactKeyMatch()**</st>
+> [id:39]: https://utils.eaglex.net/module-x-utils.html#~exactKeyMatch  "Detailed in docs"
+> Test if ALL keys match between `object{}` and `source{}`
+
+### [#][id:40] <st>**trueVal()**</st>
+> [id:40]: https://utils.eaglex.net/module-x-utils.html#~trueVal  "Detailed in docs"
+> Exclude any falsy values from array, such as: `[0,null,false,{},undefined, -1,'',[]]`
+
+### [#][id:41] <st>**trueValDeep()**</st>
+> [id:41]: https://utils.eaglex.net/module-x-utils.html#~trueValDeep  "Detailed in docs"
+> Exclude any falsy values from array: `[0,null,false,{},undefined, -1,'',[]]`, 
+> but testing 1 level deeper, compared to `trueVal()`
+
+### [#][id:42] <st>**trueProp()**</st>
+> [id:42]: https://utils.eaglex.net/module-x-utils.html#~trueProp  "Detailed in docs"
+> Object with true entities will be returned 
+
+### [#][id:43] <st>**typeCheck()**</st>
+> [id:43]: https://utils.eaglex.net/module-x-utils.html#~typeCheck  "Detailed in docs"
+> Examines element for its `type`, provided `value`, and `primitive value`
+
+### [#][id:44] <st>**isEmpty()**</st>
+> [id:44]: https://utils.eaglex.net/module-x-utils.html#~isEmpty  "Detailed in docs"
+> Check item has some `value`, set of `props`, or `length`
+
+### [#][id:45] <st>**isError()**</st>
+> [id:45]: https://utils.eaglex.net/module-x-utils.html#~isError  "Detailed in docs"
+> Check item is of Error object family
+
+### [#][id:46] <st>**isInstance()**</st>
+> [id:46]: https://utils.eaglex.net/module-x-utils.html#~isInstance  "Detailed in docs"
+> Testing if item{} is a `new Item{}`, instance of a class
+
+### [#][id:47] <st>**isClass()**</st>
+> [id:47]: https://utils.eaglex.net/module-x-utils.html#~isClass  "Detailed in docs"
+> Test item is a class{} constractor, that can be initiated
+
+### [#][id:48] <st>**hasPrototype()**</st>
+> [id:48]: https://utils.eaglex.net/module-x-utils.html#~hasPrototype  "Detailed in docs"
+> Test item is a class{} constractor, that can be initiated, _( alias of isClass() )_
+
+### [#][id:49] <st>**hasProto()**</st>
+> [id:49]: https://utils.eaglex.net/module-x-utils.html#~hasProto  "Detailed in docs"
+> Test item is a class{} constractor, that can be initiated, _( alias of isClass() )_
+
+### [#][id:50] <st>**hasProto()**</st>
+> [id:50]: https://utils.eaglex.net/module-x-utils.html#~hasProto  "Detailed in docs"
+> Check if item has access to `__proto__`
+
+### [#][id:51] <st>**validDate()**</st>
+> [id:51]: https://utils.eaglex.net/module-x-utils.html#~validDate  "Detailed in docs"
+> Evaluate if data is an actual `Date`
+
+### [#][id:52] <st>**selectiveArray()**</st>
+> [id:52]: https://utils.eaglex.net/module-x-utils.html#~selectiveArray  "Detailed in docs"
+> Select data from array of objects by reference, and go down recursively 
+> in order of selectBy `['a.b']` ref
+
+### [#][id:53] <st>**arrayWith()**</st>
+> [id:53]: https://utils.eaglex.net/module-x-utils.html#~arrayWith  "Detailed in docs"
+> Mixed array of objects and values, grab `items[]` that include specific prop. 
+
+### [#][id:54] <st>**exFromArray()**</st>
+> [id:54]: https://utils.eaglex.net/module-x-utils.html#~exFromArray  "Detailed in docs"
+> Exclude items from array matchd by `excludes[]`, 
+> and replace with `undefined` keeping index position
+
+### [#][id:55] <st>**pickFromArray()**</st>
+> [id:55]: https://utils.eaglex.net/module-x-utils.html#~pickFromArray  "Detailed in docs"
+> Array selection tool. Filter items in `array[item,item]` 
+> by `picks[Types|primitives,values]` conditions 
+
+### [#][id:56] <st>**dispatcher()**</st>
+> [id:56]: https://utils.eaglex.net/module-x-utils.html#~dispatcher  "Detailed in docs"
+> Lightweight Event Dispatcher, allowing dispatch anywhere in code, 
+> very handy in `callback/hell` situations, deep promises, or other computations.
+ 
+### [#][id:57] <st>**withHoc()**</st>
+> [id:57]: https://utils.eaglex.net/module-x-utils.html#~withHoc  "Detailed in docs"
+> High order caller, concept taken from React HOC. Supports promises
+ 
+### [#][id:58] <st>**resolver()**</st>
+> [id:58]: https://utils.eaglex.net/module-x-utils.html#~resolver  "Detailed in docs"
+> Run some method that returns value in future, checking updates until timeout, 
+> or exit when data becomes available.
+
+### [#][id:59] <st>**dupes()**</st>
+> [id:59]: https://utils.eaglex.net/module-x-utils.html#~dupes  "Detailed in docs"
+> Duplicate item x:number of times
+
+### [#][id:60] <st>**loop()**</st>
+> [id:60]: https://utils.eaglex.net/module-x-utils.html#~loop  "Detailed in docs"
+> Looping each item inside of callback
+
+### [#][id:61] <st>**xError()**</st>
+> [id:61]: https://utils.eaglex.net/module-x-utils.html#~xError  "Detailed in docs"
+> Extended Error(...) with extra `{id,name,fileName,lineNumber}` used to throw exception.
+
+### [#][id:62] <st>**referenceError()**</st>
+> [id:62]: https://utils.eaglex.net/module-x-utils.html#~referenceError  "Detailed in docs"
+> Extended ReferenceError(...) with extra `{name,fileName,lineNumber,columnNumber}`, 
+> used to throw exception.
+
+### [#][id:63] <st>**xrequire()**</st>
+> [id:63]: https://utils.eaglex.net/module-x-utils.html#~xrequire  "Detailed in docs"
+> Extended NodeRequire, does not throw when second argument `ref=ERR_NO_THROW` provided. 
+> THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
+
+### [#][id:64] <st>**loggerSetting()**</st>
+> [id:64]: https://utils.eaglex.net/module-x-utils.html#~loggerSetting  "Detailed in docs"
+> Allow enabling and disabling of loggers: 
+> `log/warn/error/onerror/attention/debug/alert`
+
+### [#][id:65] <st>**resetLogging()**</st>
+> [id:65]: https://utils.eaglex.net/module-x-utils.html#~resetLogging  "Detailed in docs"
+> Change state of xutils loggers when calling at top of hoist level. 
+> Effects: `log/warn/error/onerror/attention/debug/alert`
+
+### [#][id:66] <st>**log()**</st>
+> [id:66]: https://utils.eaglex.net/module-x-utils.html#~log  "Detailed in docs"
+> Extends console.log with `[log]` prefix
+
+### [#][id:67] <st>**debug()**</st>
+> [id:67]: https://utils.eaglex.net/module-x-utils.html#~debug  "Detailed in docs"
+> Extends console.log with `[debug]` prefix, 
+> produces `green` color output
+
+### [#][id:68] <st>**onerror()**</st>
+> [id:68]: https://utils.eaglex.net/module-x-utils.html#~onerror  "Detailed in docs"
+> Extends console.error with `[error]` prefix, 
+> produces `red` color output
+    
+### [#][id:69] <st>**warn()**</st>
+> [id:69]: https://utils.eaglex.net/module-x-utils.html#~warn  "Detailed in docs"
+> Extends console.log with `[warn]` prefix, 
+> produces bright `white` color output
+
+### [#][id:70] <st>**attention()**</st>
+> [id:70]: https://utils.eaglex.net/module-x-utils.html#~attention  "Detailed in docs"
+> Extends console.log with `[attention]` prefix, 
+> produces `blue` color output
+
+### [#][id:71] <st>**alert()**</st>
+> [id:71]: https://utils.eaglex.net/module-x-utils.html#~alert  "Detailed in docs"
+> Extends console.log with `[alert]` prefix, 
+> produces `yellow` color output. 
+> Does not work on window object _( for obvious reasons! )_
+
+### [#][id:72] <st>**stack()**</st>
+> [id:72]: https://utils.eaglex.net/module-x-utils.html#~stack  "Detailed in docs"
+> For stack tracing, prefixed with `[STACK TRACE]`
+
+### [#][id:73] <st>**errorTrace()**</st>
+> [id:73]: https://utils.eaglex.net/module-x-utils.html#~errorTrace  "Detailed in docs"
+> For stack tracing, prefixed with `[STACK TRACE]`
+
+### [#][id:74] <st>**errorTrace()**</st>
+> [id:74]: https://utils.eaglex.net/module-x-utils.html#~errorTrace  "Detailed in docs"
+> Extended console.error, stack trace, prefixed with `[ERROR]`
+
 &nbsp;\
 &nbsp;
 
 
-#### Usage and Examples
-For full detail refer to **website docs**: [utils.eaglex.net](https://utils.eaglex.net)
 
-```js
-
-// All available methods
-import { ... } from 'x-utils-es' 
-
-objectSize({ a: 1, b: 2 }) }) // 2
-stringSize('abc') // 3 
-head([[{ value: 1 }, { value: 2 }]]) // { value: 1 }
-shuffle(['1',2,3,'4']) // returns random order
-flatten([['hello world']]) // ['hello world']
-flattenDeep([[[['hello world']]]) // ['hello world']
-last([{},{},[1], { value: 1 }]) // { value: 1 }
-copyBy({ a: 1, b: 2, c: 3, d: 1 ,e: 1 }, ['a', 'c']) } // {a: 1, c: 3}
-copy(new Array(1,2,3)) //=> / [1,2,3]
-copyDeep([{ a: (new function(){this.b=1}()) }]) //=>  [ { a: {b:1} } ]
-asJson( { a:{ b: { c:'hello world' } } } )
-/**
- {
-  "a": {
-    "b": {
-      "c": "hello world"
-    }
-  }
-}
- **/
-isFunction(()=>{}) // true
-timer(() => log('timer called'), 2000) // called time expiry
-
-// just like setInterval, calls `every` time, and clears interval on `endTime` 
-interval(() => log('interval called'), 100, 300) 
-validID('sdfkj 45 AMKD') // sdfkj45amkd
-isNumber(-1) // true
-
-// SimpleQ / instanceOf Promise & SimpleQ
-sq().resolve().then(log) 
-sq() instanceof Promise === true
-
-isPromise( Promise.resolve()) ) // true
-isQPromise( q.defer() ) // true (refering to node.js q )
-
-// How long to wait before we exit synchronous process
-let def = sq()
-cancelPromise({ defer:def, // can use standard Promise, sq(), or node.js q.defer
-                checkEvery:200,  // log process on every 
-                maxWait:3000,  // expire promise 
-                message:'waited too long',  // use this error message
-                logging:true, // display process
-                id: new Date().getTime(), // custom id to display or on error
-                cbErr:function({error,defer,id}){
-                    // update our reject message
-                    def.reject(error) 
-                    // defer.reject(error)  // same
-                    // this.defer.reject(error)  // same
-                }
-             })//.promise // returns promise
-
-             // def.resolve()
-             // or this
-             def.promise.then(n=>{
-                 log('not called')
-             },err=>{
-                onerror('[cancelPromise]',err)
-             })   
-
-uniq([1, 1, 3, 'a', 'b', 'a', null, null, true, true]) // [1,3,'a','b',null,true]
-uniqBy([{ a: 1, b: 2 }, 1, { b: 1 }, 5, { a: 1 }, null, { a: 1, b: 2 } ], 'a') 
-// [ { a: 1, b: 2 }, 1, { b: 1 }, 5, null ]
-
-isObject({}) // true
-isArray([]) // true
-arraySize([1,2,3]) // 3
-chunks( [1,2,3,4,5,6] , 2) // [ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ]
-isString('') // true
-isRegExp(/abc/) // true
-
-isFalsy({}) // true
-isFalsy({a:1}) // false
-
-isTrue(undefined) // false
-isTrue(5) // true
-isTrue(true) // true
-
-isFalse(false) // true
-isFalse(-1) // true
-isFalse(true) // false
-
-isBoolean(undefined) // false
-isBoolean(false) // true
-isBoolean(new Boolean(false)) // true 
-
-isNull(null) // true
-isNull(undefined) // false
-
-isUndefined(undefined) // true
-isUndefined(null) // false
-
-await delay(2000)
-// continue
-
-truthFul({ a: undefined, b: 1, c: {}, d:undefined }) // { b: 1, c: {} }
-
-inIndex('ab cd eFG', [/fg/i, /\sCD\s/i, /ab/]) // 3 < found in three pattern arrays
-inIndex('abcdeFG', [/%fg/i, /1CD/i, /ab/]) // 1 (last)
-
-matched('aabc', /^abc/)) // false
-matched('aaBC', /abc/i) // true
-
-someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 })  //=>  true , {a} was found
-someKeyMatch({ a: 2, b: 1, c: 2 }, { d: 1, e: 1, a: 1 }, ()=>1-1===1) 
-//=>  false, because callback return !!false
-
-exactKeyMatch({ a: 2, b: 1, c: 2 }, { c: 1, a: 1, b: 1 }) //=>  true
-exactKeyMatch({ a: 2, b: 1 }, { c: 1, a: 1, b: 1 }) //=> false
-
-trueVal([-1, 0,1 {}, "hello", [], { name: 'jack' }, false, null, NaN, undefined,true]) 
-//=> [1,'hello',{ name: 'jack' },true]
-
-trueValDeep([1, 0, [], {}, "hello", [0, undefined, -1, false, NaN, 1], { name: 'jack' }, false, null, undefined])
-//=> [ 1, 'hello', [ 1 ], { name: 'jack' } ] }
-
-
-// New object with only true entities `{prop:values,...}`,
-trueProp({ a: NaN, b: 0, c: false, d: -1, e: NaN, f: [], g: 'hello', h: {}, i: undefined, j:'' })
-//=> {g: 'hello'}
-
-
-// Evaluate given data and return type/value object
-typeCheck({a:1,b:2}) // {type:'object', value:2, primitiveValue: Object() }
-typeCheck([2,3],false) // {type:'array', value:2, primitiveValue: Object() }
-typeCheck(Date,false) // {type:'date', value:1, primitiveValue: Date() }
-typeCheck(2) // {type:'number', value:2, primitiveValue: Number() }
-typeCheck(true) // {type:'boolean', value:1, primitiveValue: Boolean() }
-typeCheck(null) // {type:'object', value:0, primitiveValue: Object() }
-typeCheck(undefined) // {type:'undefined', value:0, primitiveValue: undefined }
-typeCheck(function () { }) // {type:'function', value:1, primitiveValue: Function }
-typeCheck(Promise.resolve(),false) // {type:'promise', value:1, primitiveValue: Function }
-// .. full list refer to docs
-
-// Check if given item has some value, set of props, or length
-isEmpty({}) // true
-isEmpty({a:1}) // false
-isEmpty([]) // true
-isEmpty([0]) // false
-isEmpty(true) // false
-
-isError(Error()) // true
-isError(new Error()) // true
-
-// Testing if item is new (instance)
-isInstance({}) // false
-isInstance(new function(){}) // true 
-isInstance(new class(){} ) // true 
-isInstance(function () { }) // false
-isInstance([]) // false
-
-// alias of isClass() method, 
-isClass/hasPrototype(function(){}) // true 
-hasPrototype(new function(){}) // false
-hasPrototype(Date) // true
-hasPrototype(Object) // true
-
-// Check if item has __proto__
-hasProto({}) // true
-hasProto('') // true
-hasProto(-1) // true
-hasProto(undefined) // false
-hasProto(null) // false
-hasProto(NaN) // true
-
-validDate(new Date()) // true
-
-
-// Select data from array of objects by reference, and go down recursively in order of selectBy references
-selectiveArray(['a.b'], [ { a: { b:'hello' }, b:{c:'hello'} },{ a: { b:'world' },b:{c:'world'} } ]) 
-//=>  [ [ 'hello'], [ 'world'] ] 
-
-// Mix array of objects and values, grabs items[] that include specific prop 
-arrayWith([ [], { a: undefined }, { b: 3 }, { a: 1 } ], 'a') //  [ { a: undefined }, { a: 1 }] 
-
-
-// Exclude items from array that match by excludes, keeping relative index
-exFromArray([{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 }], ['a', 'b']) 
- // [ { c: 5 }, undefined, undefined, { c: 1 }] 
-exFromArray([ null,1,{ a: 1, c: 5 }, { a: 10 }, { b: 2 }, { c: 1, a: 2 },'2'], ['a', 'c']) 
-// [null,1, undefined,undefined,{ b: 2 },undefined,'2']
-
-
-// Filter items from array by picks[] conditions
-let picks = [Number, Boolean] // select only numbers and booleans from array  
-pickFromArray([undefined, 1, {}, 2, null, [], 'hello world', 3, true, 4, null, 5], picks) 
-//> [ 1, 2, 3, true, 4, 5 ]
-
-
-let picks = [undefined, [undefined] ] // select all undefined from array
-pickFromArray([undefined, false, 1, true, {}, [1], [undefined, 'this one'], null], picks)
-// [undefined, [undefined,'this one']]
-
-let picks = [{ data: Array }] // we only want to pick items that are {data} objects containing array
-pickFromArray([{ data: ['hello'] }, { data: {} }, { data: 1 }, { data: { d: 2 } }, { data: ['world'] }], picks)
-//>   [{ data: [ 'hello'] },{ data: [ 'world' ] } ]
-// for more examples refer to docs
-
-
-// Lightweight Event Dispatcher, allowing you dispatch anywhere in the code
-const ds = dispatcher(/** uid, debug */)
-    .next({ data: 'hello world' }) // will wait and call first once subscribed
-    .subscribe((data, uid, index) => {
-         log('on subscribe', data, uid, index)
-    }).onComplete(uid => {
-        log('completed', uid)
-    })
-ds.next({ data: 'hello again' })
-ds.delete() // delete self, onComplete will also be called
-ds.next({ data: 'never called' })
-
-
-
-// High order caller, concept taken from react HOC
-
-function fn(a = 1, b = 2, c = 3) {
-    return a + b + c
-}
-
-fnHocked = withHoc(fn, 4, 5, 6) 
-// above arguments  replaced with in final call 
-fnHocked(7, 8, 9) // > 24  
-
-fnHocked = withHoc(Promise.resolve(fn), 4, 5, 6) 
-// above arguments  replaced with in final call 
-fnHocked(7, 8, 9).then(log) // > 24  
-
-
-// Run some method that returns a value, check for updated conditions until timeout or when data becomes available
-resolver(()=>Promise.resolve({data:'hello world'}),5000,50).then(n=>{
-    log({resolver:n})
-})
-
-dupes('any', 2) // ['any','any']
-
-loop(5,inx=>10+inx) // [10, 11, 12, 13, 14]
-loop(2,inx=>{
-    console.log('hello world', inx)
-}) // [undefined, undefined]
-
-
-// Error Generators
-try {
-    throw xError({ id:123,name: 'MyError', message: 'my message', fileName: 'example.js', lineNumber: 20 })
-} catch (e) {
-    console.log(e instanceof Error)   // true
-    console.log(e.id)                         // "123"
-    console.log(e.name)                       // "MyError"
-    console.log(e.message)                    // "my message"      
-    console.log(e.fileName)                   // "example.js"
-    console.log(e.lineNumber)                 // 20
-    console.log(e.stack)                      // "@Scratchpad/2:2:9\n"
-}
-
-try {
-    throw referenceError({name:'MyReferenceError',message:'my message',fileName:'example.js' lineNumber:1})
-} catch(err){
-    log(e instanceof ReferenceError)  // true
-    log(e.name)                       // "MyReferenceError"
-    log(e.message)                    // "my message"
-    log(e.fileName)                   // "example.js"
-    log(e.lineNumber)                 // 1
-    log(e.stack)                      // "@Scratchpad/2:2:9\n"
-}
-  
-
-
-
-
-// LIMITED FUNCTIONALITY
-// THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
-// Modified require() does not throw when second arg ref >ERR_NO_THROW is provided
-xrequire('./path/to/mod') // as usual
-xrequire('sdf56yfd','ERR_NO_THROW') // returns undefined
-
-// LOGGING
-log('my data',[1,2]) //  [log] my data [1,2]
-debug('my data',[1,2]) //  [debug] my data [1,2]
-onerror('ups','1') // [error] ups 1
-warn('warn','1') //  [warning] warn 1
-attention('attention','1') //  [attention] attention 1
-alert('alert','1') //  [alert] alert (node.js only)
-stack('some data'/**, true*/) // [STACK TRACE]: xxxx
-errorTrace('error data', true) //  [[ERROR],... ]
-
-disableLogging() // disable all loging features for above methods
-resetLogging() //  clear disabled loggin 
-loggerSetting('log', 'off') // disable logging for log()
-loggerSetting('log', 'on ') // re-enable logging for log()
-
-
-```
-&nbsp;
-&nbsp;
-
-
-
-#### Contact
+## Contact
 Have questions, or would like to submit feedback [contact eaglex.net](https://eaglex.net/app/contact?product=x-utils)
