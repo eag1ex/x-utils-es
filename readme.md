@@ -73,12 +73,6 @@ const {} require('x-utils-es/umd') // with node/commonjs support
 
 &nbsp;
 
-<style>
-r { color: Red }
-o { color: Orange }
-g { color: Green }
-st {color:#666666}
-</style>
 
 ***
 ```js
