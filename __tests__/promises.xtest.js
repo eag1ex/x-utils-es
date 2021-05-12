@@ -23,18 +23,23 @@ describe('Evaluate Promises', () => {
         expect(defer.reject).toBeInstanceOf(Function)
         expect(defer.promise).toBeInstanceOf(Promise)
 
-        defer.resolve(true)
+        defer.resolve(1)
         await defer
-        expect(defer).resolves.toBe(true)
+        expect(defer).resolves.toBe(1)
 
         defer = sq()
-        defer.reject(true)
+        defer.resolve(3)    
+        await defer
+        expect(defer).resolves.toBe(3)   
+
+        defer = sq()
+        defer.reject(2)
             .catch((err) => {
-                expect(err).toBe(true)
+                expect(err).toBe(2)
                 expect(defer.entity).toBe('SimpleQ')
                 done()
             })
-
+         
     })
 
     it('resolver()', async (done) => {

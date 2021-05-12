@@ -1,6 +1,6 @@
 {
     "testRegex": "/*.xtest.js$",
-    "collectCoverage": true,
+    "collectCoverage": false,
     "testPathIgnorePatterns":[
         "/node_modules/",
         "/umd/",
@@ -21,7 +21,7 @@
      "statements": 0
      }
     },
-    "moduleDirectories": ["node_modules", "src"],
+    "moduleDirectories": ["node_modules", "src","umd","esm","Prototypes","assets","docs","todo"],
     "transform": {
         "^.+\\.[t|j]sx?$": "babel-jest"
       }

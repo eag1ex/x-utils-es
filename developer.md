@@ -35,7 +35,7 @@
 
 ```sh
 # all devDependencies
-npm i @babel/cli @babel/core @babel/plugin-external-helpers @babel/plugin-proposal-decorators @babel/plugin-transform-modules-commonjs @babel/plugin-transform-runtime @babel/plugin-transform-runtime @babel/preset-env @babel/preset-react babel-eslint babel-plugin-transform-es2015-modules-commonjs babel-plugin-transform-es2015-modules-umd babel-preset-minify eslint eslint-plugin-node eslint-plugin-standard esm @babel/plugin-proposal-class-properties minami --save-dev
+npm i @babel/cli @babel/core -g && npm i @babel/plugin-external-helpers @babel/plugin-proposal-decorators @babel/plugin-transform-modules-commonjs @babel/plugin-transform-runtime @babel/plugin-transform-runtime @babel/preset-env @babel/preset-react babel-eslint babel-plugin-transform-es2015-modules-commonjs babel-plugin-transform-es2015-modules-umd babel-preset-minify eslint eslint-plugin-node eslint-plugin-standard esm @babel/plugin-proposal-class-properties minami --save-dev
 ```
 
 ```sh

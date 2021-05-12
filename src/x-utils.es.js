@@ -477,6 +477,7 @@ const isBigInt = (n) => typeof (n) === 'bigint'
  * }) //  [ { '0': 1 }, { '1': 2 }, { '2': 3 } ]
 */
 // @ts-ignore
+// @ts-ignore
 const loop = function (size = 0, cb = (index = 0) => {}) {
     let isFN = typeof cb === 'function'
     let isNum = typeof size === 'number'
@@ -631,6 +632,7 @@ const typeCheck = (el, standard = true) => {
     } catch (err) {
         /* istanbul ignore next */ 
         error(err)
+        // @ts-ignore
         return {}
     }
 }
@@ -861,83 +863,11 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
 
 }
 
-/**
- * @ignore
- */
-class SimpleQ extends Promise {
-
-    /**
-     * deferrerCallback
-     * 
-     * @callback SimpleQdeferrerCallback
-     * @param {function} resolve
-     * @param {function} reject
-     * 
-     */
-    /* istanbul ignore next */
-    /**
-     * 
-     * @param {SimpleQdeferrerCallback} deferrerCallback 
-     */
-
-    // @ts-ignore
-    constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
-        // @ts-ignore
-        SimpleQ._promise = super(deferrerCallback)
-    }
-
-    /**
-     *
-     * Resolve your promise outside of callback
-     * @param {*} data
-     * @memberof SimpleQ
-     */
-    resolve(data) {
-        // @ts-ignore
-        let res = SimpleQ._resolve
-        if (res instanceof Function) res(data)
-        /* istanbul ignore next */
-        else onerror('[SimpleQ][resolve]', 'not callable')
-
-        return this
-    }
-
-    /**
-     * Reject your promise outside of callback
-     * @memberof SimpleQ
-     * @param {*} data 
-     */
-    reject(data) {
-        // @ts-ignore
-        let rej = SimpleQ._reject
-        if (rej instanceof Function) rej(data)
-
-        else {
-            /* istanbul ignore next */
-            onerror('[SimpleQ][reject]', 'not callable')
-        }
-
-        return this
-    }
-
-    /**
-     * - Returns promise, and instanceof Promise
-     * @memberof Promise
-     * @readonly
-     * @memberof SimpleQ
-     */
-    get promise() {
-        // @ts-ignore
-        let promise = SimpleQ._promise
-        return promise instanceof Promise ? promise : undefined
-    }
-}
-
 /** 
  * SimpleQ / instanceof Promise & SimpleQ
  * - Deferred simplified promise 
  * @borrows Promise
- * @returns {SimpleQ}
+ * @returns `{SimpleQ}`
  * 
  * @example 
  * let defer = sq()
@@ -967,6 +897,79 @@ class SimpleQ extends Promise {
 //  @ts-ignore
 const sq = () => {
 
+    /**
+     * @ignore
+     */
+    class SimpleQ extends Promise {
+
+        /**
+     * deferrerCallback
+     * 
+     * @callback SimpleQdeferrerCallback
+     * @param {function} resolve
+     * @param {function} reject
+     * 
+     */
+        /* istanbul ignore next */
+        /**
+     * 
+     * @param {SimpleQdeferrerCallback} deferrerCallback 
+     */
+
+        // @ts-ignore
+        // @ts-ignore
+        constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {
+        // @ts-ignore
+            SimpleQ._promise = super(deferrerCallback)
+        }
+
+        /**
+     *
+     * Resolve your promise outside of callback
+     * @param {*} data
+     * @memberof SimpleQ
+     */
+        resolve(data) {
+        // @ts-ignore
+            let res = SimpleQ._resolve
+            if (res instanceof Function) res(data)
+            /* istanbul ignore next */
+            else onerror('[SimpleQ][resolve]', 'not callable')
+
+            return this
+        }
+
+        /**
+     * Reject your promise outside of callback
+     * @memberof SimpleQ
+     * @param {*} data 
+     */
+        reject(data) {
+        // @ts-ignore
+            let rej = SimpleQ._reject
+            if (rej instanceof Function) rej(data)
+
+            else {
+            /* istanbul ignore next */
+                onerror('[SimpleQ][reject]', 'not callable')
+            }
+
+            return this
+        }
+
+        /**
+     * - Returns promise, and instanceof Promise
+     * @memberof Promise
+     * @readonly
+     * @memberof SimpleQ
+     */
+        get promise() {
+        // @ts-ignore
+            let promise = SimpleQ._promise
+            return promise instanceof Promise ? promise : undefined
+        }
+    }
+
     let deferred = new SimpleQ((resolve, reject) => {
         // @ts-ignore
         SimpleQ._resolve = resolve
@@ -995,6 +998,7 @@ const sq = () => {
  * @param {Promise<any>} o.defer
  * @param {string} o.id
  */
+// @ts-ignore
 // eslint-disable-next-line no-unused-vars
 const cancelPromiseCB = ({ error, defer, id }) => {}
 
@@ -1034,6 +1038,7 @@ const cancelPromiseCB = ({ error, defer, id }) => {}
  * // dfr.promise.then(log)
  * 
 **/
+// @ts-ignore
 // @ts-ignore
 const cancelPromise = ({ defer = undefined, checkEvery = 500, maxWait = 9500, cbErr = ({ error, defer, id }) => {}, message = 'taken too long to respond', logging = false, id = undefined }) => {
    
@@ -1601,6 +1606,7 @@ const isString = (str = undefined, cbEval = undefined) => {
 const copyBy = (obj = {}, refs = []) => {
     if (!isObject(obj)) return {}
     // @ts-ignore
+    // @ts-ignore
     const d = [].concat(refs).reduce((n, el, i) => {
         if (obj[el] !== undefined) n[el] = obj[el]
         return n
@@ -1709,6 +1715,7 @@ const delay = (time = 0) => {
     const isNum = typeof time === 'number' && time >= 0 // must provide number
     if (!isNum) return Promise.resolve(true) // or resolve 
     // @ts-ignore
+    // @ts-ignore
     return new Promise((resolve, reject) => {
         const t = setTimeout(() => {
             clearTimeout(t)
@@ -1783,6 +1790,7 @@ const trueVal = (arr = []) => {
     // @ts-ignore
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
     // @ts-ignore
+    // @ts-ignore
     return [].concat(arr).filter((itm, inx) => isFalsy(itm) !== true)
 }
 
@@ -1801,6 +1809,7 @@ const trueValDeep = (arr = []) => {
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
     if (!arr.length) return []
     // @ts-ignore
+    // @ts-ignore
     return [].concat(arr).map((itm, inx) => {
         const typeIs = typeCheck(itm, false)
         // this item has child, check for false entities
@@ -1812,6 +1821,7 @@ const trueValDeep = (arr = []) => {
             }).filter(n => !!n)
         }
         if (typeIs.type === 'object' && typeIs.value) {
+            // @ts-ignore
             // @ts-ignore
             return Object.entries(itm).reduce((n, [k, v], i) => {
                 if (typeCheck(k, false).value > 0) n[k] = v
@@ -1834,6 +1844,7 @@ const trueValDeep = (arr = []) => {
 const trueProp = (obj = {}) => {
     if (!(!obj ? false : Object.prototype === (obj).__proto__)) return {}
 
+    // @ts-ignore
     // @ts-ignore
     return Object.entries(obj).reduce((n, [key, val], inx) => {
         if (!isFalsy(val)) n[key] = val
@@ -1867,6 +1878,7 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
     if (!isFunction) {
         return Promise.reject('fn() must be callable')
     }
+    // @ts-ignore
     // @ts-ignore
     return new Promise((resolve, reject) => {
         let every = testEvery || 50
@@ -1976,6 +1988,7 @@ const flattenDeep = (arr = []) => {
  */
 const chunks = (arr = [], size = 0) =>
     // @ts-ignore
+    // @ts-ignore
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
         arr.slice(i * size, i * size + size)
     )
@@ -2046,6 +2059,7 @@ const uniqBy = (arr = [], propName = '') => {
             continue
         }
 
+        // @ts-ignore
         // @ts-ignore
         let exists = Object.entries(stored).filter(([k], i) => item[propName] === stored[k]).length
         if (exists) continue
@@ -2578,6 +2592,7 @@ const withHoc = (item = () => { }, ...args) => {
 
             try {
 
+                // @ts-ignore
                 return item(...argsFN())
             } catch (err) {
                 /* istanbul ignore next */ 
