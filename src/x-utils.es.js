@@ -25,7 +25,6 @@ const isWindow = () => {
     }   
 }
 
-
 /**
  * @typedef {'log' | 'warn' | 'onerror' | 'error' | 'alert'| 'attention' | 'debug' | 'stack' | 'errorTrace'} logType 
  */
@@ -189,8 +188,6 @@ const loggerSetting = (logType = 'log', logMode = 'off') => {
    
 }
 
-
-
 /** 
  * 
  * Internal method
@@ -264,7 +261,6 @@ const loggingON = () => {
 
 /** 
  * @ignore
- * Designed for executing callback functions
 */
 const callFN = (cb = undefined) => {
     if (typeof cb !== 'function') return false
@@ -278,7 +274,6 @@ const callFN = (cb = undefined) => {
 
 /** 
  * @ignore
- * @param {string} type log,error,warn,debug
 */
 /* istanbul ignore next */ 
 const logConstract = function (type = '', args) {
@@ -293,12 +288,6 @@ const logConstract = function (type = '', args) {
     if (type === 'alert') args = [].concat(`\x1b[90m[alert]\x1b[0m\x1b[33m${format} `, args, '\x1b[0m')
     if (type === 'attention') args = [].concat(`\x1b[90m[attention]\x1b[0m\x1b[36m${format} `, args, '\x1b[0m')
 
-    try {
-        if (isWindow()) console.log.apply(null, args)
-        return
-    } catch (err) {
-        // using node     
-    }
     console.log.apply(null, args)
 }
 
@@ -347,7 +336,7 @@ const warn = function (...args) {
  * @param  {...any} args 
 */
 const alert = function (...args) {
-    if(isWindow()) return
+    if (isWindow()) return
     if (!loggingON()) return
     if (checkLoggerSetting('alert') === 'off') return
 
@@ -872,8 +861,6 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
 
 }
 
-
-
 /**
  * @ignore
  */
@@ -945,7 +932,6 @@ class SimpleQ extends Promise {
         return promise instanceof Promise ? promise : undefined
     }
 }
-
 
 /** 
  * SimpleQ / instanceof Promise & SimpleQ
