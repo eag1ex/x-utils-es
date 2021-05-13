@@ -29,7 +29,6 @@ esm/developer.md
 *.1
 *.ns
 journal
-types
 # Ignore Web Storm #
 .idea
 

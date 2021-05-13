@@ -277,10 +277,6 @@ import { ... } from 'x-utils-es'
 > [id:48]: https://utils.eaglex.net/module-x-utils.html#~hasPrototype  "Detailed in docs"
 > Test item is a class{} constractor, that can be initiated, _( alias of isClass() )_
 
-##### [#][id:49] <st>**hasProto()**</st>
-> [id:49]: https://utils.eaglex.net/module-x-utils.html#~hasProto  "Detailed in docs"
-> Test item is a class{} constractor, that can be initiated, _( alias of isClass() )_
-
 ##### [#][id:50] <st>**hasProto()**</st>
 > [id:50]: https://utils.eaglex.net/module-x-utils.html#~hasProto  "Detailed in docs"
 > Check if item has access to `__proto__`
@@ -392,9 +388,6 @@ import { ... } from 'x-utils-es'
 > [id:73]: https://utils.eaglex.net/module-x-utils.html#~errorTrace  "Detailed in docs"
 > For stack tracing, prefixed with `[STACK TRACE]`
 
-##### [#][id:74] <st>**errorTrace()**</st>
-> [id:74]: https://utils.eaglex.net/module-x-utils.html#~errorTrace  "Detailed in docs"
-> Extended console.error, stack trace, prefixed with `[ERROR]`
 
 &nbsp;
 

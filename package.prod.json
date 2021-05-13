@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "helper tools for javascript validation",
   "main": "src/x-utils.es.js",
   "module": "umd/index.js",
