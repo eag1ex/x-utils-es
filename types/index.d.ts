@@ -96,7 +96,7 @@ declare namespace xutils {
     declare function isFunction(el: any): boolean;
     declare function isArray(arr: any, cbEval?: TcbEval): boolean;
     declare function isBigInt(n: any): boolean;
-    declare function loop(size: number, cb: TloopCallback): [];
+    declare function loop(size: number, cb: TloopCallback): Array<any>;
     declare function validDate(dt: any, cbEval?: TcbEval): boolean;
     declare function arraySize(arr: any): number;
     declare function typeCheck(el: any, standard?: boolean): ItypeCheck;
@@ -121,8 +121,8 @@ declare namespace xutils {
     declare function isSQ(defer: any): boolean;
     declare function isPromise(defer: any): boolean;
     declare function isObject(obj: any, cbEval?: TcbEval): boolean;
-    declare function uniq(arr: []): [];
-    declare function shuffle(arr: []): [];
+    declare function uniq(arr: []): Array<any>;
+    declare function shuffle(arr: []): Array<any>;
     declare function selectiveArray(selectBy: Array<string>, data: Array<any>): Array<[]>;
     declare function isClass(obj: object, cbEval?: TcbEval): boolean;
     declare function hasPrototype(obj: object, cbEval?: TcbEval): boolean;
@@ -148,7 +148,7 @@ declare namespace xutils {
     declare function chunks(arr: [], size: number): Array<[]>;
     declare function dupes(item: any, index: number): Array<any>;
     declare function uniqBy(arr: [], propName: string): Array<any>;
-    declare function arrayWith(arr: Array<any>, prop: string): [];
+    declare function arrayWith(arr: Array<any>, prop: string): Array<any>;
     declare function exFromArray(arr: [], excludes: Array<string>): Array<any>;
     declare function pickFromArray(arr: [], picks: Array<any>): Array<any>;
     declare function dispatcher(uid?: string | number, debug?: boolean): Idispatcher
