@@ -31,7 +31,7 @@ declare namespace xutils {
         id: string | number
         message?: string
         logging?: boolean
-        cbErr(arg: { error: string, defer: { resolve: Function<any>, reject: function<any> }, id: string | number }): void;
+        cbErr(arg: { error: string, defer: { resolve: Function<any>, reject: Function<any> }, id: string | number }): void;
     }
 
     declare interface Idispatcher {
@@ -131,7 +131,7 @@ declare namespace xutils {
     declare function isInstance(obj: any, cbEval?: TcbEval): boolean;
     declare function objectSize(obj: any): number;
     declare function isFalsy(el: any): boolean;
-    declare function isString(str: any, cbEval: ?TcbEval): boolean;
+    declare function isString(str: any, cbEval?: TcbEval): boolean;
     declare function copyBy(obj: object, refs: Array<string>): Object;
     declare function copy(data: any): any;
     declare function asJson(data: any): string;
