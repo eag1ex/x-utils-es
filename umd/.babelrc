@@ -18,6 +18,8 @@
                 }
             } 
         ],
+        "@babel/preset-react",
+        "@babel/preset-flow",
         [
             "minify",
             {
@@ -29,6 +31,7 @@
         ]
     ],
     "plugins": [
+        "@babel/plugin-proposal-class-properties",
         // "@babel/plugin-external-helpers",
         // [
         //     "@babel/plugin-transform-runtime",
