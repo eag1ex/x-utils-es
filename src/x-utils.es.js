@@ -920,8 +920,6 @@ const sq = () => {
         // @ts-ignore
         constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {    
             super(deferrerCallback)
-            // @ts-ignore
-            SimpleQ._promise = this
         }
 
         /**
@@ -971,7 +969,7 @@ const sq = () => {
         }
     }
 
-    let deferred = new SimpleQ((resolve, reject) => {
+    const deferred = SimpleQ._promise = new SimpleQ((resolve, reject) => {
         // @ts-ignore
         SimpleQ._resolve = resolve
         // @ts-ignore
