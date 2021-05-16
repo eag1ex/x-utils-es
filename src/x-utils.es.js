@@ -863,7 +863,6 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
 
 }
 
-
 /** 
  * SimpleQ / instanceof Promise & SimpleQ
  * - Deferred simplified promise 
@@ -930,10 +929,10 @@ const sq = () => {
      * 
      * @param {SimpleQdeferrerCallback} deferrerCallback 
      */
-            /** @typedef {"resolved"|"rejected"|"in_progress"|"timeout"} val */
-            /** @typedef {number} time */
+        /** @typedef {"resolved"|"rejected"|"in_progress"|"timeout"} val */
+        /** @typedef {number} time */
 
-            /**
+        /**
             * @typedef {function(val, time):void} callback
             */
 
@@ -951,11 +950,11 @@ const sq = () => {
              * @type {progress_cb}
              */
             this._progress_cb = {
-                every:100,
-                timeout:1000,
-                cb:undefined,
-                done:undefined,
-                index:0
+                every: 100,
+                timeout: 1000,
+                cb: undefined,
+                done: undefined,
+                index: 0
             }
 
         }
@@ -989,10 +988,10 @@ const sq = () => {
                 this._progress_cb.index = index
                 if (this._progress_cb.done) return clearInterval(t)
                 if (index >= timeout) {
-                    this._progress_cb.cb('timeout',index)
+                    this._progress_cb.cb('timeout', index)
                     this._progress_cb.done = true
                     return clearInterval(t)
-                } else this._progress_cb.cb('in_progress',index)
+                } else this._progress_cb.cb('in_progress', index)
 
                 index = index + every
             }, every)
@@ -1011,10 +1010,11 @@ const sq = () => {
             let res = SimpleQ._resolve
             if (res instanceof Function) {
                 res(data)
-                if(isFunction(this._progress_cb.cb) && !this._progress_cb.done){
-                    this._progress_cb.cb('resolved',this._progress_cb.index)
+                if (isFunction(this._progress_cb.cb) && !this._progress_cb.done) {
+                    this._progress_cb.cb('resolved', this._progress_cb.index)
                     this._progress_cb.done = true
                 }
+            // eslint-disable-next-line brace-style
             }
             /* istanbul ignore next */
             else onerror('[SimpleQ][resolve]', 'not callable')
@@ -1032,20 +1032,17 @@ const sq = () => {
             let rej = SimpleQ._reject
             if (rej instanceof Function) {
                 rej(data)
-                if(isFunction(this._progress_cb.cb) && !this._progress_cb.done){
-                    this._progress_cb.cb('rejected',this._progress_cb.index)
+                if (isFunction(this._progress_cb.cb) && !this._progress_cb.done) {
+                    this._progress_cb.cb('rejected', this._progress_cb.index)
                     this._progress_cb.done = true
                 }
-            }
-
-            else {
+            } else {
             /* istanbul ignore next */
                 onerror('[SimpleQ][reject]', 'not callable')
             }
 
             return this
         }
-        
 
         /**
         * - Returns promise, and instanceof Promise
