@@ -31,7 +31,11 @@
         ]
     ],
     "plugins": [
-        "@babel/plugin-proposal-class-properties",
+       
+        ["transform-builtin-classes", {
+            "globals": ["Array","Promise","Error","ReferenceError","Object"]
+          }],
+          "@babel/plugin-transform-classes",
         // "@babel/plugin-external-helpers",
         // [
         //     "@babel/plugin-transform-runtime",
