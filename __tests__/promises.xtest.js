@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-import { sq, cancelPromise, delay, resolver, disableLogging, loggerSetting, asJson } from '../src'
+import { sq, cancelPromise, delay, resolver, disableLogging, loggerSetting, asJson } from '../src/x-utils.es'
 import { describe, expect, it, jest } from '@jest/globals'
 import q from 'q'
 
@@ -17,6 +17,7 @@ describe('Evaluate Promises', () => {
     })
 
     it('sq()', async (done) => {
+        jest.setTimeout(4000)
         let defer = sq()
         expect(defer instanceof Promise).toBe(true)
         expect(defer.resolve).toBeInstanceOf(Function)
@@ -37,8 +38,55 @@ describe('Evaluate Promises', () => {
             .catch((err) => {
                 expect(err).toBe(2)
                 expect(defer.entity).toBe('SimpleQ')
-                done()
+             //   done()
             })
+
+        let fn = async (testVal, resolvesToValue = '') => {
+            let defer1 = sq()
+            defer1.progress((value, index) => {
+
+                if (value === 'in_progress') expect(value).toBe('in_progress')
+                else expect(value).toBe(testVal)
+                expect(typeof index).toBe('number')
+            }, 100, 700)
+
+            if (testVal === 'resolved') {
+                delay(500).then(() => {
+                    defer1.resolve(resolvesToValue)
+                })
+            }
+
+            if (testVal === 'timeout') {
+                delay(1000).then(() => {
+                    defer1.resolve(resolvesToValue)
+                })
+            }
+
+            if (testVal === 'rejected') {
+                delay(500).then(() => {
+                    defer1.reject(resolvesToValue)
+                })
+            }
+
+            try {
+                await defer1
+                expect(defer1).resolves.toBe(resolvesToValue)
+            } catch (err) {
+                expect(defer1).rejects.toBe(resolvesToValue)
+            }
+
+        }  
+
+        let tests = [{ type: "resolved", value: 'hello world' }, { type: "rejected", value: 'world rejected' }, { type: "timeout", value: 'world timeout' }]
+
+        let indexed = 0
+        for (let inx = 0; inx < tests.length; inx++) {
+            await fn(tests[inx].type,tests[inx].value)
+            indexed++
+        }
+       
+        expect(indexed).toBe(tests.length)
+        done()
          
     })
 

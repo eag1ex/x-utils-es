@@ -863,24 +863,34 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
 
 }
 
+
 /** 
  * SimpleQ / instanceof Promise & SimpleQ
  * - Deferred simplified promise 
+ * - Available methods: `resolve() / reject() / (get) promise / progress( (value:string,time:number)=>self,every?:number,timeout?:number ):self`,  _progress() calls with values: `resolved | rejected | in_progress | timeout`, its discarted when fulfilled or timedout_
+ *
  * @borrows Promise
  * @returns `{SimpleQ}`
  * 
  * @example 
  * let defer = sq()
- * // with/without .promise
- * defer.promise.then(n=>{
- *     log('[sq][resolve]',n)
- * }).catch(err=>{
- *    onerror('[sq][reject]',err)
- * })
+ *
+ * let every = 100 // how often to check
+ * let timeout = 5000 // exists if not already resolved or rejected
+ *
+ * defer.progress((val,time)=>{
+ *     // val //> "resolved" | "rejected" | "in_progress" | "timeout"
+ *    log('[progress]',val,time)
+ * }, every, timeout)
+ *
+ *  .then(n=>{
+ *         log('[sq][resolve]',n)
+ *  }).catch(err=>{
+ *        onerror('[sq][reject]',err)
+ *  })
  *
  * defer.resolve('hello world')
  * // defer.reject('kill it')
- *
  * // or
  * defer.resolve('hello world')
  * .then(log)
@@ -893,16 +903,21 @@ const interval = (cb = () => {}, every = 0, endTime = 0) => {
  * defer.reject('ups')
  * .catch(onerror)
  *
+ * // or either
+ * await defer // resolves // rejects? 
+ * await defer.promise // resolves // rejects? 
+ * 
+ *
 **/
 //  @ts-ignore
 const sq = () => {
 
     /**
+     * @interface
      * @ignore
      */
     class SimpleQ extends Promise {
-
-        /**
+    /**
      * deferrerCallback
      * 
      * @callback SimpleQdeferrerCallback
@@ -915,23 +930,92 @@ const sq = () => {
      * 
      * @param {SimpleQdeferrerCallback} deferrerCallback 
      */
+            /** @typedef {"resolved"|"rejected"|"in_progress"|"timeout"} val */
+            /** @typedef {number} time */
 
-        // @ts-ignore
+            /**
+            * @typedef {function(val, time):void} callback
+            */
+
         // @ts-ignore
         constructor(deferrerCallback = (resolve = (data) => { }, reject = (data) => { }) => { }) {    
             super(deferrerCallback)
+            
+            /**
+            * @ignore 
+            * @typedef { {every:number,timeout:number,cb:callback,done:boolean,index:number} } progress_cb 
+            */
+            
+            /**
+             * @ignore  
+             * @type {progress_cb}
+             */
+            this._progress_cb = {
+                every:100,
+                timeout:1000,
+                cb:undefined,
+                done:undefined,
+                index:0
+            }
+
         }
 
         /**
-     *
-     * Resolve your promise outside of callback
-     * @param {*} data
-     * @memberof SimpleQ
-     */
+         * @name progress
+         * @method progress 
+         * Returns callback when promise if resolved or rejected
+         * - On resolved cb() value is `resolved`
+         * - On rejected cb() value is `rejected`
+         * - If neither, cb initiated on {every} until {timeout}, or before {done}, with value `in_progress`
+         * - If promise is never resolved and {timeout} is reached, final callback value is `timeout`
+         * @memberof SimpleQ
+         * @param {callback} cb 
+         * @param {number} every 
+         * @param {number} timeout when to stop checking progress (will exit setInterval)
+         */
+        progress(cb, every = 100, timeout = 1000) {
+            // make sure every is never bigger then timeout
+            if (every > timeout) {
+                every = 0
+            }
+            let index = 0
+            this._progress_cb.cb = cb
+            this._progress_cb.every = every
+            this._progress_cb.timeout = timeout
+            this._progress_cb.index = index
+           
+            // execute either { timeout | in_progress } based on selection
+            let t = setInterval(() => {
+                this._progress_cb.index = index
+                if (this._progress_cb.done) return clearInterval(t)
+                if (index >= timeout) {
+                    this._progress_cb.cb('timeout',index)
+                    this._progress_cb.done = true
+                    return clearInterval(t)
+                } else this._progress_cb.cb('in_progress',index)
+
+                index = index + every
+            }, every)
+            
+            return this
+        }
+
+        /**
+        *
+        * Resolve your promise outside of callback
+        * @param {*} data
+        * @memberof SimpleQ
+        */
         resolve(data) {
         // @ts-ignore
             let res = SimpleQ._resolve
-            if (res instanceof Function) res(data)
+            if (res instanceof Function) {
+                res(data)
+                if(isFunction(this._progress_cb.cb) && !this._progress_cb.done){
+                    this._progress_cb.cb('resolved',this._progress_cb.index)
+                    this._progress_cb.done = true
+                }
+            }
             /* istanbul ignore next */
             else onerror('[SimpleQ][resolve]', 'not callable')
 
@@ -939,14 +1023,20 @@ const sq = () => {
         }
 
         /**
-     * Reject your promise outside of callback
-     * @memberof SimpleQ
-     * @param {*} data 
-     */
+        * Reject your promise outside of callback
+        * @memberof SimpleQ
+        * @param {*} data 
+        */
         reject(data) {
         // @ts-ignore
             let rej = SimpleQ._reject
-            if (rej instanceof Function) rej(data)
+            if (rej instanceof Function) {
+                rej(data)
+                if(isFunction(this._progress_cb.cb) && !this._progress_cb.done){
+                    this._progress_cb.cb('rejected',this._progress_cb.index)
+                    this._progress_cb.done = true
+                }
+            }
 
             else {
             /* istanbul ignore next */
@@ -955,13 +1045,14 @@ const sq = () => {
 
             return this
         }
+        
 
         /**
-     * - Returns promise, and instanceof Promise
-     * @memberof Promise
-     * @readonly
-     * @memberof SimpleQ
-     */
+        * - Returns promise, and instanceof Promise
+        * @memberof Promise
+        * @readonly
+        * @memberof SimpleQ
+        */
         get promise() {
         // @ts-ignore
             let promise = SimpleQ._promise
@@ -974,6 +1065,7 @@ const sq = () => {
         SimpleQ._resolve = resolve
         // @ts-ignore
         SimpleQ._reject = reject
+        
     })
 
     // for recongnition

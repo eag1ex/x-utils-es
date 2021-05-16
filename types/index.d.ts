@@ -16,8 +16,19 @@ declare namespace xutils {
         primitiveValue: any
     }
 
+    /*
+         * @memberof SimpleQ
+         * @param {callback} cb 
+         * @param {number} every 
+         * @param {number} timeout when to stop checking progress (will exit setInterval)
+         
+         progress(cb, every = 100, timeout = 1000) {
+    **/
+
     declare interface ISimpleQ extends Promise<T> {
         [Promise]: Promise<T>
+        entity?: string;
+        progress(cb: (value: "resolved" | "rejected" | "in_progress" | "timeout", time?:number) => void, every?: number, timeout?: number): ISimpleQ;
         resolve(arg: any): ISimpleQ;
         reject(arg: any): ISimpleQ;
         promise: Promise<T>
