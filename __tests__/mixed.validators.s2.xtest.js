@@ -6,7 +6,7 @@
 
 // NOTE Provided tests are for arrays and objects, logical operators
 
-import { someKeyMatch, exactKeyMatch, withHoc, typeCheck, xrequire } from '../src'
+import { someKeyMatch, exactKeyMatch, withHoc, typeCheck, xrequire, noop } from '../src/x-utils.es'
 import { describe, expect, it } from '@jest/globals'
 
 describe('Evaluate Mixed/ segment (2.)', () => {
@@ -119,6 +119,13 @@ describe('Evaluate Mixed/ segment (2.)', () => {
         }
 
         expect(errSet).toBe(true)
+        done()
+    })
+
+    it('noop()', (done) => {
+
+        expect(noop).toBeInstanceOf(Function)
+        expect(noop()).toBe(undefined)
         done()
     })
 

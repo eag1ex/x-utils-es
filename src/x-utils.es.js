@@ -456,7 +456,7 @@ const isBigInt = (n) => typeof (n) === 'bigint'
 
 /**
  * loopCB 
- *
+ * @ignore
  * @callback loopCB
  * @param {string} param string
  */
@@ -808,6 +808,7 @@ const last = (arr = []) => {
 }
 
 /**
+ * @ignore
  * timerCB 
  *
  * @callback timerCB
@@ -833,6 +834,7 @@ const timer = (cb = () => {}, time = 0) => {
 }
 
 /**
+ * @ignore
  * intervalCB 
  *
  * @callback intervalCB
@@ -918,7 +920,7 @@ const sq = () => {
     class SimpleQ extends Promise {
     /**
      * deferrerCallback
-     * 
+     * @ignore
      * @callback SimpleQdeferrerCallback
      * @param {function} resolve
      * @param {function} reject
@@ -1941,6 +1943,7 @@ const trueProp = (obj = {}) => {
 }
 
 /**
+ * @ignore
  * @callback resolverCB
  * @returns {any}
  */
@@ -2620,6 +2623,7 @@ const dispatcher = (uid = undefined, debug = false) => {
 }
 
 /**
+ * @ignore
  * @callback withHocCB
  * @param {...any} args
  */
@@ -2962,6 +2966,12 @@ const isError = (el) => {
     }
 }
 
+/**
+ * No operation function
+ * @returns {void}
+ */
+const noop = () => {}
+
 export { disableLogging }
 export { resetLogging }
 export { loggerSetting }
@@ -3041,3 +3051,4 @@ export { isRegExp }
 export { matched }
 export { referenceError }
 export { xError }
+export { noop }

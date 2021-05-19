@@ -54,8 +54,9 @@ declare namespace xutils {
     }
 
     declare type xrequireRef = 'ERR_NO_THROW' | undefined
+    declare type Tselection  = Selection | string
     declare interface Ixrequire extends NodeRequire {
-        (id:Selection, ref?: xrequireRef): any
+        (id:Tselection, ref?: xrequireRef): any
     }
     declare interface IXReferenceOpts{
         name?:string
@@ -132,8 +133,8 @@ declare namespace xutils {
     declare function isSQ(defer: any): boolean;
     declare function isPromise(defer: any): boolean;
     declare function isObject(obj: any, cbEval?: TcbEval): boolean;
-    declare function uniq(arr: []): Array<any>;
-    declare function shuffle(arr: []): Array<any>;
+    declare function uniq(arr: Array<any>): Array<any>;
+    declare function shuffle(arr:  Array<any>): Array<any>;
     declare function selectiveArray(selectBy: Array<string>, data: Array<any>): Array<[]>;
     declare function isClass(obj: object, cbEval?: TcbEval): boolean;
     declare function hasPrototype(obj: object, cbEval?: TcbEval): boolean;
@@ -154,14 +155,14 @@ declare namespace xutils {
     declare function trueValDeep(arr: Array<any>): Array<any>;
     declare function trueProp(obj: object): object;
     declare function resolver(fn: CB, timeout?: number, testEvery?: number): Promise<T>;
-    declare function flatten(arr: []): Array<any>;
+    declare function flatten(arr: Array<any>): Array<any>;
     declare function flattenDeep(arr: Array<any>): Array<any>;
-    declare function chunks(arr: [], size: number): Array<[]>;
+    declare function chunks(arr: Array<any>, size: number): Array<[]>;
     declare function dupes(item: any, index: number): Array<any>;
-    declare function uniqBy(arr: [], propName: string): Array<any>;
+    declare function uniqBy(arr:  Array<any>, propName: string): Array<any>;
     declare function arrayWith(arr: Array<any>, prop: string): Array<any>;
-    declare function exFromArray(arr: [], excludes: Array<string>): Array<any>;
-    declare function pickFromArray(arr: [], picks: Array<any>): Array<any>;
+    declare function exFromArray(arr: Array<any>, excludes: Array<string>): Array<any>;
+    declare function pickFromArray(arr:  Array<any>, picks: Array<any>): Array<any>;
     declare function dispatcher(uid?: string | number, debug?: boolean): Idispatcher
     declare function withHoc(item: TwithHoc, ...args: any): TwithHoc;
     declare function truthFul(obj: object): object;
@@ -170,7 +171,7 @@ declare namespace xutils {
     declare function matched(str: string, expression: RegExp): boolean;
     declare function referenceError(opts?:IXReferenceOpts):TXReferenceError;
     declare function xError(opts?:IXErrorOpts):TXError;
-  
+    declare function noop():void
 }
 
 export as namespace xutils

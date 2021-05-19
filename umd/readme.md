@@ -3,5 +3,3 @@
 - compressed and stripped of comments
 
 
-### after each transpite add:
-

@@ -43,7 +43,7 @@ $/ npm i x-utils-es
 
 
 #### @types
-Typed declaration support on all exported version
+Definitly typed (DT) support on all version
 &nbsp;\
 &nbsp;
 
