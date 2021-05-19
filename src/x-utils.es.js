@@ -2730,7 +2730,7 @@ const withHoc = (item = () => { }, ...args) => {
  * - Extended NodeRequire, does not throw when second argument `ref=ERR_NO_THROW` provided
  * - Does not modify global require() method 
  * - _( Does not provide Intellisense unfortunately )_
- * @param {Selection} path require(>path<)
+ * @param {string} path require(>path<)
  * @param {string} ref // ERR_NO_THROW and it wont throw an error
  * @returns {any} require module output or undefined
  * 
@@ -2741,37 +2741,16 @@ const withHoc = (item = () => { }, ...args) => {
  */
 // @ts-ignore
 function xrequire(path = '', ref) {
-    
-    /* istanbul ignore next */ 
+
+    /* istanbul ignore next */
     if (isWindow()) return undefined
 
-    const Mod = function () {}
-
-    Mod.prototype = Object.create(module.constructor.prototype)
-    Mod.prototype.constructor = module.constructor
-
-    Mod.prototype.require = function (_path, ref) {
-        const self = this
-        try {
-            // @ts-ignore
-            return self.constructor._load(_path, self)
-        } catch (err) {
-            // NOTE magic if the ref has match instead of throw we return undefined
-            /* istanbul ignore next */ 
-            if (ref === 'ERR_NO_THROW') return undefined
-            // if module not found, we have nothing to do, simply throw it back.
-            /* istanbul ignore next */ 
-            if (err.code === 'MODULE_NOT_FOUND') {
-                throw err
-            }
-        }
+    try {
+        return module.require(path)
+    } catch (err) {
+        if (ref === 'ERR_NO_THROW') return undefined
+        else throw err
     }
-
-    /* istanbul ignore next */ 
-    if (!(Mod.prototype instanceof module.constructor)) return undefined
-
-    // @ts-ignore
-    else return Mod.prototype.require(path, ref)
 }
 
 /**

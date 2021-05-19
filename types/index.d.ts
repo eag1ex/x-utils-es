@@ -1,4 +1,4 @@
-
+ 
 declare namespace xutils {
 
     declare type TlogTypes = "log" | "warn" | "error" | "onerror" | "attention" | "debug" | "alert" | "stack" | "errorTrace"
@@ -15,6 +15,7 @@ declare namespace xutils {
         value: number
         primitiveValue: any
     }
+
 
     /*
          * @memberof SimpleQ
@@ -53,11 +54,12 @@ declare namespace xutils {
         isActive(): boolean
     }
 
-    declare type xrequireRef = 'ERR_NO_THROW' | undefined
-    declare type Tselection  = Selection | string
-    declare interface Ixrequire extends NodeRequire {
-        (id:Tselection, ref?: xrequireRef): any
+
+    //declare type Tselection  = Selection | string
+    declare interface Ixrequire extends NodeRequire{
+        (id:string | URL, ref?: 'ERR_NO_THROW' | undefined): any
     }
+
     declare interface IXReferenceOpts{
         name?:string
         message?:string
@@ -166,7 +168,7 @@ declare namespace xutils {
     declare function dispatcher(uid?: string | number, debug?: boolean): Idispatcher
     declare function withHoc(item: TwithHoc, ...args: any): TwithHoc;
     declare function truthFul(obj: object): object;
-    declare const xrequire: Ixrequire;
+    declare const xrequire:Ixrequire
     declare function inIndex(str: string, patterns: Array<string>): number;
     declare function matched(str: string, expression: RegExp): boolean;
     declare function referenceError(opts?:IXReferenceOpts):TXReferenceError;

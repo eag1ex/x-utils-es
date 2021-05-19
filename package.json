@@ -79,6 +79,7 @@
     "referenceError",
     "xError",
     "isRegExp",
+    "noop",
     "types support"
   ],
   "esm": {
