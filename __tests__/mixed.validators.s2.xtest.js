@@ -106,7 +106,7 @@ describe('Evaluate Mixed/ segment (2.)', () => {
 
         expect(xrequire).toBeInstanceOf(Function)
         // NOTE it actually works in commonjs
-        expect(xrequire('./example.data', 'ERR_NO_THROW')).toBe(undefined)
+        expect(xrequire('./example.data')).toBe(undefined)
 
         let errSet = false
         try {

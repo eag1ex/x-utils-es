@@ -2722,9 +2722,9 @@ const withHoc = (item = () => { }, ...args) => {
 }
 
 /**
+ * Extended require version, does not modify global require() method  
  * THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
  * - Does not throw when second argument `ref=ERR_NO_THROW` provided
- * - Does not modify global require() method 
  * - _( Does not provide Intellisense unfortunately )_
  * @param {string} path require(>path<)
  * @param {string} ref // ERR_NO_THROW and it wont throw an error
@@ -2741,13 +2741,53 @@ function xrequire(path = '', ref) {
 
     /* istanbul ignore next */
     if (isWindow()) return undefined
+    const Mod = function () { }
 
-    try {
-        return module.require(path)
-    } catch (err) {
-        if (ref === 'ERR_NO_THROW') return undefined
-        else throw err
+    Mod.prototype = Object.create(module.constructor.prototype)
+    Mod.prototype.constructor = module.constructor
+
+    Mod.prototype.require = function (_path, ref) {
+        const self = this
+        try {
+            // check if loading module
+            let loadingNPMmod = _path.indexOf('./') !== 0 && _path.indexOf('.') !== 0
+            let amendedPath = _path
+
+            if (!loadingNPMmod) {
+                // gets location of script execution
+                let fullPath = require.main.filename.replace(/\\/g, '/')
+                let fullPathArr = fullPath.split('/')
+                fullPathArr.splice(fullPathArr.length - 1, 1)
+                let execDir = fullPathArr.toString().replace(/,/g, '/')
+
+                let combine = () => {
+                    if (_path.indexOf('..') === -1 && _path.indexOf('./') !== -1) {
+                        _path = _path.replace('./', '')
+                    }
+                    amendedPath = execDir + '/' + _path
+                }
+                combine()
+            }
+
+            // @ts-ignore
+            return self.constructor._load(amendedPath, self)
+        } catch (err) {
+            // NOTE magic if the ref has match instead of throw we return undefined
+            /* istanbul ignore next */
+            if (ref === 'ERR_NO_THROW') return undefined
+            // if module not found, we have nothing to do, simply throw it back.
+            /* istanbul ignore next */
+            if (err.code === 'MODULE_NOT_FOUND') {
+                throw err
+            }
+        }
     }
+
+    /* istanbul ignore next */ 
+    if (!(Mod.prototype instanceof module.constructor)) return undefined
+
+    // @ts-ignore
+    else return Mod.prototype.require(path, ref)
 }
 
 /**
