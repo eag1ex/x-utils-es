@@ -29,6 +29,75 @@ const isWindow = () => {
  * @typedef {'log' | 'warn' | 'onerror' | 'error' | 'alert'| 'attention' | 'debug' | 'stack' | 'errorTrace'} logType 
  */
 
+/**
+ * Extended require version, does not modify global require() method  
+ * THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
+ * - Does not throw when second argument `ref=ERR_NO_THROW` provided
+ * - _( Does not provide Intellisense unfortunately )_
+ * @param {string} path require(>path<)
+ * @param {string} ref // ERR_NO_THROW and it wont throw an error
+ * @returns {any} module.require output or undefined
+ * 
+ * @example 
+ * xrequire('./path/to/mod') // as usual
+ * xrequire('sdf56yfd','ERR_NO_THROW') // returns undefined
+ *
+ */
+// @ts-ignore
+
+function xrequire(path = '', ref) {
+
+    /* istanbul ignore next */
+    if (isWindow()) return undefined
+    const Mod = function () { }
+
+    Mod.prototype = Object.create(module.constructor.prototype)
+    Mod.prototype.constructor = module.constructor
+
+    Mod.prototype.require = function (_path, ref) {
+        const self = this
+        try {
+            // check if loading module
+            let loadingNPMmod = _path.indexOf('./') !== 0 && _path.indexOf('.') !== 0
+            let amendedPath = _path
+
+            if (!loadingNPMmod) {
+                // gets location of script execution
+                let fullPath = require.main.filename.replace(/\\/g, '/')
+                let fullPathArr = fullPath.split('/')
+                fullPathArr.splice(fullPathArr.length - 1, 1)
+                let execDir = fullPathArr.toString().replace(/,/g, '/')
+
+                let combine = () => {
+                    if (_path.indexOf('..') === -1 && _path.indexOf('./') !== -1) {
+                        _path = _path.replace('./', '')
+                    }
+                    amendedPath = execDir + '/' + _path
+                }
+                combine()
+            }
+
+            // @ts-ignore
+            return self.constructor._load(amendedPath, self)
+        } catch (err) {
+            // NOTE magic if the ref has match instead of throw we return undefined
+            /* istanbul ignore next */
+            if (ref === 'ERR_NO_THROW') return undefined
+            // if module not found, we have nothing to do, simply throw it back.
+            /* istanbul ignore next */
+            if (err.code === 'MODULE_NOT_FOUND') {
+                throw err.stack
+            }
+        }
+    }
+
+    /* istanbul ignore next */ 
+    if (!(Mod.prototype instanceof module.constructor)) return undefined
+
+    // @ts-ignore
+    else return Mod.prototype.require(path, ref)
+}
+
 /** 
  * 
  * If you used logging in your application from the moment this method was called all logging will be disabled
@@ -476,7 +545,6 @@ const isBigInt = (n) => typeof (n) === 'bigint'
  *   return {[inx]:inx+1}
  * }) //  [ { '0': 1 }, { '1': 2 }, { '2': 3 } ]
 */
-// @ts-ignore
 // @ts-ignore
 const loop = function (size = 0, cb = (index = 0) => {}) {
     let isFN = typeof cb === 'function'
@@ -1125,7 +1193,6 @@ const cancelPromiseCB = ({ error, defer, id }) => {}
  * 
 **/
 // @ts-ignore
-// @ts-ignore
 const cancelPromise = ({ defer = undefined, checkEvery = 500, maxWait = 9500, cbErr = ({ error, defer, id }) => {}, message = 'taken too long to respond', logging = false, id = undefined }) => {
    
     let isFN = (el) => typeof el === 'function'
@@ -1692,7 +1759,6 @@ const isString = (str = undefined, cbEval = undefined) => {
 const copyBy = (obj = {}, refs = []) => {
     if (!isObject(obj)) return {}
     // @ts-ignore
-    // @ts-ignore
     const d = [].concat(refs).reduce((n, el, i) => {
         if (obj[el] !== undefined) n[el] = obj[el]
         return n
@@ -1801,7 +1867,6 @@ const delay = (time = 0) => {
     const isNum = typeof time === 'number' && time >= 0 // must provide number
     if (!isNum) return Promise.resolve(true) // or resolve 
     // @ts-ignore
-    // @ts-ignore
     return new Promise((resolve, reject) => {
         const t = setTimeout(() => {
             clearTimeout(t)
@@ -1876,7 +1941,6 @@ const trueVal = (arr = []) => {
     // @ts-ignore
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
     // @ts-ignore
-    // @ts-ignore
     return [].concat(arr).filter((itm, inx) => isFalsy(itm) !== true)
 }
 
@@ -1895,7 +1959,6 @@ const trueValDeep = (arr = []) => {
     if (!(!arr ? false : Array.prototype === (arr).__proto__)) return []
     if (!arr.length) return []
     // @ts-ignore
-    // @ts-ignore
     return [].concat(arr).map((itm, inx) => {
         const typeIs = typeCheck(itm, false)
         // this item has child, check for false entities
@@ -1907,7 +1970,6 @@ const trueValDeep = (arr = []) => {
             }).filter(n => !!n)
         }
         if (typeIs.type === 'object' && typeIs.value) {
-            // @ts-ignore
             // @ts-ignore
             return Object.entries(itm).reduce((n, [k, v], i) => {
                 if (typeCheck(k, false).value > 0) n[k] = v
@@ -1930,7 +1992,6 @@ const trueValDeep = (arr = []) => {
 const trueProp = (obj = {}) => {
     if (!(!obj ? false : Object.prototype === (obj).__proto__)) return {}
 
-    // @ts-ignore
     // @ts-ignore
     return Object.entries(obj).reduce((n, [key, val], inx) => {
         if (!isFalsy(val)) n[key] = val
@@ -1965,7 +2026,6 @@ const resolver = (fn = () => {}, timeout = 5000, testEvery = 50) => {
     if (!isFunction) {
         return Promise.reject('fn() must be callable')
     }
-    // @ts-ignore
     // @ts-ignore
     return new Promise((resolve, reject) => {
         let every = testEvery || 50
@@ -2075,7 +2135,6 @@ const flattenDeep = (arr = []) => {
  */
 const chunks = (arr = [], size = 0) =>
     // @ts-ignore
-    // @ts-ignore
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
         arr.slice(i * size, i * size + size)
     )
@@ -2146,7 +2205,6 @@ const uniqBy = (arr = [], propName = '') => {
             continue
         }
 
-        // @ts-ignore
         // @ts-ignore
         let exists = Object.entries(stored).filter(([k], i) => item[propName] === stored[k]).length
         if (exists) continue
@@ -2719,75 +2777,6 @@ const withHoc = (item = () => { }, ...args) => {
 
     }
     return hoc
-}
-
-/**
- * Extended require version, does not modify global require() method  
- * THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
- * - Does not throw when second argument `ref=ERR_NO_THROW` provided
- * - _( Does not provide Intellisense unfortunately )_
- * @param {string} path require(>path<)
- * @param {string} ref // ERR_NO_THROW and it wont throw an error
- * @returns {any} module.require output or undefined
- * 
- * @example 
- * xrequire('./path/to/mod') // as usual
- * xrequire('sdf56yfd','ERR_NO_THROW') // returns undefined
- *
- */
-// @ts-ignore
-
-function xrequire(path = '', ref) {
-
-    /* istanbul ignore next */
-    if (isWindow()) return undefined
-    const Mod = function () { }
-
-    Mod.prototype = Object.create(module.constructor.prototype)
-    Mod.prototype.constructor = module.constructor
-
-    Mod.prototype.require = function (_path, ref) {
-        const self = this
-        try {
-            // check if loading module
-            let loadingNPMmod = _path.indexOf('./') !== 0 && _path.indexOf('.') !== 0
-            let amendedPath = _path
-
-            if (!loadingNPMmod) {
-                // gets location of script execution
-                let fullPath = require.main.filename.replace(/\\/g, '/')
-                let fullPathArr = fullPath.split('/')
-                fullPathArr.splice(fullPathArr.length - 1, 1)
-                let execDir = fullPathArr.toString().replace(/,/g, '/')
-
-                let combine = () => {
-                    if (_path.indexOf('..') === -1 && _path.indexOf('./') !== -1) {
-                        _path = _path.replace('./', '')
-                    }
-                    amendedPath = execDir + '/' + _path
-                }
-                combine()
-            }
-
-            // @ts-ignore
-            return self.constructor._load(amendedPath, self)
-        } catch (err) {
-            // NOTE magic if the ref has match instead of throw we return undefined
-            /* istanbul ignore next */
-            if (ref === 'ERR_NO_THROW') return undefined
-            // if module not found, we have nothing to do, simply throw it back.
-            /* istanbul ignore next */
-            if (err.code === 'MODULE_NOT_FOUND') {
-                throw err
-            }
-        }
-    }
-
-    /* istanbul ignore next */ 
-    if (!(Mod.prototype instanceof module.constructor)) return undefined
-
-    // @ts-ignore
-    else return Mod.prototype.require(path, ref)
 }
 
 /**
