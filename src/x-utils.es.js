@@ -809,8 +809,6 @@ const last = (arr = []) => {
 
 /**
  * @ignore
- * timerCB 
- *
  * @callback timerCB
  */
 
@@ -835,8 +833,6 @@ const timer = (cb = () => {}, time = 0) => {
 
 /**
  * @ignore
- * intervalCB 
- *
  * @callback intervalCB
  */
 
@@ -2727,12 +2723,12 @@ const withHoc = (item = () => { }, ...args) => {
 
 /**
  * THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
- * - Extended NodeRequire, does not throw when second argument `ref=ERR_NO_THROW` provided
+ * - Does not throw when second argument `ref=ERR_NO_THROW` provided
  * - Does not modify global require() method 
  * - _( Does not provide Intellisense unfortunately )_
  * @param {string} path require(>path<)
  * @param {string} ref // ERR_NO_THROW and it wont throw an error
- * @returns {any} require module output or undefined
+ * @returns {any} module.require output or undefined
  * 
  * @example 
  * xrequire('./path/to/mod') // as usual
@@ -2740,6 +2736,7 @@ const withHoc = (item = () => { }, ...args) => {
  *
  */
 // @ts-ignore
+
 function xrequire(path = '', ref) {
 
     /* istanbul ignore next */
