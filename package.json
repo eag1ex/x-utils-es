@@ -1,6 +1,6 @@
 {
   "name": "x-utils-es",
-  "version": "2.1.9",
+  "version": "2.2.0",
   "description": "helper tools for javascript validation",
   "main": "src/x-utils.es.js",
   "module": "umd/index.js",
@@ -71,7 +71,6 @@
     "pickFromArray",
     "dispatcher",
     "withHoc",
-    "xrequire",
     "asJson",
     "truthFul",
     "inIndex",
@@ -80,6 +79,7 @@
     "xError",
     "isRegExp",
     "noop",
+    "trim",
     "types support"
   ],
   "esm": {
@@ -92,6 +92,5 @@
   },
   "contributors": [],
   "devDependencies": {
-  
   }
 }

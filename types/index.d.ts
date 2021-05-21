@@ -1,6 +1,7 @@
 
 declare namespace xutils {
 
+
     declare type TlogTypes = "log" | "warn" | "error" | "onerror" | "attention" | "debug" | "alert" | "stack" | "errorTrace"
     declare type TlogMode = "on" | "off"
     declare type TloopCallback = (index: number) => any;
@@ -9,6 +10,7 @@ declare namespace xutils {
     declare interface TwithHoc extends Fuction{
         (...args:any):any
     }
+
     declare type TcbEval = () => boolean;
     declare interface ItypeCheck {
         type: string
@@ -16,15 +18,6 @@ declare namespace xutils {
         primitiveValue: any
     }
 
-
-    /*
-         * @memberof SimpleQ
-         * @param {callback} cb 
-         * @param {number} every 
-         * @param {number} timeout when to stop checking progress (will exit setInterval)
-         
-         progress(cb, every = 100, timeout = 1000) {
-    **/
 
     declare interface ISimpleQ extends Promise<T> {
         [Promise]: Promise<T>
@@ -54,10 +47,14 @@ declare namespace xutils {
         isActive(): boolean
     }
 
-    //declare type Tselection  = Selection | string
+
     declare interface IXrequire extends NodeRequire{
-        (id:string | URL, ref?: 'ERR_NO_THROW' | undefined): any
+        (id:string | URL, dir?:string, ref?: 'ERR_NO_THROW' | undefined): any
     }
+
+     
+
+
 
     declare interface IXReferenceOpts{
         name?:string
@@ -87,6 +84,7 @@ declare namespace xutils {
         fileName?:string
         lineNumber?:number
     }
+
 
 
     // logging types
@@ -167,12 +165,15 @@ declare namespace xutils {
     declare function dispatcher(uid?: string | number, debug?: boolean): Idispatcher
     declare function withHoc(item: TwithHoc, ...args: any): TwithHoc;
     declare function truthFul(obj: object): object;
-    declare const xrequire:IXrequire
+    
+    declare const xrequire:IXrequire;
+
     declare function inIndex(str: string, patterns: Array<string>): number;
     declare function matched(str: string, expression: RegExp): boolean;
     declare function referenceError(opts?:IXReferenceOpts):TXReferenceError;
     declare function xError(opts?:IXErrorOpts):TXError;
-    declare function noop():void
+    declare function noop():void;
+    declare function trim(str:string):string
 }
 
 export as namespace xutils

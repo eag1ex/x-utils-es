@@ -5,7 +5,7 @@
 /* eslint-env mocha */
 
 // import assert from 'assert'
-import { stringSize, validID, asJson, inIndex, matched } from '../src'
+import { stringSize, validID, asJson, inIndex, matched, trim } from '../src/x-utils.es'
 import { describe, expect, it } from '@jest/globals'
 
 describe('Evaluate Strings/ segment (1.)', () => {
@@ -22,6 +22,23 @@ describe('Evaluate Strings/ segment (1.)', () => {
         expect(stringSize('-1')).toBe(2)
         expect(stringSize({})).toBe(0)
         expect(stringSize([])).toBe(0)
+        done()
+    })
+
+    it('trim()', (done) => {
+        expect(trim).toBeInstanceOf(Function)
+        expect(trim('')).toBe('')
+        expect(trim()).toBe('')
+        expect(trim(`
+        \n
+        hello
+        \n  
+        \r
+
+        world
+        \n 
+        `)).toBe('hello world')
+
         done()
     })
 

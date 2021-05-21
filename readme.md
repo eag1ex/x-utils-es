@@ -2,7 +2,7 @@
 
 | Statements                  | Branches                | Functions                 | Lines                |
 | --------------------------- | ----------------------- | ------------------------- | -------------------- |
-| ![Statements](https://img.shields.io/badge/Coverage-93.27%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-83.58%25-yellow.svg) | ![Functions](https://img.shields.io/badge/Coverage-94.25%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-95.61%25-brightgreen.svg)    |
+| ![Statements](https://img.shields.io/badge/Coverage-93.28%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-83.53%25-yellow.svg) | ![Functions](https://img.shields.io/badge/Coverage-94.29%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-95.61%25-brightgreen.svg)    |
 
 
 &nbsp;
@@ -330,6 +330,10 @@ import { ... } from 'x-utils-es'
 > [id:60a]: https://utils.eaglex.net/module-x-utils.html#~noop  "Detailed in docs"
 > No operation function
 
+##### [#][id:60b] **trim()**
+> [id:60b]: https://utils.eaglex.net/module-x-utils.html#~trim  "Detailed in docs"
+> Trim boths sides of string, including new lines, and multiple spaces to single space
+
 ##### [#][id:61] **xError()**
 > [id:61]: https://utils.eaglex.net/module-x-utils.html#~xError  "Detailed in docs"
 > Extended Error(...) with extra `{id,name,fileName,lineNumber}` used to throw exception.
@@ -339,9 +343,9 @@ import { ... } from 'x-utils-es'
 > Extended ReferenceError(...) with extra `{name,fileName,lineNumber,columnNumber}`, 
 > used to throw exception.
 
-##### [#][id:63] **xrequire()**
+##### [#][id:63] **xrequire()** 
 > [id:63]: https://utils.eaglex.net/module-x-utils.html#~xrequire  "Detailed in docs"
-> Extended NodeRequire, does not throw when second argument `ref=ERR_NO_THROW` provided. 
+> Extended NodeRequire, does not throw when argument `ref=ERR_NO_THROW` is provided. 
 > THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
 
 ##### [#][id:64] **loggerSetting()**

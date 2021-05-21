@@ -29,75 +29,6 @@ const isWindow = () => {
  * @typedef {'log' | 'warn' | 'onerror' | 'error' | 'alert'| 'attention' | 'debug' | 'stack' | 'errorTrace'} logType 
  */
 
-/**
- * Extended require version, does not modify global require() method  
- * THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
- * - Does not throw when second argument `ref=ERR_NO_THROW` provided
- * - _( Does not provide Intellisense unfortunately )_
- * @param {string} path require(>path<)
- * @param {string} ref // ERR_NO_THROW and it wont throw an error
- * @returns {any} module.require output or undefined
- * 
- * @example 
- * xrequire('./path/to/mod') // as usual
- * xrequire('sdf56yfd','ERR_NO_THROW') // returns undefined
- *
- */
-// @ts-ignore
-
-function xrequire(path = '', ref) {
-
-    /* istanbul ignore next */
-    if (isWindow()) return undefined
-    const Mod = function () { }
-
-    Mod.prototype = Object.create(module.constructor.prototype)
-    Mod.prototype.constructor = module.constructor
-
-    Mod.prototype.require = function (_path, ref) {
-        const self = this
-        try {
-            // check if loading module
-            let loadingNPMmod = _path.indexOf('./') !== 0 && _path.indexOf('.') !== 0
-            let amendedPath = _path
-
-            if (!loadingNPMmod) {
-                // gets location of script execution
-                let fullPath = require.main.filename.replace(/\\/g, '/')
-                let fullPathArr = fullPath.split('/')
-                fullPathArr.splice(fullPathArr.length - 1, 1)
-                let execDir = fullPathArr.toString().replace(/,/g, '/')
-
-                let combine = () => {
-                    if (_path.indexOf('..') === -1 && _path.indexOf('./') !== -1) {
-                        _path = _path.replace('./', '')
-                    }
-                    amendedPath = execDir + '/' + _path
-                }
-                combine()
-            }
-
-            // @ts-ignore
-            return self.constructor._load(amendedPath, self)
-        } catch (err) {
-            // NOTE magic if the ref has match instead of throw we return undefined
-            /* istanbul ignore next */
-            if (ref === 'ERR_NO_THROW') return undefined
-            // if module not found, we have nothing to do, simply throw it back.
-            /* istanbul ignore next */
-            if (err.code === 'MODULE_NOT_FOUND') {
-                throw err.stack
-            }
-        }
-    }
-
-    /* istanbul ignore next */ 
-    if (!(Mod.prototype instanceof module.constructor)) return undefined
-
-    // @ts-ignore
-    else return Mod.prototype.require(path, ref)
-}
-
 /** 
  * 
  * If you used logging in your application from the moment this method was called all logging will be disabled
@@ -2880,11 +2811,11 @@ class XReferenceError extends ReferenceError {
  * - method extends {ReferenceError}
  * 
  * @param {Object} opts
- * @param {string} opts.name (optional) defaults to ReferenceError, provide your own
- * @param {string} opts.message (optional)
- * @param {string} opts.fileName (optional)
- * @param {number} opts.lineNumber (optional)
- * @param {number} opts.columnNumber (optional)
+ * @param {string?} opts.name (optional) defaults to ReferenceError, provide your own
+ * @param {string?} opts.message (optional)
+ * @param {string?} opts.fileName (optional)
+ * @param {number?} opts.lineNumber (optional)
+ * @param {number?} opts.columnNumber (optional)
  * @returns {XReferenceError} extended new ReferenceError(...)
  *
  * @example 
@@ -2972,10 +2903,115 @@ const isError = (el) => {
 }
 
 /**
+ * Extended require version, does not modify global require()  
+ * THIS METHOD ONLY WORK FOR COMMON.JS modules, and not for browser
+ * - Does not throw when second argument `ref=ERR_NO_THROW` provided
+ * - _( Does not provide Intellisense unfortunately )_
+ * @param {string} path require(>path<)
+ * @param {string?} dir must provide `__dirname` when executing NONE npm packages, so it can correctly map file paths
+ * @param {string?} ref // ERR_NO_THROW and it wont throw an error
+ * @returns {any} module.require output or undefined
+ * 
+ * @example 
+ * required('your_npm_package') // your npm package
+ * required('./path/to/module', __dirname) // your module script
+ * required('./blah/not/found', __dirname, 'ERR_NO_THROW') // returns undefined
+ * required('./blah/not/found', '', 'ERR_NO_THROW') // returns undefined
+ */
+function xrequire(path = '', dir = '', ref) {
+
+    /* istanbul ignore next */
+
+    if (isWindow()) return undefined
+
+    const Mod = function () { }
+
+    Mod.prototype = Object.create(module.constructor.prototype)
+    Mod.prototype.constructor = module.constructor
+
+    Mod.prototype.require = function (_path, ref) {
+        const self = this
+        try {
+            // check if loading module
+            let loadingNPMmod = _path.indexOf('./') !== 0 && _path.indexOf('.') !== 0
+            let amendedPath = _path
+            /* istanbul ignore next */
+            if (!dir && ref === 'ERR_NO_THROW' && !loadingNPMmod) return undefined
+            /* istanbul ignore next */
+            if (!dir && ref !== 'ERR_NO_THROW' && !loadingNPMmod) {
+                // @ts-ignore
+                throw referenceError({ name: 'xrequire', message: 'xrequire needs your __dirname to correctly map the path to require script' })
+               
+            }
+
+            if (!loadingNPMmod) {
+
+                // gets location of script execution
+                let nicePath = dir.replace(/\\/g, '/')
+                let combine = () => {
+                    if (_path.indexOf('..') === -1 &&
+                        _path.indexOf('./') !== -1) {
+                        _path = _path.replace('./', '')
+                    }
+
+                    amendedPath = nicePath + '/' + _path
+                }
+
+                combine()
+
+            }
+
+            // @ts-ignore
+            return self.constructor._load(amendedPath, self)
+        } catch (err) {
+            
+            /* istanbul ignore next */
+            if (err.name === 'xrequire') throw err.message
+
+            // NOTE magic if the ref has match instead of throw we return undefined
+            /* istanbul ignore next */
+            if (ref === 'ERR_NO_THROW') return undefined
+            // if module not found, we have nothing to do, simply throw it back.
+            /* istanbul ignore next */
+            if (err.code === 'MODULE_NOT_FOUND') {
+                throw err.stack
+            }
+        }
+    }
+
+    /* istanbul ignore next */
+    if (!(Mod.prototype instanceof module.constructor)) return undefined
+
+    // @ts-ignore
+    else return Mod.prototype.require(path, ref)
+}
+
+/**
  * No operation function
  * @returns {void}
  */
 const noop = () => {}
+
+/**
+ * Trim boths sides of string, including new lines, and multiple spaces to single space
+ * @param {string} str
+ * @returns {string}
+ * 
+ * @example 
+ * trim(`  \n hello  
+ * \n
+ * \r 
+ *
+ * \n
+ * \r
+ * world  
+ * 
+ * `) //> hello world
+ */
+const trim = (str) => {
+    if (typeof str !== 'string') return ''
+    return str.replace(/(\r\n?|\n|\t)/g, '').trim().replace(/\s\s +/g, ' ')
+}
 
 export { disableLogging }
 export { resetLogging }
@@ -3057,3 +3093,4 @@ export { matched }
 export { referenceError }
 export { xError }
 export { noop }
+export { trim }

@@ -102,16 +102,17 @@ describe('Evaluate Mixed/ segment (2.)', () => {
     
     // NOTE no support for mixing commonjs and esm modules while running tests
     // only decleared it to get code coverege
+
     it('xrequire()', (done) => {
 
         expect(xrequire).toBeInstanceOf(Function)
         // NOTE it actually works in commonjs
-        expect(xrequire('./example.data')).toBe(undefined)
+        expect(xrequire('./example.data', __dirname, 'ERR_NO_THROW')).toBe(undefined)
 
         let errSet = false
         try {
             // NOTE it actually works in commonjs, should throw
-            xrequire('/a/b/a').toBe(undefined)
+            xrequire('/a/b/a', '', 'ERR_NO_THROW').toBe(undefined)
             errSet = true  
         } catch (err) {
             // in commonjs this this hit!
