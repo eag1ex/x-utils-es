@@ -1,9 +1,9 @@
 /// <reference path="./x-utils.es.d.ts" />
-/** global xutils isArray */
+
 /**
  * @namespace xutils
  * @module x-utils
- * @license CC-BY-SA-4.0
+ * @license MIT
  * {@link https://eaglex.net Eaglex}
  * @description Simple javascript, lodash alternative library, for support contact me at eaglex.net
  * @author Developed by Anon
@@ -11,7 +11,6 @@
  */
 /* eslint-disable no-proto */
 // eslint-disable-next-line semi
-"use strict";
 
 /* istanbul ignore next */ 
 const isWindow = () => {
@@ -2913,10 +2912,10 @@ const isError = (el) => {
  * @returns {any} module.require output or undefined
  * 
  * @example 
- * required('your_npm_package') // your npm package
- * required('./path/to/module', __dirname) // your module script
- * required('./blah/not/found', __dirname, 'ERR_NO_THROW') // returns undefined
- * required('./blah/not/found', '', 'ERR_NO_THROW') // returns undefined
+ * xrequire('your_npm_package') // your npm package
+ * xrequire('./path/to/module', __dirname) // your module script
+ * xrequire('./blah/not/found', __dirname, 'ERR_NO_THROW') // returns undefined
+ * xrequire('./blah/not/found', '', 'ERR_NO_THROW') // returns undefined
  */
 function xrequire(path = '', dir = '', ref) {
 
