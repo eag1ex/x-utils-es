@@ -1,34 +1,33 @@
 
 declare namespace xutils {
 
-
-    declare type TlogTypes = "log" | "warn" | "error" | "onerror" | "attention" | "debug" | "alert" | "stack" | "errorTrace"
-    declare type TlogMode = "on" | "off"
-    declare type TloopCallback = (index: number) => any;
-    declare type CB = () => any;
+    export type TlogTypes = "log" | "warn" | "error" | "onerror" | "attention" | "debug" | "alert" | "stack" | "errorTrace"
+    export type TlogMode = "on" | "off"
+    export type TloopCallback = (index: number) => any 
+    export type CB = () => any 
     
-    declare interface TwithHoc extends Fuction{
+    export interface TwithHoc extends FunctionConstructor{
         (...args:any):any
     }
 
-    declare type TcbEval = () => boolean;
-    declare interface ItypeCheck {
+    export type TcbEval = () => boolean 
+    export interface ItypeCheck {
         type: string
         value: number
         primitiveValue: any
     }
 
 
-    declare interface ISimpleQ extends Promise<T> {
-        [Promise]: Promise<T>
-        entity?: string;
-        progress(cb: (value: "resolved" | "rejected" | "in_progress" | "timeout", time?:number) => void, every?: number, timeout?: number): ISimpleQ;
-        resolve(arg: any): ISimpleQ;
-        reject(arg: any): ISimpleQ;
-        promise: Promise<T>
+    export interface ISimpleQ extends Promise<any> {
+      //  [name?:string]: Promise<any>
+        entity?: string
+        progress(cb: (value: "resolved" | "rejected" | "in_progress" | "timeout", time?:number) => void, every?: number, timeout?: number): ISimpleQ
+        resolve(arg: any): ISimpleQ
+        reject(arg: any): ISimpleQ
+        promise: Promise<any>
     }
 
-    declare interface IcancelPromiseProps {
+    export interface IcancelPromiseProps {
         //{ error, defer, id }
         defer: Promise<any>
         checkEvery: number
@@ -36,10 +35,10 @@ declare namespace xutils {
         id: string | number
         message?: string
         logging?: boolean
-        cbErr(arg: { error: string, defer: { resolve: Function<any>, reject: Function<any> }, id: string | number }): void;
+        cbErr(arg: { error: string, defer: { resolve: ()=>any, reject: ()=>any }, id: string | number }): void 
     }
 
-    declare interface Idispatcher {
+    export interface Idispatcher {
         subscribe(cb: (data: any, uid: string, index: number) => void): Idispatcher
         onComplete(cb: (uid: string) => void): Idispatcher
         next(data: any): Idispatcher
@@ -48,7 +47,7 @@ declare namespace xutils {
     }
 
 
-    declare interface IXrequire extends NodeRequire{
+    export interface IXrequire{
         (id:string | URL, dir?:string, ref?: 'ERR_NO_THROW' | undefined): any
     }
 
@@ -56,20 +55,20 @@ declare namespace xutils {
 
 
 
-    declare interface IXReferenceOpts{
+    export interface IXReferenceOpts{
         name?:string
         message?:string
         fileName?:string
         lineNumber?:number
         columnNumber?:number
     }
-    declare interface TXReferenceError extends ReferenceErrorConstructor{
+    export interface TXReferenceError extends ReferenceErrorConstructor{
         lineNumber?:number
         fileName?:string
         columnNumber?:number
     }
 
-    declare interface IXErrorOpts{
+    export interface IXErrorOpts{
         id?:string|number
         name?:string
         message?:string
@@ -77,7 +76,7 @@ declare namespace xutils {
         lineNumber?:number
     }
 
-    declare interface TXError extends Error{
+    export interface TXError extends ErrorConstructor{
         id?:string|number
         name?:string
         message?:string
@@ -88,92 +87,92 @@ declare namespace xutils {
 
 
     // logging types
-    declare function disableLogging(): boolean;
-    declare function resetLogging(): boolean;
-    declare function loggerSetting(logType: TlogTypes, logMode?: TlogMode): boolean;
-    declare function checkLoggerSetting(logType: TlogTypes): TlogMode;
-    declare function loggingON(): boolean;
-    declare function log(...any:any): any;
-    declare function attention(...any:any): any;
-    declare function debug(...any:any): any;
-    declare function alert(...any:any): any;
-    declare function stack(data: any, asArray: boolean): any;
-    declare function errorTrace(data: any, asArray: boolean): any;
-    declare function warn(...any:any): any;
-    declare function error(...any:any): any;
-    declare function onerror(...any:any): any;
+    export function disableLogging(): boolean 
+    export function resetLogging(): boolean 
+    export function loggerSetting(logType: TlogTypes, logMode?: TlogMode): boolean 
+    export function checkLoggerSetting(logType: TlogTypes): TlogMode 
+    export function loggingON(): boolean 
+    export function log(...any:any): any 
+    export function attention(...any:any): any 
+    export function debug(...any:any): any
+    export function alert(...any:any): any
+    export function stack(data: any, asArray: boolean): any 
+    export function errorTrace(data: any, asArray: boolean): any 
+    export function warn(...any:any): any 
+    export function error(...any:any): any 
+    export function onerror(...any:any): any 
 
 
-    declare function isFunction(el: any): boolean;
-    declare function isArray(arr: any, cbEval?: TcbEval): boolean;
-    declare function isBigInt(n: any): boolean;
-    declare function loop(size: number, cb: TloopCallback): Array<any>;
-    declare function validDate(dt: any, cbEval?: TcbEval): boolean;
-    declare function arraySize(arr: any): number;
-    declare function typeCheck(el: any, standard?: boolean): ItypeCheck;
-    declare function isError(el: any): boolean;
-    declare function isFalse(el: any): boolean;
-    declare function isTrue(el: any): boolean;
-    declare function isBoolean(el: any): boolean;
-    declare function isNull(el: any): boolean;
-    declare function isUndefined(el): boolean;
-    declare function isEmpty(value: any): boolean;
-    declare function head(arr: Array<any>): any;
-    declare function last(arr: Array<any>): any;
-    declare function timer(cb: CB, time?: number): void;
-    declare function interval(cb: CB, every?: number, endTime?: number): void;
-    declare function sq(): ISimpleQ;
-    declare function cancelPromise(options: IcancelPromiseProps): Promise<T>;
-    declare function validID(id: string): string;
-    declare function isNumber(n: any): boolean;
-    declare function isDate(d: any): boolean;
-    declare function stringSize(str: string): number;
-    declare function isQPromise(defer: any): boolean;
-    declare function isSQ(defer: any): boolean;
-    declare function isPromise(defer: any): boolean;
-    declare function isObject(obj: any, cbEval?: TcbEval): boolean;
-    declare function uniq(arr: Array<any>): Array<any>;
-    declare function shuffle(arr:  Array<any>): Array<any>;
-    declare function selectiveArray(selectBy: Array<string>, data: Array<any>): Array<[]>;
-    declare function isClass(obj: object, cbEval?: TcbEval): boolean;
-    declare function hasPrototype(obj: object, cbEval?: TcbEval): boolean;
-    declare function hasProto(el: object, cbEval?: TcbEval): boolean;
-    declare function isRegExp(expression: RegExp): boolean;
-    declare function isInstance(obj: any, cbEval?: TcbEval): boolean;
-    declare function objectSize(obj: any): number;
-    declare function isFalsy(el: any): boolean;
-    declare function isString(str: any, cbEval?: TcbEval): boolean;
-    declare function copyBy(obj: object, refs: Array<string>): Object;
-    declare function copy(data: any): any;
-    declare function asJson(data: any): string;
-    declare function copyDeep(data: any): any;
-    declare function delay(time?: number): Promise<T>;
-    declare function someKeyMatch(object: object, source: object, cbEval?: TcbEval): boolean;
-    declare function exactKeyMatch(object: object, source: object, cbEval?: TcbEval): boolean;
-    declare function trueVal(arr: Array<any>): Array<any>;
-    declare function trueValDeep(arr: Array<any>): Array<any>;
-    declare function trueProp(obj: object): object;
-    declare function resolver(fn: CB, timeout?: number, testEvery?: number): Promise<T>;
-    declare function flatten(arr: Array<any>): Array<any>;
-    declare function flattenDeep(arr: Array<any>): Array<any>;
-    declare function chunks(arr: Array<any>, size: number): Array<[]>;
-    declare function dupes(item: any, index: number): Array<any>;
-    declare function uniqBy(arr:  Array<any>, propName: string): Array<any>;
-    declare function arrayWith(arr: Array<any>, prop: string): Array<any>;
-    declare function exFromArray(arr: Array<any>, excludes: Array<string>): Array<any>;
-    declare function pickFromArray(arr:  Array<any>, picks: Array<any>): Array<any>;
-    declare function dispatcher(uid?: string | number, debug?: boolean): Idispatcher
-    declare function withHoc(item: TwithHoc, ...args: any): TwithHoc;
-    declare function truthFul(obj: object): object;
+    export function isFunction(el: any): boolean 
+    export function isArray(arr: any, cbEval?: TcbEval): boolean 
+    export function isBigInt(n: any): boolean 
+    export function loop(size: number, cb: TloopCallback): Array<any> 
+    export function validDate(dt: any, cbEval?: TcbEval): boolean 
+    export function arraySize(arr: any): number 
+    export function typeCheck(el: any, standard?: boolean): ItypeCheck 
+    export function isError(el: any): boolean 
+    export function isFalse(el: any): boolean 
+    export function isTrue(el: any): boolean 
+    export function isBoolean(el: any): boolean 
+    export function isNull(el: any): boolean 
+    export function isUndefined(el): boolean 
+    export function isEmpty(value: any): boolean 
+    export function head(arr: Array<any>): any 
+    export function last(arr: Array<any>): any 
+    export function timer(cb: CB, time?: number): void 
+    export function interval(cb: CB, every?: number, endTime?: number): void 
+    export function sq(): ISimpleQ 
+    export function cancelPromise(options: IcancelPromiseProps): Promise<any> 
+    export function validID(id: string): string 
+    export function isNumber(n: any): boolean 
+    export function isDate(d: any): boolean 
+    export function stringSize(str: string): number 
+    export function isQPromise(defer: any): boolean 
+    export function isSQ(defer: any): boolean 
+    export function isPromise(defer: any): boolean 
+    export function isObject(obj: any, cbEval?: TcbEval): boolean 
+    export function uniq(arr: Array<any>): Array<any> 
+    export function shuffle(arr:  Array<any>): Array<any> 
+    export function selectiveArray(selectBy: Array<string>, data: Array<any>): Array<[]> 
+    export function isClass(obj: object, cbEval?: TcbEval): boolean 
+    export function hasPrototype(obj: object, cbEval?: TcbEval): boolean 
+    export function hasProto(el: object, cbEval?: TcbEval): boolean 
+    export function isRegExp(expression: RegExp): boolean 
+    export function isInstance(obj: any, cbEval?: TcbEval): boolean 
+    export function objectSize(obj: any): number 
+    export function isFalsy(el: any): boolean 
+    export function isString(str: any, cbEval?: TcbEval): boolean 
+    export function copyBy(obj: object, refs: Array<string>): Object 
+    export function copy(data: any): any 
+    export function asJson(data: any): string 
+    export function copyDeep(data: any): any 
+    export function delay(time?: number): Promise<any> 
+    export function someKeyMatch(object: object, source: object, cbEval?: TcbEval): boolean 
+    export function exactKeyMatch(object: object, source: object, cbEval?: TcbEval): boolean 
+    export function trueVal(arr: Array<any>): Array<any> 
+    export function trueValDeep(arr: Array<any>): Array<any> 
+    export function trueProp(obj: object): object 
+    export function resolver(fn: CB, timeout?: number, testEvery?: number): Promise<any> 
+    export function flatten(arr: Array<any>): Array<any> 
+    export function flattenDeep(arr: Array<any>): Array<any> 
+    export function chunks(arr: Array<any>, size: number): Array<[]> 
+    export function dupes(item: any, index: number): Array<any> 
+    export function uniqBy(arr:  Array<any>, propName: string): Array<any> 
+    export function arrayWith(arr: Array<any>, prop: string): Array<any> 
+    export function exFromArray(arr: Array<any>, excludes: Array<string>): Array<any> 
+    export function pickFromArray(arr:  Array<any>, picks: Array<any>): Array<any> 
+    export function dispatcher(uid?: string | number, debug?: boolean): Idispatcher
+    export function withHoc(item: TwithHoc, ...args: any): TwithHoc 
+    export function truthFul(obj: object): object 
     
-    declare const xrequire:IXrequire;
+    export const xrequire:IXrequire 
 
-    declare function inIndex(str: string, patterns: Array<string>): number;
-    declare function matched(str: string, expression: RegExp): boolean;
-    declare function referenceError(opts?:IXReferenceOpts):TXReferenceError;
-    declare function xError(opts?:IXErrorOpts):TXError;
-    declare function noop():void;
-    declare function trim(str:string):string
+    export function inIndex(str: string, patterns: Array<string>): number 
+    export function matched(str: string, expression: RegExp): boolean 
+    export function referenceError(opts?:IXReferenceOpts):TXReferenceError 
+    export function xError(opts?:IXErrorOpts):TXError 
+    export function noop():void 
+    export function trim(str:string):string
 }
 
 export as namespace xutils
