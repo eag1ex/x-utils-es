@@ -396,6 +396,16 @@ import { ... } from 'x-utils-es'
 > [id:73]: https://utils.eaglex.net/module-x-utils.html#~errorTrace  "Detailed in docs"
 > For stack tracing, prefixed with `[ERROR]`
 
+##### [#][id:74] **unsubscribe()**
+> [id:74]: https://utils.eaglex.net/module-x-utils.html#~unsubscribe  "Detailed in docs"
+> Unsubscribe from an RX/subscription, by providing array of active subs
+
+##### [#][id:75] **includes()**
+> [id:75]: https://utils.eaglex.net/module-x-utils.html#~includes  "Detailed in docs"
+> Compare match array items with the id, if any were found return true
+
+
+
 
 &nbsp;
 
