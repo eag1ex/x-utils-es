@@ -2130,7 +2130,7 @@ const uniqBy = (arr = [], propName = '') => {
             continue
         }
 
-        if (!item[propName]) {
+        if (item[propName] === undefined) {
             n.push(item)
             continue
         }
@@ -2736,7 +2736,7 @@ const truthFul = (obj = {}) => {
  * inIndex('abcdeFG', [/%fg/i, /1CD/i, /ab/]) // 1 (last)
  * 
  */
-const inIndex = (str = '', patterns = []) => {
+const inIndex = (str = '', patterns) => {
 
     let o = 0
     if (!isArray(patterns)) return o
@@ -2787,6 +2787,60 @@ const matched = (str = '', expression = /\\/) => {
     }
     o = regx(expression, str)
     return o
+}
+
+/**
+ * Compare match array items with the id, if any were found return true
+ * @param {any} id single item represented in mach array
+ * @param {Array<number>} matchArr array of item type that we can match by id
+ * @returns {boolean} when id was found in matchArr
+ * 
+ * @example 
+ * includes(1, [2,'0',false,1]) // true
+ * includes('5', [2,'5',false,1]) // true
+ */
+const includes = (id, matchArr) => {
+    if (!isArray(matchArr)) return false
+    return matchArr.filter((n) => id === n).length > 0
+}
+
+/** 
+ * Unsubscribe from an RX/subscription, by providing an array of active subs
+ * - invalids are silently dismissed and disposed
+ * - source input is finally spliced
+ * @param {Array<any>?} subscriptions Array of RX subscriptions
+ * @param {string?} message optional message displayed when item is unsubscribed
+ * @returns {number} index count of items unsubscribed
+ * 
+ * @example 
+ * unsubscribe([sub1,sub2,sub3],'on component destroyed') // 3
+ * unsubscribe([sub1,'',sub3],'unsubscribed') // 2, but the empty item is also disposed from array
+ */
+const unsubscribe = (subscriptions, message) => {
+    if (!(subscriptions || []).length) return 0
+    let inx = 0
+
+    subscriptions.forEach((sub, i) => {
+
+        try {
+            /* istanbul ignore next */
+            if (sub.unsubscribe !== undefined) {
+                sub.unsubscribe()
+                inx++
+            }
+          
+        } catch (err) {
+            // ups
+        }
+        
+    })
+
+    // splice all array items
+    subscriptions.splice(0, subscriptions.length)
+   
+    /* istanbul ignore next */
+    if (inx) log(`unsub ${message ? 'from:' + message : ''} index: ${inx}`)
+    return inx
 }
 
 /**
@@ -3093,3 +3147,5 @@ export { referenceError }
 export { xError }
 export { noop }
 export { trim }
+export { includes }
+export { unsubscribe }

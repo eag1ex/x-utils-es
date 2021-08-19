@@ -5,7 +5,7 @@
 /* eslint-env mocha */
 
 import {
-    last, head, uniq, uniqBy, shuffle, arrayWith, exFromArray, pickFromArray, flatten, flattenDeep, chunks, trueVal, trueValDeep, selectiveArray
+    last, head, uniq, uniqBy, shuffle, arrayWith, exFromArray, pickFromArray, flatten, flattenDeep, chunks, trueVal, trueValDeep, selectiveArray,unsubscribe
 } from '../src'
 import { describe, expect, it } from '@jest/globals'
 
@@ -31,6 +31,19 @@ describe('Evaluate Arrays/ segment (1.)', () => {
         done()
 
     })
+
+    // NOTE we cannot trully test this method, without importing RX module, but do it for sake of coverage!
+    it('unsubscribe()', (done) => {
+
+        expect(unsubscribe).toBeInstanceOf(Function)
+        expect(unsubscribe()).toBe(0)
+        let subs = ['',1,()=>{}]
+        expect(unsubscribe(subs,'unsubscribed')).toBe(0)
+        expect(subs.length).toBe(0)
+        done()
+
+    })
+    
 
     it('uniq()', (done) => {
 
