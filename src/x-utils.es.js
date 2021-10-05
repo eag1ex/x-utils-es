@@ -3067,7 +3067,7 @@ const trim = (str) => {
 }
 
 /**
- * @description Iterate data by matching props[...], must provide an object data 
+ * @description Iterate data by matching props[...], must provide an object 
  * 
  * @param {object} data must be an object
  * @param {Array<string>} props prop list matching first level on data object
