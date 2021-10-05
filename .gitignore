@@ -22,6 +22,9 @@ prototyping
 Prototypes
 umd/developer.md
 esm/developer.md
+package.master.json
+package.prod.json
+package.production.json
 ###################
 #Don't commit Mongo Database files
 *.lock
