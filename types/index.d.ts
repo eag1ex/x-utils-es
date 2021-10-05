@@ -139,7 +139,7 @@ declare namespace xutils {
     export function objectSize(obj: any): number 
     export function isFalsy(el: any): boolean 
     export function isString(str: any, cbEval?: CallbackEval): boolean 
-    export function copyBy(obj: object, refs: Array<string>): Object 
+    export function copyBy(obj: object, refs: Array<string>): object 
     export function copy(data: any): any 
     export function asJson(data: any): string 
     export function copyDeep(data: any): any 
@@ -172,9 +172,10 @@ declare namespace xutils {
     export function trim(str:string):string
     export function includes(id:any, arr:Array<any>):boolean
     export function unsubscribe(subscriptions:Array<any>, message?:string):boolean
+    export function objectIterateWith(obj:object,props:Array<any>):object
     
 }
 
 export as namespace xutils
 
-export {xutils}
+export {xutils} 

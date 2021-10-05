@@ -3066,6 +3066,27 @@ const trim = (str) => {
     return str.replace(/(\r\n?|\n|\t)/g, '').trim().replace(/\s\s +/g, ' ')
 }
 
+/**
+ * @description Iterate data by matching props[...], must provide an object data 
+ * 
+ * @param {object} data must be an object
+ * @param {Array<string>} props prop list matching first level on data object
+ * @returns {object} Object with specified props
+ * 
+ * @example 
+ * objectIterateWith({a:1,b:2,c:{}},['a','c']) // {a:1,c:{}}
+ * objectIterateWith({a:1,b:2,c:3},[]) // {a:1,b:2,c:3}
+ */
+const objectIterateWith = (data, props) => {
+    if (!props) return data
+    if (!isArray(props)) return data
+    if (!isObject(data)) return {}
+    return Object.entries(data).reduce((n, [key, el], inx) => {
+        if (props.filter(x => x === key).length) n[key] = el
+        return n
+    }, {})
+}
+
 export { disableLogging }
 export { resetLogging }
 export { loggerSetting }
@@ -3149,3 +3170,4 @@ export { noop }
 export { trim }
 export { includes }
 export { unsubscribe }
+export { objectIterateWith }

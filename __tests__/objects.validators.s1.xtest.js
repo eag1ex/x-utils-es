@@ -4,7 +4,7 @@
 /* eslint-disable no-new-wrappers */
 /* eslint-env mocha */
 
-import { objectSize, trueProp, truthFul } from '../src'
+import { objectSize, trueProp, truthFul,objectIterateWith } from '../src/x-utils.es'
 import { describe, expect, it, jest } from '@jest/globals'
 
 describe('Evaluate Objects/ segment (1.)', () => {
@@ -45,6 +45,14 @@ describe('Evaluate Objects/ segment (1.)', () => {
         expect(truthFul({})).toStrictEqual({})
 
         expect(truthFul({ a: undefined, b: 1, c: {}, z: undefined })).toStrictEqual({ b: 1, c: {} })
+        done()
+    })
+
+    it('objectIterateWith()', (done) => {
+        expect(objectIterateWith).toBeInstanceOf(Function)
+        expect(objectIterateWith({},[])).toStrictEqual({})
+        expect(objectIterateWith({},undefined)).toStrictEqual({})
+        expect(objectIterateWith({a:1,b:2,c:{}},['b','c'])).toStrictEqual({b:2,c:{}})
         done()
     })
 
