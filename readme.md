@@ -2,7 +2,7 @@
 
 | Statements                  | Branches                | Functions                 | Lines                |
 | --------------------------- | ----------------------- | ------------------------- | -------------------- |
-| ![Statements](https://img.shields.io/badge/Coverage-93.25%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-83.54%25-yellow.svg) | ![Functions](https://img.shields.io/badge/Coverage-94.51%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-95.7%25-brightgreen.svg)    |
+| ![Statements](https://img.shields.io/badge/Coverage-93.43%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-83.58%25-yellow.svg) | ![Functions](https://img.shields.io/badge/Coverage-94.57%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-95.75%25-brightgreen.svg)    |
 
 
 &nbsp;
@@ -404,10 +404,13 @@ import { ... } from 'x-utils-es'
 > [id:75]: https://utils.eaglex.net/module-x-utils.html#~includes  "Detailed in docs"
 > Compare match array items with the id, if any were found return true
 
-##### [#][id:76] **objectIterateWith()**
-> [id:76]: https://utils.eaglex.net/module-x-utils.html#~objectIterateWith  "Detailed in docs"
-> Iterate data by matching props[...], must provide an object 
+##### [#][id:76] **spread()**
+> [id:76]: https://utils.eaglex.net/module-x-utils.html#~spread  "Detailed in docs"
+> Spread data of an object as you would ...data, but with selected prop names that match the object 
 
+##### [#][id:77] **spreadWith()**
+> [id:76]: https://utils.eaglex.net/module-x-utils.html#~spreadWith  "Detailed in docs"
+>  Spread only selected array items matching index number
 
 &nbsp;
 

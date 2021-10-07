@@ -172,8 +172,9 @@ declare namespace xutils {
     export function trim(str:string):string
     export function includes(id:any, arr:Array<any>):boolean
     export function unsubscribe(subscriptions:Array<any>, message?:string):boolean
-    export function objectIterateWith(obj:object,props:Array<any>):object
-    
+    export function objectIterateWith(obj:object,props:Array<string>):object
+    export function spread(obj:object,props:Array<string>):object
+    export function spreadWith(arr:Array<any>,props:Array<number>):Array<any> 
 }
 
 export as namespace xutils

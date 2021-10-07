@@ -3067,25 +3067,58 @@ const trim = (str) => {
 }
 
 /**
- * @description Iterate data by matching props[...], must provide an object 
+ * @description Spread data of an object as you would ...data, but with selected prop names that match the object 
  * 
  * @param {object} data must be an object
- * @param {Array<string>} props prop list matching first level on data object
- * @returns {object} Object with specified props
+ * @param {Array<string>} props prop list matching first level props on an object
+ * @returns {object} 
  * 
  * @example 
- * objectIterateWith({a:1,b:2,c:{}},['a','c']) // {a:1,c:{}}
- * objectIterateWith({a:1,b:2,c:3},[]) // {a:1,b:2,c:3}
+ * spread({a:1,b:2,c:{}},['a','c']) // {a:1,c:{}}
+ * spread({a:1,b:2,c:3},[]) // {}
  */
-const objectIterateWith = (data, props) => {
-    if (!props) return data
-    if (!isArray(props)) return data
+const spread = (data, props) => {
     if (!isObject(data)) return {}
+    if (!props || !(props || []).length) return {}
+
     return Object.entries(data).reduce((n, [key, el], inx) => {
         if (props.filter(x => x === key).length) n[key] = el
         return n
     }, {})
 }
+
+/**
+ * @description Spread only selected array items matching index number
+ * @param {Array<any>} arr 
+ * @param {Array<number>} indexArr index number matching array
+ * @returns {Array<any>}
+ * 
+ * @example 
+ * spreadWith(['a','b','c'],[1,2]) // ['b','c']
+ * spreadWith(['a','b','c'],[2,4]) // ['c']
+ */
+const spreadWith = (arr, indexArr) => {
+    if (!(arr || []).length) return []
+    if (!(indexArr || []).length) return []
+
+    let list = []
+    for (let inx = 0; inx < indexArr.length; inx++) {
+        let i = indexArr[inx]
+        if (typeof i === 'number') {
+            if (arr[i] !== undefined) list.push(arr[i])
+        }
+    }
+    return list
+}
+
+/**
+ * @deprecated Use spread() method instead
+ * @alias spread
+ * @param {*} data 
+ * @param {*} props 
+ * @returns {object} 
+ */
+const objectIterateWith = (data, props) => spread(data, props)
 
 export { disableLogging }
 export { resetLogging }
@@ -3171,3 +3204,5 @@ export { trim }
 export { includes }
 export { unsubscribe }
 export { objectIterateWith }
+export { spread }
+export { spreadWith }
