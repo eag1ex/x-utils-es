@@ -18,12 +18,6 @@ Website docs at: [x-utils-es at github pages](https://eag1ex.github.io/x-utils-e
 &nbsp;\
 &nbsp;
 
-### Coverage
-
-Full coverage details at: [utils.eaglex.net/coverage](https://utils.eaglex.net/coverage)
-&nbsp;\
-&nbsp;
-
 ### Install
 
 ```shell
@@ -70,8 +64,6 @@ const {} require('x-utils-es/umd') // with node/commonjs support
 &nbsp;
 
 ### Example overview
-
-> For full detail refer to **website docs**: [utils.eaglex.net](https://utils.eaglex.net)
 
 &nbsp;
 
