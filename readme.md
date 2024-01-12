@@ -12,11 +12,23 @@ Simple javascript utility, lodash alternative, to help with type validation, wit
   &nbsp;\
   &nbsp;
 
+
+#### Depreciation notice
+This project is no longer maintained *(because Im busy building new exciting things!).* If you find something is not working, please check release date of the project, and adjust to corresponding Node.js (even) version, then it should work.
+
+If you are interested in my work and have questions about this project, **please drop me a comment, or email me, thanks!**
+
+
 ### Documentation & Demo
 
 Website docs at: [x-utils-es at github pages](https://eag1ex.github.io/x-utils-es/)
 &nbsp;\
 &nbsp;
+
+### Playground on codesandbox
+you can play with it directly
+[x-utils-es on codesandbox ](https://codesandbox.io/p/github/eag1ex/x-utils-es/codesandbox)
+
 
 ### Install
 
