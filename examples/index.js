@@ -73,8 +73,8 @@ import {
      * `esm` > (default) and node support for with esnext,  // node -r esm examples 
      * `umd` > universal module/es2015 
     */
-} from './umd'
-    // or {} = require('./umd') 
+} from 'x-utils-es/umd'
+// or {} = require('./umd') 
     
 loggerSetting('log', 'off') // disable all log()
 loggerSetting('log', 'on') // enable all log() // no effect if off was not set
