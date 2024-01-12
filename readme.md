@@ -18,6 +18,12 @@ Website docs at: [x-utils-es at github pages](https://eag1ex.github.io/x-utils-e
 &nbsp;\
 &nbsp;
 
+### Preview
+Just run 
+```sh
+npm run example
+```
+
 ### Install
 
 ```shell

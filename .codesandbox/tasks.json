@@ -1,0 +1,88 @@
+{
+  // These tasks will run in order when initializing your CodeSandbox project.
+  "setupTasks": [
+    {
+      "name": "Install Dependencies",
+      "command": "npm install"
+    }
+  ],
+
+  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
+  "tasks": {
+    "docs": {
+      "name": "docs",
+      "command": "npm run docs",
+      "runAtStart": false
+    },
+    "lint:install": {
+      "name": "lint:install",
+      "command": "npm run lint:install",
+      "runAtStart": false
+    },
+    "jest:install": {
+      "name": "jest:install",
+      "command": "npm run jest:install",
+      "runAtStart": false
+    },
+    "lint": {
+      "name": "lint",
+      "command": "npm run lint",
+      "runAtStart": false
+    },
+    "lint:fix": {
+      "name": "lint:fix",
+      "command": "npm run lint:fix",
+      "runAtStart": false
+    },
+    "lint:fix:tests": {
+      "name": "lint:fix:tests",
+      "command": "npm run lint:fix:tests",
+      "runAtStart": false
+    },
+    "build:esm": {
+      "name": "build:esm",
+      "command": "npm run build:esm",
+      "runAtStart": false
+    },
+    "build:test": {
+      "name": "build:test",
+      "command": "npm run build:test",
+      "runAtStart": false
+    },
+    "build:umd": {
+      "name": "build:umd",
+      "command": "npm run build:umd",
+      "runAtStart": false
+    },
+    "build:proto": {
+      "name": "build:proto",
+      "command": "npm run build:proto",
+      "runAtStart": false
+    },
+    "build:all": {
+      "name": "build:all",
+      "command": "npm run build:all",
+      "runAtStart": false
+    },
+    "example": {
+      "name": "example",
+      "command": "npm run example",
+      "runAtStart": false
+    },
+    "test": {
+      "name": "test",
+      "command": "npm run test",
+      "runAtStart": false
+    },
+    "coverage": {
+      "name": "coverage",
+      "command": "npm run coverage",
+      "runAtStart": false
+    },
+    "badge": {
+      "name": "badge",
+      "command": "npm run badge",
+      "runAtStart": false
+    }
+  }
+}
