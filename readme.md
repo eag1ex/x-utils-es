@@ -571,7 +571,7 @@ import { ... } from 'x-utils-es'
 
 ##### [#][id:77] **spreadWith()**
 
-> [id:76]: https://eag1ex.github.io/x-utils-es/module-x-utils.html#~spreadWith "Detailed in docs"
+> [id:77]: https://eag1ex.github.io/x-utils-es/module-x-utils.html#~spreadWith "Detailed in docs"
 >
 > Spread only selected array items matching index number
 
