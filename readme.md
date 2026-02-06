@@ -579,4 +579,4 @@ import { ... } from 'x-utils-es'
 
 ## Contact
 
-Have questions, or would like to submit feedback [contact eaglex.net](https://eaglex.net/app/contact?product=x-utils)
+Have questions, or would like to submit feedback [contact MichaelWorks](https://michaelworks.eaglex.net/connect/)
